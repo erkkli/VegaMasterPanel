@@ -1183,3 +1183,23 @@ DateTime: 29.11.2023 22:10:23
 ActionName: SefimPanelIp
 LogText: Ip Adres:192.168.1.101 User Id:1
 -----------------
+DateTime: 8.12.2023 20:59:05
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.101 User Id:1
+-----------------
+DateTime: 8.12.2023 22:07:24
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.101 User Id:1
+-----------------
+DateTime: 8.12.2023 22:56:44
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.101 User Id:1
+-----------------
+DateTime: 8.12.2023 23:00:15
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.101 User Id:1
+-----------------
+DateTime: 8.12.2023 23:17:41
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.101 User Id:1
+-----------------

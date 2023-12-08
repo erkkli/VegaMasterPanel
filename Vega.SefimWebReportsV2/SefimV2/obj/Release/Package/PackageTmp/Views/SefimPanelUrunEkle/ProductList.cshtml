@@ -1254,6 +1254,7 @@
             var opCatsId = $('#optionsKategori').val();
             var optionsId = $('#optionsId').val();
 
+            debugger;
             if (!secenek) {
                 return alert('Lütfen öncelikle Seçenek giriniz.')
             }
@@ -1278,8 +1279,9 @@
                 miktarli = true;
             else
                 miktarli = false;
+            debugger;
 
-            product.Options.push({ iid: iid, OptionCatsId: opCatsId, Name: secenek, Category: kategori, Price: fiyat, Quantitative: miktarli, Id: optionsId });
+            product.Options.push({ iid: iid, OptionCatsId: opCatsId, Name: secenek, Category: kategori, OptionCatsName: kategoriName, Price: fiyat, Quantitative: miktarli, Id: optionsId });
             lib.addRow(iid, tableOptions, '', { secenek: secenek, kategori: kategoriName, fiyat: fiyat, miktarli: miktarli }, gid, undefined, true);
             lib.editOptionsiid = undefined;
         })
@@ -2237,7 +2239,7 @@
             } else {
                 obj.FreeItem = false;
             }
-
+            debugger;
             if ($('#Sube').val()) {
                 obj.Choice1 = product.Choice1;
                 obj.Choice2 = product.Choice2;

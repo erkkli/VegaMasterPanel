@@ -65,6 +65,7 @@ namespace SefimV2.Models
         public int Id { get; set; }
         public int ProductId { get; set; }
         public string Name { get; set; }
+        public string OptionCatsName { get; set; }
         public string Price { get; set; }//decimal    
         public bool Quantitative { get; set; }
         public string Category { get; set; }

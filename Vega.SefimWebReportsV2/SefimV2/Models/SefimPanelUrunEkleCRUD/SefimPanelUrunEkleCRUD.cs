@@ -23,7 +23,7 @@ namespace SefimV2.Models.ProductSefimCRUD
         static readonly string sqlKullaniciName = WebConfigurationManager.AppSettings["User"];
         static readonly string sqlKullaniciPassword = WebConfigurationManager.AppSettings["Password"];
         #endregion
-        public ActionResultMessages Insert(SefimPanelUrunEkleViewModel Product)
+        public ActionResultMessages Insert(SefimPanelUrunEkleViewModel Product, bool urunKopyalamaMi = false)
         {
             var result = new ActionResultMessages();
 
@@ -72,19 +72,19 @@ namespace SefimV2.Models.ProductSefimCRUD
                     }
 
 
-                    string CmdString = "declare @ProductCount int=0" +
-                        "  set @ProductCount=(select count(*) from [dbo].[Product] where [ProductName]=@par1 and [ProductGroup]=@par2 and [SubeId]=convert(int,@par13))" +
-                        "if(@ProductCount=0)" +
-                        "Begin " +
-                            "INSERT INTO [dbo].[Product]([ProductName],[ProductGroup],[ProductCode],[Order],[Price],[VatRate],[FreeItem],[InvoiceName],[ProductType],[Plu],[SkipOptionSelection],[Favorites],[SubeId],[SubeName],[YeniUrunMu],[ProductPkId]) VALUES" +
-                            "(@par1, @par2, @par3, @par4, @par5, @par6, @par7, @par8, @par9, @par10, @par11, @par12, @par13, @par14, @par15,0)" +
-                            "select CAST(scope_identity() AS int)" +
-                        " End " + Environment.NewLine +
-                        "else " +
-                        "Begin " + Environment.NewLine +
-                            "select CAST(-1 AS int)--INSERT INTO [dbo].[Product]([ProductName],[ProductGroup],[ProductCode],[Order],[Price],[VatRate],[FreeItem],[InvoiceName],[ProductType],[Plu],[SkipOptionSelection],[Favorites],[SubeId],[SubeName],[YeniUrunMu],[ProductPkId]) VALUES" +
-                            "--(@par1+'_kopya'+(select convert(nvarchar(20), (Select Cast(Datediff(minute, '19700101', Cast(GETDATE() As date)) As bigint) * 60000 + Datediff(ms, '19000101', Cast(GETDATE() As time))))), @par2, @par3, @par4, @par5, @par6, @par7, @par8, @par9, @par10, @par11, @par12, @par13, @par14, @par15,0)" + Environment.NewLine +
-                        " End ";
+                    string CmdString = " declare @ProductCount int=0" +
+                                       " set @ProductCount=(select count(*) from [dbo].[Product] where [ProductName]=@par1 and [ProductGroup]=@par2 and [SubeId]=convert(int,@par13))" +
+                                       " if(@ProductCount=0)" +
+                                       " Begin " +
+                                           "INSERT INTO [dbo].[Product]([ProductName],[ProductGroup],[ProductCode],[Order],[Price],[VatRate],[FreeItem],[InvoiceName],[ProductType],[Plu],[SkipOptionSelection],[Favorites],[SubeId],[SubeName],[YeniUrunMu],[ProductPkId]) VALUES" +
+                                           "(@par1, @par2, @par3, @par4, @par5, @par6, @par7, @par8, @par9, @par10, @par11, @par12, @par13, @par14, @par15,0)" +
+                                           "select CAST(scope_identity() AS int)" +
+                                       " End " + Environment.NewLine +
+                                       " else " +
+                                       " Begin " + Environment.NewLine +
+                                           "select CAST(-1 AS int)--INSERT INTO [dbo].[Product]([ProductName],[ProductGroup],[ProductCode],[Order],[Price],[VatRate],[FreeItem],[InvoiceName],[ProductType],[Plu],[SkipOptionSelection],[Favorites],[SubeId],[SubeName],[YeniUrunMu],[ProductPkId]) VALUES" +
+                                           "--(@par1+'_kopya'+(select convert(nvarchar(20), (Select Cast(Datediff(minute, '19700101', Cast(GETDATE() As date)) As bigint) * 60000 + Datediff(ms, '19000101', Cast(GETDATE() As time))))), @par2, @par3, @par4, @par5, @par6, @par7, @par8, @par9, @par10, @par11, @par12, @par13, @par14, @par15,0)" + Environment.NewLine +
+                                       " End ";
                     int ID = sqlData.ExecuteScalarTransactionSql(CmdString, transaction, new object[]
                                 {
                                     Product.ProductName,
@@ -165,88 +165,139 @@ namespace SefimV2.Models.ProductSefimCRUD
                             }
                         }
 
-                        if (Product.OptionCats != null && Product.OptionCats.Count > 0)
-                        {
-                            foreach (var optionCats in Product.OptionCats)
-                            {
-                                string CmdStringOptionCats = "INSERT INTO [dbo].[OptionCats]([Name],[ProductId],[MaxSelections],[MinSelections],[SubeId],[SubeName],[OptionCatsPkId],[YeniUrunMu]) values " +
-                                     "(@par1, @par2, @par3, @par4, @par5, @par6, @par7,1)" +
-                          "select CAST(scope_identity() AS int);";
-                                int optionCatsId = sqlData.ExecuteScalarTransactionSql(CmdStringOptionCats, transaction, new object[] {
-                        optionCats.Name,
-                        ID,
-                        optionCats.MaxSelections,
-                        optionCats.MinSelections,
-                        Product.SubeId,
-                        Product.SubeName,
-                        0
-                    });
 
-                                //Kategor girilmiş kayıtlar için.
-                                if (Product.Options != null && Product.Options.Count > 0)
+                        if (!urunKopyalamaMi)
+                        {
+                            if (Product.OptionCats != null && Product.OptionCats.Count > 0)
+                            {
+                                foreach (var optionCats in Product.OptionCats)
                                 {
-                                    foreach (var options in Product.Options)
+                                    string CmdStringOptionCats = "INSERT INTO [dbo].[OptionCats]([Name],[ProductId],[MaxSelections],[MinSelections],[SubeId],[SubeName],[OptionCatsPkId],[YeniUrunMu]) values " +
+                                                                 "(@par1, @par2, @par3, @par4, @par5, @par6, @par7,1)" +
+                                                                 " select CAST(scope_identity() AS int);";
+                                    int optionCatsId = sqlData.ExecuteScalarTransactionSql(CmdStringOptionCats, transaction, new object[]
                                     {
-                                        if (options.OptionCatsId != null && optionCats.optionCatsId != null && options.OptionCatsId == optionCats.optionCatsId)
+                                                                optionCats.Name,
+                                                                ID,
+                                                                optionCats.MaxSelections,
+                                                                optionCats.MinSelections,
+                                                                Product.SubeId,
+                                                                Product.SubeName,
+                                                                0
+                                    });
+
+                                    //Kategor girilmiş kayıtlar için.
+                                    if (Product.Options != null && Product.Options.Count > 0)
+                                    {
+                                        foreach (var options in Product.Options)
                                         {
-                                            string CmdStringOptions = "INSERT INTO [dbo].[Options]([Name],[Price],[Quantitative],[ProductId],[Category],[SubeId],[SubeName],[OptionsPkId],[YeniUrunMu]) values " +
-                                                 "(@par1, @par2, @par3, @par4, @par5, @par6, @par7, @par8,1)" +
-                                                          "select CAST(scope_identity() AS int);";
-                                            int choice2Id = sqlData.ExecuteScalarTransactionSql(CmdStringOptions, transaction, new object[] {
+                                            if (options.OptionCatsId != null && optionCats.optionCatsId != null && options.OptionCatsId == optionCats.optionCatsId)
+                                            {
+                                                string CmdStringOptions = "INSERT INTO [dbo].[Options]([Name],[Price],[Quantitative],[ProductId],[Category],[SubeId],[SubeName],[OptionsPkId],[YeniUrunMu]) values " +
+                                                     "(@par1, @par2, @par3, @par4, @par5, @par6, @par7, @par8,1)" +
+                                                              "select CAST(scope_identity() AS int);";
+                                                int choice2Id = sqlData.ExecuteScalarTransactionSql(CmdStringOptions, transaction, new object[] {
                                             options.Name,
                                             options.Price,
                                             options.Quantitative,
                                             ID,
-                                            optionCatsId, //optionCats.Name,
+                                            optionCats.Name,//optionCatsId, //optionCats.Name,
                                             Product.SubeId,
                                             Product.SubeName,
                                             0
                                         });
-                                        }
-                                        else if (options.Category == optionCats.Id.ToString() && options.Category != 0.ToString())// 18.11.23 guncellendı
-                                        //else if (options.Category == optionCats.Name.ToString() && options.Category != 0.ToString())
-                                        {
-                                            string CmdStringOptions = "INSERT INTO [dbo].[Options]([Name],[Price],[Quantitative],[ProductId],[Category],[SubeId],[SubeName],[OptionsPkId],[YeniUrunMu]) values " +
-                                                "(@par1, @par2, @par3, @par4, @par5, @par6, @par7, @par8,1)" +
-                                                         "select CAST(scope_identity() AS int);";
-                                            int choice2Id = sqlData.ExecuteScalarTransactionSql(CmdStringOptions, transaction, new object[] {
+                                            }
+                                            //else if (options.Category == optionCats.Id.ToString() && options.Category != 0.ToString())// 18.11.23 guncellendı, // 08
+                                            else if (options.Category == optionCats.Name.ToString() && options.Category != 0.ToString())
+                                            {
+                                                string CmdStringOptions = "INSERT INTO [dbo].[Options]([Name],[Price],[Quantitative],[ProductId],[Category],[SubeId],[SubeName],[OptionsPkId],[YeniUrunMu]) values " +
+                                                    "(@par1, @par2, @par3, @par4, @par5, @par6, @par7, @par8,1)" +
+                                                             "select CAST(scope_identity() AS int);";
+                                                int choice2Id = sqlData.ExecuteScalarTransactionSql(CmdStringOptions, transaction, new object[] {
                                             options.Name,
                                             options.Price,
                                             options.Quantitative,
                                             ID,
-                                            optionCatsId,
+                                             //optionCatsId,
                                             Product.SubeId,
                                             Product.SubeName,
                                             0
                                         });
+                                            }
                                         }
+                                    }
+                                }
+                            }
+
+
+                            //Kategori girilmemiş kayıtlar için
+                            if (Product.Options != null && Product.Options.Count > 0)
+                            {
+                                foreach (var options in Product.Options)
+                                {
+                                    if (options.OptionCatsId == null && (options.Category == "0" || string.IsNullOrEmpty(options.Category))) //25.11.2023 kopyalamada options tablosunu aktarmadığı için kapatıldı.
+                                    {
+                                        string CmdStringOptions = "INSERT INTO [dbo].[Options]([Name],[Price],[Quantitative],[ProductId],[Category],[SubeId],[SubeName],[OptionsPkId],[YeniUrunMu]) values " +
+                                         "(@par1, @par2, @par3, @par4, @par5, @par6, @par7, @par8,1)" +
+                                          "select CAST(scope_identity() AS int);";
+                                        int choice2Id = sqlData.ExecuteScalarTransactionSql(CmdStringOptions, transaction, new object[] {
+                                    options.Name,
+                                    options.Price,
+                                    options.Quantitative,
+                                    ID,
+                                    "",  //options .Category,   //"", //25.11.2023
+                                    Product.SubeId,
+                                    Product.SubeName,
+                                    0
+                                });
                                     }
                                 }
                             }
                         }
 
-
-                        //Kategori girilmemiş kayıtlar için
-                        if (Product.Options != null && Product.Options.Count > 0)
+                        if (urunKopyalamaMi)
                         {
-                            foreach (var options in Product.Options)
+                            //Kategori girilmemiş kayıtlar için
+                            if (Product.Options != null && Product.Options.Count > 0)
                             {
-                                //if (options.OptionCatsId == null && (options.Category == "0" || string.IsNullOrEmpty(options.Category))) //25.11.2023 kopyalamada options tablosunu aktarmadığı için kapatıldı.
-                                //{
-                                string CmdStringOptions = "INSERT INTO [dbo].[Options]([Name],[Price],[Quantitative],[ProductId],[Category],[SubeId],[SubeName],[OptionsPkId],[YeniUrunMu]) values " +
-                                     "(@par1, @par2, @par3, @par4, @par5, @par6, @par7, @par8,1)" +
-                                      "select CAST(scope_identity() AS int);";
-                                int choice2Id = sqlData.ExecuteScalarTransactionSql(CmdStringOptions, transaction, new object[] {
-                                    options.Name,
-                                    options.Price,
-                                    options.Quantitative,
-                                    ID,
-                                    options .Category,   //"", //25.11.2023
-                                    Product.SubeId,
-                                    Product.SubeName,
-                                    0
-                                });
-                                //}
+                                foreach (var options in Product.Options)
+                                {
+                                    string CmdStringOptions = " INSERT INTO [dbo].[Options]([Name],[Price],[Quantitative],[ProductId],[Category],[SubeId],[SubeName],[OptionsPkId],[YeniUrunMu]) values " +
+                                                              " (@par1, @par2, @par3, @par4, @par5, @par6, @par7, @par8,1)" +
+                                                              " select CAST(scope_identity() AS int);";
+                                    int choice2Id = sqlData.ExecuteScalarTransactionSql(CmdStringOptions, transaction, new object[]
+                                    {
+                                                    options.Name,
+                                                    options.Price,
+                                                    options.Quantitative,
+                                                    ID,
+                                                    options.Category,  //options .Category,   //"", //25.11.2023
+                                                    Product.SubeId,
+                                                    Product.SubeName,
+                                                    0
+                                    });
+                                }
+                            }
+
+                            //Kategori girilmemiş kayıtlar için
+                            if (Product.OptionCats != null && Product.OptionCats.Count > 0)
+                            {
+                                foreach (var optionCats in Product.OptionCats)
+                                {
+                                    string CmdStringOptionCats = " INSERT INTO [dbo].[OptionCats]([Name],[ProductId],[MaxSelections],[MinSelections],[SubeId],[SubeName],[OptionCatsPkId],[YeniUrunMu]) values " +
+                                                                 " (@par1, @par2, @par3, @par4, @par5, @par6, @par7,1)" +
+                                                                 " select CAST(scope_identity() AS int);";
+                                    int optionCatsId = sqlData.ExecuteScalarTransactionSql(CmdStringOptionCats, transaction, new object[]
+                                    {
+                                                    optionCats.Name,
+                                                    ID,
+                                                    optionCats.MaxSelections,
+                                                    optionCats.MinSelections,
+                                                    Product.SubeId,
+                                                    Product.SubeName,
+                                                    0
+                                    });
+                                }
                             }
                         }
                     }
@@ -270,7 +321,6 @@ namespace SefimV2.Models.ProductSefimCRUD
             result.UserMessage = "İşlem Başarılı";
 
             return result;
-
         }
 
         public ActionResultMessages UpdateProduct(SefimPanelUrunEkleViewModel Product)
@@ -623,7 +673,7 @@ namespace SefimV2.Models.ProductSefimCRUD
                                                         options.Price,
                                                         options.Quantitative,
                                                         Product.Id,
-                                                        ""  ,
+                                                        options.Category,
                                                         Product.Id,
                                                         optId  });
                                         }
@@ -634,12 +684,17 @@ namespace SefimV2.Models.ProductSefimCRUD
                                                 string CmdStringOptions = " INSERT INTO [dbo].[Options]([Name],[Price],[Quantitative],[ProductId],[Category]) values " +
                                                                           " (@par1, @par2, @par3, @par4, @par5 ) " +
                                                                           " select CAST(scope_identity() AS int); ";
-                                                int choice2Id = sqlData.ExecuteScalarTransactionSql(CmdStringOptions, transaction, new object[] {
+                                                int choice2Id = sqlData.ExecuteScalarTransactionSql(CmdStringOptions, transaction, new object[]
+                                                {
                                                     options.Name,
                                                     options.Price,
                                                     options.Quantitative,
                                                     Product.Id,
-                                                    ""    });
+                                                    options.OptionCatsName
+                                                  });
+
+                                                options.Id = choice2Id;
+                                                options.ProductId = (int)Product.Id;
                                             }
                                         }
                                     }
@@ -1245,7 +1300,7 @@ namespace SefimV2.Models.ProductSefimCRUD
                     product.SubeId = Convert.ToInt32(sube.Value);
                     product.SubeName = sube.Text;
 
-                    ActionResultMessages msg = Insert(product);
+                    ActionResultMessages msg = Insert(product, true);
                     if (!msg.IsSuccess)
                     {
                         result.UserMessage += "Şube:" + product.SubeName + " hata:" + msg.UserMessage;
