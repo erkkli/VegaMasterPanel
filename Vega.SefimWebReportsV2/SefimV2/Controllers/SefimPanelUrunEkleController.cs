@@ -13,6 +13,10 @@ namespace SefimV2.Controllers
     {
         // GET: Product
 
+
+
+
+
         [HttpPost]
         public JsonResult ProductInsert(SefimPanelUrunEkleViewModel Product)
         {
