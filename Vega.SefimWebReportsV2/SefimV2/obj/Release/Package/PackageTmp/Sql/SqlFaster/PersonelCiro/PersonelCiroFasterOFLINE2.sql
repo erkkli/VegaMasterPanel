@@ -1,0 +1,359 @@
+﻿
+declare @Sube nvarchar(100) = '{SUBE}';
+declare @Trh1 nvarchar(20) = '{TARIH1}';
+declare @Trh2 nvarchar(20) = '{TARIH2}';
+
+WITH Toplamsatis AS
+  (SELECT @Sube AS Sube,
+
+     (SELECT TOP 1 SUBEADI
+      FROM TBLFASTERKASALAR
+      WHERE SUBENO=TBLFASTERODEMELER.SUBEIND) AS Sube1,
+
+     (SELECT KASAADI
+      FROM TBLFASTERKASALAR
+      WHERE KASANO=TBLFASTERODEMELER.KASAIND) AS Kasa,
+
+     (SELECT IND
+      FROM TBLFASTERKASALAR
+      WHERE KASANO=TBLFASTERODEMELER.KASAIND) AS ID,
+          ODENEN AS cash,
+          0 AS Credit,
+          0 AS Ticket,
+          0 AS Debit,
+          0 AS Ikram,
+          0 AS HediyeCeki,
+          0 AS KasaToplam,
+
+     (SELECT USERNAME
+      FROM TBLUSERS
+      WHERE IND = TBLFASTERODEMELER.USERIND) AS PERSONEL
+   FROM DBO.TBLFASTERODEMELER
+   WHERE ODEMETIPI = 0
+     AND ISNULL(IADE, 0) = 0
+     AND ISLEMTARIHI >= @Trh1
+     AND ISLEMTARIHI <= @Trh2
+
+	 UNION ALL SELECT @Sube AS Sube,
+
+     (SELECT TOP 1 SUBEADI
+      FROM TBLFASTERKASALAR
+      WHERE SUBENO=TBLFASTERODEMELER.SUBEIND) AS Sube1,
+
+     (SELECT KASAADI
+      FROM TBLFASTERKASALAR
+      WHERE KASANO=TBLFASTERODEMELER.KASAIND) AS Kasa,
+
+     (SELECT IND
+      FROM TBLFASTERKASALAR
+      WHERE KASANO=TBLFASTERODEMELER.KASAIND) AS ID,
+          ODENEN*-1 AS cash,
+             0 AS Credit,
+          0 AS Ticket,
+          0 AS Debit,
+          0 AS Ikram,
+          0 AS HediyeCeki,
+          0 AS KasaToplam,
+		   (SELECT USERNAME
+      FROM TBLUSERS
+      WHERE IND = TBLFASTERODEMELER.USERIND) AS PERSONEL
+
+   FROM DBO.TBLFASTERODEMELER
+   WHERE ODEMETIPI=0
+     AND ISNULL(IADE, 0)=1
+     AND ISLEMTARIHI >= @Trh1
+     AND ISLEMTARIHI <= @Trh2
+
+
+   UNION ALL SELECT @Sube AS Sube,
+
+     (SELECT TOP 1 SUBEADI
+      FROM TBLFASTERKASALAR
+      WHERE SUBENO=TBLFASTERODEMELER.SUBEIND) AS Sube1,
+
+     (SELECT KASAADI
+      FROM TBLFASTERKASALAR
+      WHERE KASANO=TBLFASTERODEMELER.KASAIND) AS Kasa,
+
+     (SELECT IND
+      FROM TBLFASTERKASALAR
+      WHERE KASANO=TBLFASTERODEMELER.KASAIND) AS ID,
+                    0 AS cash,
+                    ODENEN AS Credit,
+                    0 AS Ticket,
+                    0 AS Debit,
+                    0 AS Ikram,
+                    0 AS HediyeCeki,
+                    0 AS KasaToplam,
+
+     (SELECT USERNAME
+      FROM TBLUSERS
+      WHERE IND = TBLFASTERODEMELER.USERIND) AS PERSONEL
+   FROM DBO.TBLFASTERODEMELER
+   WHERE ODEMETIPI = 1
+     AND ISNULL(IADE, 0)= 0
+     AND ISLEMTARIHI >= @Trh1
+     AND ISLEMTARIHI <= @Trh2
+
+	 	 UNION ALL SELECT @Sube AS Sube,
+
+     (SELECT TOP 1 SUBEADI
+      FROM TBLFASTERKASALAR
+      WHERE SUBENO=TBLFASTERODEMELER.SUBEIND) AS Sube1,
+
+     (SELECT KASAADI
+      FROM TBLFASTERKASALAR
+      WHERE KASANO=TBLFASTERODEMELER.KASAIND) AS Kasa,
+
+     (SELECT IND
+      FROM TBLFASTERKASALAR
+      WHERE KASANO=TBLFASTERODEMELER.KASAIND) AS ID,
+          0 AS cash,
+             ODENEN*-1 AS Credit,
+          0 AS Ticket,
+          0 AS Debit,
+          0 AS Ikram,
+          0 AS HediyeCeki,
+          0 AS KasaToplam,
+		   (SELECT USERNAME
+      FROM TBLUSERS
+      WHERE IND = TBLFASTERODEMELER.USERIND) AS PERSONEL
+
+   FROM DBO.TBLFASTERODEMELER
+   WHERE ODEMETIPI=1
+     AND ISNULL(IADE, 0)=1
+     AND ISLEMTARIHI >= @Trh1
+     AND ISLEMTARIHI <= @Trh2
+
+   UNION ALL SELECT @Sube AS Sube,
+
+     (SELECT TOP 1 SUBEADI
+      FROM TBLFASTERKASALAR
+      WHERE SUBENO=TBLFASTERODEMELER.SUBEIND) AS Sube1,
+
+     (SELECT KASAADI
+      FROM TBLFASTERKASALAR
+      WHERE KASANO=TBLFASTERODEMELER.KASAIND) AS Kasa,
+
+     (SELECT IND
+      FROM TBLFASTERKASALAR
+      WHERE KASANO=TBLFASTERODEMELER.KASAIND) AS ID,
+                    0 AS cash,
+                    0 AS Credit,
+                    ODENEN AS Ticket,
+                    0 AS Debit,
+                    0 AS Ikram,
+                    0 AS HediyeCeki,
+                    0 AS KasaToplam,
+
+     (SELECT USERNAME
+      FROM TBLUSERS
+      WHERE IND = TBLFASTERODEMELER.USERIND) AS PERSONEL
+   FROM DBO.TBLFASTERODEMELER
+   WHERE ODEMETIPI = 2
+     AND ISNULL(IADE, 0)= 0
+     AND ISLEMTARIHI >= @Trh1
+     AND ISLEMTARIHI <= @Trh2
+
+	  UNION ALL SELECT @Sube AS Sube,
+
+     (SELECT TOP 1 SUBEADI
+      FROM TBLFASTERKASALAR
+      WHERE SUBENO=TBLFASTERODEMELER.SUBEIND) AS Sube1,
+
+     (SELECT KASAADI
+      FROM TBLFASTERKASALAR
+      WHERE KASANO=TBLFASTERODEMELER.KASAIND) AS Kasa,
+
+     (SELECT IND
+      FROM TBLFASTERKASALAR
+      WHERE KASANO=TBLFASTERODEMELER.KASAIND) AS ID,
+          0 AS cash,
+            0 AS Credit,
+          ODENEN*-1 AS Ticket,
+          0 AS Debit,
+          0 AS Ikram,
+          0 AS HediyeCeki,
+          0 AS KasaToplam,
+		   (SELECT USERNAME
+      FROM TBLUSERS
+      WHERE IND = TBLFASTERODEMELER.USERIND) AS PERSONEL
+
+   FROM DBO.TBLFASTERODEMELER
+   WHERE ODEMETIPI=2
+     AND ISNULL(IADE, 0)=1
+     AND ISLEMTARIHI >= @Trh1
+     AND ISLEMTARIHI <= @Trh2
+	 
+
+   UNION ALL SELECT @Sube AS Sube,
+
+     (SELECT TOP 1 SUBEADI
+      FROM TBLFASTERKASALAR
+      WHERE SUBENO=TBLFASTERODEMELER.SUBEIND) AS Sube1,
+
+     (SELECT KASAADI
+      FROM TBLFASTERKASALAR
+      WHERE KASANO=TBLFASTERODEMELER.KASAIND) AS Kasa,
+
+     (SELECT IND
+      FROM TBLFASTERKASALAR
+      WHERE KASANO=TBLFASTERODEMELER.KASAIND) AS ID,
+                    0 AS cash,
+                    0 AS Credit,
+                    0 AS Ticket,
+                    ODENEN AS Debit,
+                    0 AS Ikram,
+                    0 AS HediyeCeki,
+                    0 AS KasaToplam,
+
+     (SELECT USERNAME
+      FROM TBLUSERS
+      WHERE IND = TBLFASTERODEMELER.USERIND) AS PERSONEL
+   FROM DBO.TBLFASTERODEMELER
+   WHERE ODEMETIPI = 4
+     AND ISNULL(IADE, 0)= 0
+     AND ISLEMTARIHI >= @Trh1
+     AND ISLEMTARIHI <= @Trh2
+
+	  UNION ALL SELECT @Sube AS Sube,
+
+     (SELECT TOP 1 SUBEADI
+      FROM TBLFASTERKASALAR
+      WHERE SUBENO=TBLFASTERODEMELER.SUBEIND) AS Sube1,
+
+     (SELECT KASAADI
+      FROM TBLFASTERKASALAR
+      WHERE KASANO=TBLFASTERODEMELER.KASAIND) AS Kasa,
+
+     (SELECT IND
+      FROM TBLFASTERKASALAR
+      WHERE KASANO=TBLFASTERODEMELER.KASAIND) AS ID,
+          0 AS cash,
+             0 AS Credit,
+          0 AS Ticket,
+          ODENEN*-1 AS Debit,
+          0 AS Ikram,
+          0 AS HediyeCeki,
+          0 AS KasaToplam,
+		   (SELECT USERNAME
+      FROM TBLUSERS
+      WHERE IND = TBLFASTERODEMELER.USERIND) AS PERSONEL
+
+   FROM DBO.TBLFASTERODEMELER
+   WHERE ODEMETIPI=4
+     AND ISNULL(IADE, 0)=1
+     AND ISLEMTARIHI >= @Trh1
+     AND ISLEMTARIHI <= @Trh2
+
+
+   UNION ALL SELECT @Sube AS Sube,
+
+     (SELECT TOP 1 SUBEADI
+      FROM TBLFASTERKASALAR
+      WHERE SUBENO=TBLFASTERODEMELER.SUBEIND) AS Sube1,
+
+     (SELECT KASAADI
+      FROM TBLFASTERKASALAR
+      WHERE KASANO=TBLFASTERODEMELER.KASAIND) AS Kasa,
+
+     (SELECT IND
+      FROM TBLFASTERKASALAR
+      WHERE KASANO=TBLFASTERODEMELER.KASAIND) AS ID,
+                    0 AS cash,
+                    0 AS Credit,
+                    0 AS Ticket,
+                    0 AS Debit,
+                    ODENEN AS Ikram,
+                    0 AS HediyeCeki,
+                    0 AS KasaToplam,
+
+     (SELECT USERNAME
+      FROM TBLUSERS
+      WHERE IND = TBLFASTERODEMELER.USERIND) AS PERSONEL
+   FROM DBO.TBLFASTERODEMELER
+   WHERE ODEMETIPI = 3
+     AND ISNULL(IADE, 0)= 0
+     AND ISLEMTARIHI >= @Trh1
+     AND ISLEMTARIHI <= @Trh2
+   UNION ALL SELECT @Sube AS Sube,
+
+     (SELECT TOP 1 SUBEADI
+      FROM TBLFASTERKASALAR
+      WHERE SUBENO=TBLFASTERODEMELER.SUBEIND) AS Sube1,
+
+     (SELECT KASAADI
+      FROM TBLFASTERKASALAR
+      WHERE KASANO=TBLFASTERODEMELER.KASAIND) AS Kasa,
+
+     (SELECT IND
+      FROM TBLFASTERKASALAR
+      WHERE KASANO=TBLFASTERODEMELER.KASAIND) AS ID,
+                    0 AS cash,
+                    0 AS Credit,
+                    0 AS Ticket,
+                    0 AS Debit,
+                    0 AS Ikram,
+                    ODENEN AS HediyeCeki,
+                    0 AS KasaToplam,
+
+     (SELECT USERNAME
+      FROM TBLUSERS
+      WHERE IND = TBLFASTERODEMELER.USERIND) AS PERSONEL
+   FROM DBO.TBLFASTERODEMELER
+   WHERE ODEMETIPI IN  (7,8)
+     AND ISNULL(IADE, 0)= 0
+     AND ISLEMTARIHI >= @Trh1
+     AND ISLEMTARIHI <= @Trh2
+	 
+	 
+	  UNION ALL SELECT @Sube AS Sube,
+
+     (SELECT TOP 1 SUBEADI
+      FROM TBLFASTERKASALAR
+      WHERE SUBENO=TBLFASTERODEMELER.SUBEIND) AS Sube1,
+
+     (SELECT KASAADI
+      FROM TBLFASTERKASALAR
+      WHERE KASANO=TBLFASTERODEMELER.KASAIND) AS Kasa,
+
+     (SELECT IND
+      FROM TBLFASTERKASALAR
+      WHERE KASANO=TBLFASTERODEMELER.KASAIND) AS ID,
+          0 AS cash,
+             0 AS Credit,
+          0 AS Ticket,
+          0 AS Debit,
+          0 AS Ikram,
+          ODENEN*-1 AS HediyeCeki,
+          0 AS KasaToplam,
+		   (SELECT USERNAME
+      FROM TBLUSERS
+      WHERE IND = TBLFASTERODEMELER.USERIND) AS PERSONEL
+
+   FROM DBO.TBLFASTERODEMELER
+   WHERE ODEMETIPI IN  (7,8)
+     AND ISNULL(IADE, 0)=1
+     AND ISLEMTARIHI >= @Trh1
+     AND ISLEMTARIHI <= @Trh2
+	 
+	 )
+SELECT Sube,
+       Sube1,
+       Kasa,
+       SUM(Cash) AS CashPayment,
+       SUM(Credit) AS CreditPayment,
+       Sum(Ticket) AS TicketPayment,
+       Sum(Debit) AS DebitPayment,
+       Sum(Ikram) AS IkramtPayment,
+       Sum(HediyeCeki) AS HediyeCeki,
+       Sum(cash + Credit + Ticket + Debit + Ikram + HediyeCeki) AS Total,
+	   PERSONEL,
+       ID
+       
+FROM toplamsatis
+GROUP BY Sube,
+         Sube1,
+         Kasa,
+		 PERSONEL,
+         ID 

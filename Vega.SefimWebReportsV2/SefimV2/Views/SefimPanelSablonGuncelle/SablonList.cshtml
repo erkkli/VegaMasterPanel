@@ -1,0 +1,222 @@
+﻿@model SefimV2.ViewModels.SefimPanelSablonFiyatGuncelle.SablonSubeViewModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutPageSPos.cshtml";
+}
+
+<link href="~/Content/ContentSefPanel/css/costomfieldset/customfielset.css" rel="stylesheet" />
+<div class="m-content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="notification"></div>
+        </div>
+    </div>
+
+    @using (Html.BeginForm("SablonList", "SefimPanelSablonGuncelle", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary()
+
+        <div class="col-lg-12">
+            <fieldset class="well the-fieldset margin-bottom-5 padding-bottom-10 padding-top-10 table-responsive-lg">
+                <legend class="the-legend">Şablon Fiyat Güncelle</legend>
+                @* yeni eklendi*@
+                <div class="col-lg-6">
+                    <fieldset class="well the-fieldset margin-bottom-5 padding-bottom-10 padding-top-10">
+                        <legend class="the-legend">Hedef Şube</legend>
+                        <div class="col-md-3">
+                            <input type="submit" value="Şablon Fiyat Güncelle" class="btn btn-primary" title="Seçili şubelerde fiyat güncellemesi yapma" />
+                        </div>
+                        @if (Model.IsSelectedSubeList != null && Model.IsSelectedSubeList.Count > 0)
+                        {
+                            <div id="gridView">
+                                <table id="tableHedefSube" class="table table-striped table table-hover table-condensed  table-bordered table-responsive">
+                                    <thead>
+                                        <tr style="background: #fffaf0">
+                                            <th width="30%">Seç</th>
+                                            <th width="30%">Şablon Adı</th>
+                                            <th width="30%">Şube Adı</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+
+                                            var guncellenecekSablonList = Model.IsSelectedSubeList.OrderBy(x => x.SablonName).ToList();
+
+                                            Model.IsSelectedSubeList = guncellenecekSablonList;
+                                            for (int i = 0; i < Model.IsSelectedSubeList.Count; i++)
+                                            {
+                                                if (!string.IsNullOrEmpty(Model.IsSelectedSubeList[i].SubeName))
+                                                {
+                                                    @Html.HiddenFor(m => Model.IsSelectedSubeList[i].ID)
+                                                    @Html.HiddenFor(m => Model.IsSelectedSubeList[i].SubeName)
+                                                    @Html.HiddenFor(m => Model.IsSelectedSubeList[i].DBName)
+                                                    @Html.HiddenFor(m => Model.IsSelectedSubeList[i].SablonName)
+                                                    @Html.HiddenFor(m => Model.IsSelectedSubeList[i].ProductTemplatePkId)
+                                                    <tr>
+                                                        <td hideExcel="true"> <a class="btn  btn-default"> @Html.CheckBoxFor(x => Model.IsSelectedSubeList[i].IsSelectedHedefSube)  </a> </td>
+                                                        <td> <label class="btn btn-default" style="width:100%">  <h style="font-size:small;">@Model.IsSelectedSubeList[i].SablonName  </h>  </label>  </td>
+                                                        <td> <label class="btn btn-default" style="width:100%">  <h style="font-size:small;">@Model.IsSelectedSubeList[i].SubeName  </h>  </label>  </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </fieldset>
+                </div>
+                <div class="col-lg-6">
+                    <fieldset class="well the-fieldset margin-bottom-5 padding-bottom-10 padding-top-10">
+                        <legend class="the-legend">Güncellenecek Şubeler</legend>
+
+                        @if (Model.GuncellenecekSubeGruplariList != null && Model.GuncellenecekSubeGruplariList.Count > 0)
+                        {
+                            for (int e = 0; e < Model.GuncellenecekSubeGruplariList.Count; e++)
+                            {
+                                @*<input type="submit" value="Fiyat Güncelle" class="btn btn-lg btn-primary" title="Seçili şubelerde fiyat güncellemesi yapma" />*@
+
+                                if (Model.GuncellenecekSubeGruplariList[e].FiyatGuncellemsiHazirlananSubeList != null && (Model.GuncellenecekSubeGruplariList[e].FiyatGuncellemsiHazirlananSubeList.Count) > 0)
+                                {
+                                    <div id="gridView">
+                                        <div class="clearfix">
+                                            <a class="btn btn-warning" href="@Url.Action("EditSubeSablonPrice", "SefimPanelSablonGuncelle",
+                                                                            new {
+                                                                                SubeIdGrupList = Model.GuncellenecekSubeGruplariList[e].GuncellenecekSubeGrupId,
+                                                                                sablonName =Model.GuncellenecekSubeGruplariList[e].GuncellenecekSubeSablonAdi
+                                                                            })" title="Şubedeki şablon ürün bilgilerini güncelle">
+                                                Hazırlanan Şablon Ürünlere Git
+                                            </a>
+
+                                            <a href="@Url.Action("SablonList", "SefimPanelSablonGuncelle",
+                                                    new {
+                                                        SubeIdGrupList = Model.GuncellenecekSubeGruplariList[e].GuncellenecekSubeGrupId,
+                                                        sablonName =Model.GuncellenecekSubeGruplariList[e].GuncellenecekSubeSablonAdi,
+                                                        tumSubelereYay =string.Empty,
+                                                        isUpdate =true,
+                                                    })" class="btn btn-success">Şubelere Gönder</a>
+
+
+                                            @*<a name="Merkez Datada Hazırlanan Ürünleri Aktif Tüm Şubelere Gönderiri" href="@Url.Action("SablonList", "SefimPanelSablonGuncelle",
+                                                    new {
+                                                        SubeIdGrupList = Model.GuncellenecekSubeGruplariList[e].GuncellenecekSubeGrupId,
+                                                        sablonName =Model.GuncellenecekSubeGruplariList[e].GuncellenecekSubeSablonAdi,
+                                                        tumSubelereYay ="TumSubelereYay",
+                                                        isUpdate =true,
+                                                    })" class="btn btn-primary">
+                                                <i class="fa fa fa-share"></i>  Tüm Şubelere Yay
+                                            </a>*@
+
+
+                                            <a class="btn btn-danger" onclick="lib.sil('@Model.GuncellenecekSubeGruplariList[e].GuncellenecekSubeGrupId', '@Model.GuncellenecekSubeGruplariList[e].GuncellenecekSubeSablonAdi') " title="Hazırlanmakta olan şablon ürünleri siler">
+                                                <i class="fa fa fa-trash"></i> Hazırlanan Şablon Ürünleri Sil
+                                            </a>
+
+                                        </div>
+                                        <table id="tableHazirlananUrunler" class="table table-striped table table-hover table-condensed  table-bordered table-responsive">
+                                            <thead>
+                                                <tr style="background: #fffaf0">
+                                                    <th>Güncelle </th>
+                                                    <th> Şablon Adı</th>
+                                                    <th> Şube Adı</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+                                                    for (int i = 0; i < Model.GuncellenecekSubeGruplariList[e].FiyatGuncellemsiHazirlananSubeList.Count; i++)
+                                                    {
+                                                        @Html.HiddenFor(m => Model.GuncellenecekSubeGruplariList[e].FiyatGuncellemsiHazirlananSubeList[i].ID)
+                                                        @Html.HiddenFor(m => Model.GuncellenecekSubeGruplariList[e].FiyatGuncellemsiHazirlananSubeList[i].SubeName)
+                                                        @Html.HiddenFor(m => Model.GuncellenecekSubeGruplariList[e].FiyatGuncellemsiHazirlananSubeList[i].DBName)
+                                                        @Html.HiddenFor(m => Model.GuncellenecekSubeGruplariList[e].FiyatGuncellemsiHazirlananSubeList[i].SablonName)
+                                                        <tr>
+                                                            <td>
+                                                                @*<a class="btn btn-primary btntumSubelereYay" data-url=@Url.Action("SablonList","SefimPanelSablonGuncelle",
+                                                                                                               new {
+                                                                                                                   isUpdate = true,
+                                                                                                                   SubeIdGrupList ="TumSubelereYay",
+                                                                                                                   subeGrupList = Model.GuncellenecekSubeGruplariList[e].GuncellenecekSubeGrupId,
+                                                                                                                   subeId = Model.GuncellenecekSubeGruplariList[e].FiyatGuncellemsiHazirlananSubeList[i].ID,
+                                                                                                               })
+                                                                   title="Şubelere yay">
+                                                                    <i class="fa fa fa-share"></i>  Tüm Şubelere Yay
+                                                                </a>*@
+
+                                                                <a class="btn btn-primary btntumSubelereYay" name="Merkez Datada Hazırlanan Ürünleri Aktif Tüm Şubelere Gönderiri"
+                                                                   data-url="@Url.Action("IsActiveSubeList", "SefimPanelSablonGuncelle",
+                                                                                                                new {
+                                                                                                                    sablonName =Model.GuncellenecekSubeGruplariList[e].GuncellenecekSubeSablonAdi,
+                                                                                                                    SubeIdGrupList = Model.GuncellenecekSubeGruplariList[e].GuncellenecekSubeGrupId,                                                                                                                    
+                                                                                                                    tumSubelereYay ="TumSubelereYay",
+                                                                                                                    isUpdate =true,
+                                                                                                                    subeId = Model.GuncellenecekSubeGruplariList[e].FiyatGuncellemsiHazirlananSubeList[i].ID                                                                                                                    
+                                                                                                                })">
+                                                                    <i class="fa fa fa-share"></i>  Tüm Şubelere Yay
+                                                                </a>
+
+                                                            </td>
+                                                            <td> <label class="btn btn-default" style="width:100%">  <h style="font-size:small;"> @Model.GuncellenecekSubeGruplariList[e].FiyatGuncellemsiHazirlananSubeList[i].SablonName </h>  </label>  </td>
+                                                            <td> <label class="btn btn-default" style="width:100%">  <h style="font-size:small;"> @Model.GuncellenecekSubeGruplariList[e].FiyatGuncellemsiHazirlananSubeList[i].SubeName </h>  </label>  </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                            }
+                        }
+
+                    </fieldset>
+                </div>
+                <div class="col-md-offset-5 col-md-7 center">
+                    <a href="@Url.Action("Main", "SefimPanelHome")" class="btn btn-danger"> Vazgeç </a>
+                </div>
+            </fieldset>
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+    
+    $(".btntumSubelereYay").on("click", function () {
+        $('#genericModal').find(".modal-body").html("");
+        var dataurl = $(this).data("url");
+        callModalPage(dataurl, "Şube Listesi");
+        showProgressBar();
+        $("#modalPleaseWait").on('shown.bs.modal', function () {
+        });
+    });
+
+
+    var lib = {};
+    lib.sil = function (subeIdGrupList, sablonName) {
+        debugger;
+        if (confirm("Hazırlanan Şablon Ürünleri silmek istiyor musunuz?")) {
+            $.ajax(
+                {
+                    url: '/SefimPanelSablonGuncelle/Delete',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { SubeIdGrupList: subeIdGrupList, SablonName: sablonName },
+                    success: function (response) {
+                        if (response.IsSuccess) {
+                            location.reload();
+                        } else {
+                            alert(response.UserMessage)
+                        }
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+        }
+    }
+
+    $(document).on("change", '#tumunuSec', function () {
+        var seciliMi = $(this).is(":checked");
+        $('#tableHedefSube tbody').find('[type="checkbox"]').prop("checked", seciliMi);
+    })
+
+</script>

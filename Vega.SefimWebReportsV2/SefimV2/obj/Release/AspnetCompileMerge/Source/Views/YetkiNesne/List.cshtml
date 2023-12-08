@@ -1,0 +1,56 @@
+﻿@model IEnumerable<SefimV2.ViewModels.YetkiNesneViewModel.YetkiNesneViewModel>
+
+@{   
+    var uygulamaTipi = ViewBag.UygulamaTipi;
+    if (uygulamaTipi == "sp")
+    {
+        Layout = "~/Views/Shared/_LayoutPageSPos.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    }
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(false, "")
+
+    <div class="form-horizontal">
+        <fieldset class="well  the-fieldset ">
+            <legend class="the-legend"> Yetki Listesi </legend>
+            <a class='btn btn-success' href="@Url.Action("Create", "YetkiNesne",new { ut=uygulamaTipi })"> Yeni Yetki Ekle</a>
+            <div class="form-group">
+                <table id="tableChoice1" class="table table-hover table-bordered table-condensed">
+                    <thead>
+                        <tr style="background: #fffaf0; color:black">
+                            <th>İşlem</th>
+                            <th>@Html.DisplayNameFor(m => m.FirstOrDefault().YetkiAdi)</th>
+                            <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Aciklama)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            if (Model.Count() != null && Model.Count() > 0)
+                            {
+                                foreach (var yetkiNesne in Model)
+                                {
+                                    <tr>
+                                        @Html.HiddenFor(m => yetkiNesne.Id)
+
+                                        <td hideExcel="false">
+                                            <a class='btn btn-primary' href="@Url.Action("Edit", "YetkiNesne", new { id = yetkiNesne.Id, ut=uygulamaTipi})"> Düzenle</a>
+                                        </td>
+                                        <td>@yetkiNesne.YetkiAdi </td>
+                                        <td>@yetkiNesne.Aciklama  </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
+    </div>
+}

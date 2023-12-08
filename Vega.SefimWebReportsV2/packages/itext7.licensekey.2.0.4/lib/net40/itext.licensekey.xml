@@ -1,0 +1,414 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>itext.licensekey</name>
+    </assembly>
+    <members>
+        <member name="F:iText.License.LicenseKey.LICENSE_ELEMENT_NAME">
+            License file tag name 
+        </member>
+        <member name="F:iText.License.LicenseKey.LICENSE_ISSUER">
+            License file attribute name 
+        </member>
+        <member name="F:iText.License.LicenseKey.LICENSE_DATE">
+            License file attribute name 
+        </member>
+        <member name="F:iText.License.LicenseKey.LICENSE_LIB_VERSION">
+            License file attribute name 
+        </member>
+        <member name="F:iText.License.LicenseKey.LICENSEE_ELEMENT_NAME">
+            License file tag name 
+        </member>
+        <member name="F:iText.License.LicenseKey.LICENSEE_NAME">
+            License file tag name 
+        </member>
+        <member name="F:iText.License.LicenseKey.LICENSEE_EMAIL">
+            License file tag name 
+        </member>
+        <member name="F:iText.License.LicenseKey.LICENSEE_COMPANY">
+            License file tag name 
+        </member>
+        <member name="F:iText.License.LicenseKey.LICENSEE_KEY">
+            License file tag name 
+        </member>
+        <member name="F:iText.License.LicenseKey.LICENSEE_TYPE">
+            License file tag name 
+        </member>
+        <member name="F:iText.License.LicenseKey.LICENSEE_SUBTYPE">
+            License file tag name 
+        </member>
+        <member name="F:iText.License.LicenseKey.LICENSEE_PRODUCER_LINE">
+            License file tag name 
+        </member>
+        <member name="F:iText.License.LicenseKey.LICENSEE_COMMENT">
+            License file tag name 
+        </member>
+        <member name="F:iText.License.LicenseKey.LICENSEE_EXPIRE">
+            License file attribute name 
+        </member>
+        <member name="F:iText.License.LicenseKey.LICENSEE_SIGNATURE">
+            License file tag name 
+        </member>
+        <member name="F:iText.License.LicenseKey.LICENSEE_VERSION">
+            License file tag name 
+        </member>
+        <member name="F:iText.License.LicenseKey.PRODUCT_ELEMENT_NAME">
+            License file tag name 
+        </member>
+        <member name="F:iText.License.LicenseKey.PRODUCT_NAME">
+            License file attribute name 
+        </member>
+        <member name="F:iText.License.LicenseKey.PRODUCT_MAJOR">
+            License file attribute name 
+        </member>
+        <member name="F:iText.License.LicenseKey.PRODUCT_MINOR">
+            License file attribute name 
+        </member>
+        <member name="F:iText.License.LicenseKey.PRODUCT_TYPE">
+            License file attribute name 
+        </member>
+        <member name="F:iText.License.LicenseKey.PRODUCT_SUBTYPE">
+            License file attribute name 
+        </member>
+        <member name="F:iText.License.LicenseKey.PRODUCT_EXPIRE">
+            License file attribute name 
+        </member>
+        <member name="F:iText.License.LicenseKey.PRODUCT_PLATFORM">
+            License file attribute name 
+        </member>
+        <member name="F:iText.License.LicenseKey.PRODUCT_SIGNATURE">
+            License file tag name 
+        </member>
+        <member name="F:iText.License.LicenseKey.FEATURE_ELEMENT_NAME">
+            License file tag name 
+        </member>
+        <member name="F:iText.License.LicenseKey.FEATURE_NAME">
+            License file tag name 
+        </member>
+        <member name="F:iText.License.LicenseKey.FEATURE_VERSION">
+            License file tag name 
+        </member>
+        <member name="F:iText.License.LicenseKey.DEFAULT_PLATFORM">
+            Default name for C# platform 
+        </member>
+        <member name="F:iText.License.LicenseKey.template">
+            The format used for date Strings 
+        </member>
+        <member name="F:iText.License.LicenseKey.publicKey">
+            The public key needed to decrypt the signature. 
+        </member>
+        <member name="F:iText.License.LicenseKey.XMLS">
+            The Document holding the XML file. 
+        </member>
+        <member name="M:iText.License.LicenseKey.LoadLicenseFile(System.IO.Stream)">
+            Loads a license file using an Stream.
+            The certificate is read from the dll.
+            @param licenseIs	the input stream for reading the license file
+            @throws LicenseKeyException
+        </member>
+        <member name="M:iText.License.LicenseKey.LoadLicenseFile(System.IO.Stream[])">
+            Loads license files.
+            The certificate is read from the dll.
+            @param licensestreams streams of the license files
+            @throws LicenseKeyException
+        </member>
+        <member name="M:iText.License.LicenseKey.LoadLicenseFile(System.String)">
+            Loads a license file from a path.
+            The certificate is read from the jar.
+            @param pathToLicFile	the path to the license file
+            @throws LicenseKeyException
+        </member>
+        <member name="M:iText.License.LicenseKey.LoadLicenseFile(System.String[])">
+            Loads an array of license files based on the provided paths.
+            @param pathsToLicFiles array of paths
+            @throws LicenseKeyException
+        </member>
+        <member name="M:iText.License.LicenseKey.LoadLicenseFile(System.IO.Stream,System.IO.Stream)">
+            Loads a license file and a certificate.
+            @param licenseIs	the Stream to read the license file
+            @param certificateIs	the Stream to read the certificate
+            @throws LicenseKeyException
+        </member>
+        <member name="M:iText.License.LicenseKey.GetLicenseeInfo">
+            Returns information about the Licensee.
+            @return	an array of 5 Strings: a contact name, a contact email,
+            a company name, a license key and a producer line (can be null)
+        </member>
+        <member name="M:iText.License.LicenseKey.IsTrial">
+            Check if a trial license is loaded.
+            Note: this method return true if a valid trial license is loaded. It returns false
+            in all other case: commercial license, expired license, invalid license,
+            no license loaded, ...
+            
+            @return true, if a <b>valid</b> trial license is loaded.
+        </member>
+        <member name="M:iText.License.LicenseKey.CheckLicense">
+            Checks the license
+            @throws LicenseKeyException
+        </member>
+        <member name="M:iText.License.LicenseKey.ScheduledCheck(iText.License.LicenseKeyProduct)">
+            Performs a scheduled license check in a given time interval (LicenseKey.CHECK_INTERVAL)
+            @param product
+        </member>
+        <member name="M:iText.License.LicenseKey.CheckLicense(iText.License.LicenseKeyProduct)">
+            Checks the license for a specific product
+            @param product	the product for which the license needs to be checked
+            @throws LicenseKeyException
+        </member>
+        <member name="M:iText.License.LicenseKey.GetLicenseeSignatureString(iText.License.LicenseKeyLicensee)">
+            Returns the string that will be used for the licensee signature.
+        </member>
+        <member name="M:iText.License.LicenseKey.GetLicenseeSignatureString(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            Returns the string that will be used for the licensee signature.
+        </member>
+        <member name="M:iText.License.LicenseKey.GetProductSignatureString(iText.License.LicenseKeyProduct,iText.License.LicenseKeyLicensee)">
+            Returns the string that will be used for the product signature.
+        </member>
+        <member name="M:iText.License.LicenseKey.GetProductSignatureString(System.String,System.String,System.String,System.String,System.String,System.String,System.String[],System.String,System.String)">
+            Returns the string that will be used for the product signature.
+        </member>
+        <member name="T:iText.License.LicenseKeyException">
+            <summary>
+            Specific exception thrown if something is wrong with the license key.
+            </summary>
+        </member>
+        <member name="M:iText.License.LicenseKeyException.#ctor(System.String,System.Exception)">
+            <summary>
+            Creates a new instance of LicenseKeyException message.
+            </summary>
+            <param name="errmsg"> message the detail message.</param>
+            <param name="inner"> an exception that caused this exception. </param>
+        </member>
+        <member name="T:iText.License.LicenseKeyLicensee">
+            Pojo class containing information about the Licensee.
+        </member>
+        <member name="F:iText.License.LicenseKeyLicensee.name">
+            The name of a person employed by the company that uses the license. 
+        </member>
+        <member name="F:iText.License.LicenseKeyLicensee.email">
+            A contact address at the company that uses the license. 
+        </member>
+        <member name="F:iText.License.LicenseKeyLicensee.company">
+            The company that uses the license. 
+        </member>
+        <member name="F:iText.License.LicenseKeyLicensee.start">
+            The start date of the licensee info. 
+        </member>
+        <member name="F:iText.License.LicenseKeyLicensee.expire">
+            The expiration date of the licensee info. 
+        </member>
+        <member name="F:iText.License.LicenseKeyLicensee.key">
+            A key to identify the license. 
+        </member>
+        <member name="F:iText.License.LicenseKeyLicensee.producerLine">
+            The producer line to be used in the PDFs (null or "" if the standard producer line can be used) 
+        </member>
+        <member name="F:iText.License.LicenseKeyLicensee.comment">
+            An optional comment for this licensee, for documentation purposes
+        </member>
+        <member name="F:iText.License.LicenseKeyLicensee.type">
+            The type of this license 
+        </member>
+        <member name="F:iText.License.LicenseKeyLicensee.deploymentType">
+            The deployment type of this license 
+        </member>
+        <member name="F:iText.License.LicenseKeyLicensee.version">
+            Version of this license 
+        </member>
+        <member name="M:iText.License.LicenseKeyLicensee.#ctor(System.String,System.String,System.String,System.DateTime,System.DateTime)">
+            Creates a Licensee object without a key (trial license).
+            
+            <param name="name">the name of an employee at company</param>
+            <param name="email">email	the contact address at company</param>
+            <param name="company">company	the company that uses the license</param>
+            <param name="expire">expire	the expiration date of the licensee info</param>
+            <param name="start">start	the start date of the licensee info</param>
+        </member>
+        <member name="M:iText.License.LicenseKeyLicensee.#ctor(System.String,System.String,System.String,System.DateTime,System.DateTime,System.String,System.String)">
+            Creates a Licensee object with a key and a default producer line.
+            
+            <param name="name">the name of an employee at company</param>
+            <param name="email">the contact address at company</param>
+            <param name="company">the company that uses the license</param>
+            <param name="expire">the expiration date of the licensee info</param>
+            <param name="start">start	the start date of the licensee info</param>
+            <param name="key">the key to identify the license</param>
+        </member>
+        <member name="M:iText.License.LicenseKeyLicensee.#ctor(System.String,System.String,System.String,System.DateTime,System.DateTime,System.String,System.String,System.String)">
+            Creates a Licensee object with a key and a custom producer line.
+            
+            <param name="name">the name of an employee at company</param>
+            <param name="email">the contact address at company</param>
+            <param name="company">the company that uses the license</param>
+            <param name="expire">the expiration date of the licensee info</param>
+            <param name="key">the key to identify the license</param>
+            <param name="producerline">a special producer line</param>
+        </member>
+        <member name="M:iText.License.LicenseKeyLicensee.#ctor(System.String,System.String,System.String,System.DateTime,System.DateTime,System.String,System.String,System.String,System.String,System.String,System.String)">
+                     * Creates a Licensee object with a key, a custom producer line and a comment.
+                     * 
+                     * <param name="name">the name of an employee at company</param>
+                     * <param name="email">the contact address at company</param>
+                     * <param name="company">the company that uses the license</param>
+                     * <param name="expire">the expiration date of the licensee info</param>
+                    * <param name="start">start	the start date of the licensee info</param>
+                     * <param name="key">the key to identify the license</param>
+                     * <param name="producerline">a special producer line</param>
+        </member>
+        <member name="M:iText.License.LicenseKeyLicensee.GetName">
+            Getter for the name.
+            <returns>the name of an employee at the company</returns>
+        </member>
+        <member name="M:iText.License.LicenseKeyLicensee.GetEmail">
+            Getter for the email.
+            <returns>the contact address of the company</returns>
+        </member>
+        <member name="M:iText.License.LicenseKeyLicensee.GetCompany">
+            Getter for the company.
+            <returns>the company that uses the license</returns>
+        </member>
+        <member name="M:iText.License.LicenseKeyLicensee.GetStart">
+            Getter for the start date.
+            <returns>the start date of the license info</returns>
+        </member>
+        <member name="M:iText.License.LicenseKeyLicensee.GetExpire">
+            Getter for the expiration date
+            <returns>the date the licensee info expires</returns>
+        </member>
+        <member name="M:iText.License.LicenseKeyLicensee.GetKey">
+            Getter for the license key.
+            <returns>a license key that can be used to identify the licensee</returns>
+        </member>
+        <member name="M:iText.License.LicenseKeyLicensee.GetProducerLine">
+            Getter for the producer line.
+            <returns>an adapted producer line</returns>
+        </member>
+        <member name="M:iText.License.LicenseKeyLicensee.GetComment">
+            Getter for the comment.
+            @return the comment for this licensee
+        </member>
+        <member name="M:iText.License.LicenseKeyLicensee.GetType">
+            Getter for the type.
+            @return the type for this licensee
+        </member>
+        <member name="M:iText.License.LicenseKeyLicensee.GetDeploymentType">
+            Getter for the deployment type.
+            @return the deployment type for this licensee
+        </member>
+        <member name="M:iText.License.LicenseKeyLicensee.GetVersion">
+            Getter for the version.
+            @return the version for this licensee
+        </member>
+        <member name="T:iText.License.LicenseKeyProduct">
+            Pojo containing info about the product that is licensed.
+        </member>
+        <member name="F:iText.License.LicenseKeyProduct.productName">
+            The name of the product. 
+        </member>
+        <member name="F:iText.License.LicenseKeyProduct.majorVersion">
+            The major version of the product. 
+        </member>
+        <member name="F:iText.License.LicenseKeyProduct.minorVersion">
+            The minor version of the product. 
+        </member>
+        <member name="F:iText.License.LicenseKeyProduct.type">
+            The type of use of the product. 
+        </member>
+        <member name="F:iText.License.LicenseKeyProduct.deploymentType">
+            The deployment type of the product 
+        </member>
+        <member name="F:iText.License.LicenseKeyProduct.expire">
+            The expiration date of the product, or the current date to be compared with the expiration date. 
+        </member>
+        <member name="F:iText.License.LicenseKeyProduct.platform">
+            The platform used. 
+        </member>
+        <member name="F:iText.License.LicenseKeyProduct.productFeatures">
+            A list of features available in the product. 
+        </member>
+        <member name="M:iText.License.LicenseKeyProduct.#ctor(System.String,System.Int32,System.Int32,System.String,System.String,System.DateTime,System.String,iText.License.LicenseKeyProductFeature[])">
+            Creates a LicenseKeyProduct Pojo
+            <param name="productName">	    the name of the product</param>
+            <param name="majorVersion"> 	    the major version of the product</param>
+            <param name="minorVersion"> 	    the minor version of the product</param>
+            <param name="type"> 			    the type of use of the product</param>
+            <param name="deploymentTypeype"> the deployment type of the product</param>
+            <param name="expire"> 		    the expiration date of the product</param>
+            <param name="platform"> 		    the platform the product is used on</param>
+            <param name="productFeatures"> 	the available features</param>
+        </member>
+        <member name="M:iText.License.LicenseKeyProduct.#ctor(System.String,System.Int32,System.String,System.String,System.DateTime,System.String,iText.License.LicenseKeyProductFeature[])">
+            Creates a LicenseKeyProduct Pojo
+            <param name="productName"> 	    the name of the product</param>
+            <param name="majorVersion"> 	    the major version of the product</param>
+            <param name="type"> 			    the type of use of the product</param>
+            <param name="deploymentType">     the deploymentType of the product</param>
+            <param name="expire"> 		    the expiration date of the product</param>
+            <param name="platform"> 		    the platform the product is used on</param>
+            <param name="productFeatures"> 	the available features</param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:iText.License.LicenseKeyProduct.#ctor(System.String,System.Int32,System.Int32,iText.License.LicenseKeyProductFeature[])" -->
+        <!-- Badly formed XML comment ignored for member "M:iText.License.LicenseKeyProduct.#ctor(System.String,System.Int32,System.Int32,System.String,iText.License.LicenseKeyProductFeature[])" -->
+        <member name="M:iText.License.LicenseKeyProduct.#ctor(System.String,System.Int32,iText.License.LicenseKeyProductFeature[])">
+            Creates a LicenseKeyProduct Pojo without an expiration date to be used in products that require a license.
+            The current date will be used to compare it with the expiration date.
+            <param name="productName"> 	    the name of the product</param>
+            <param name="majorVersion">	    the major version of the product</param>
+            <param name="productFeatures">	the available features</param>
+        </member>
+        <member name="M:iText.License.LicenseKeyProduct.GetProductName">
+            Getter for the product name
+            <returns>    the name of the product that is licensed</returns>
+        </member>
+        <member name="M:iText.License.LicenseKeyProduct.GetMajorVersion">
+            Getter for the major version
+            <returns>    the major version of the product </returns>
+        </member>
+        <member name="M:iText.License.LicenseKeyProduct.GetMinorVersion">
+            Getter for the minor version
+            <returns>    the minor version of the product</returns>
+        </member>
+        <member name="M:iText.License.LicenseKeyProduct.GetType">
+            Getter for the use
+            <returns>	the type of use for the license</returns>
+        </member>
+        <member name="M:iText.License.LicenseKeyProduct.GetExpire">
+            Getter for the expiration date
+            <returns>	the date the license expires, or the current date to be compared with the expiration date</returns>
+        </member>
+        <member name="M:iText.License.LicenseKeyProduct.GetPlatform">
+            Getter for the platform
+            <returns>	the platform</returns>
+        </member>
+        <member name="M:iText.License.LicenseKeyProduct.GetProductFeatures">
+            Getter for the product features
+            <returns>	an array of product features</returns>
+        </member>
+        <member name="M:iText.License.LicenseKeyProduct.GetDeploymentType">
+            Getter for the deployment type.
+            <returns>     the deployment type</returns>
+        </member>
+        <member name="T:iText.License.LicenseKeyProductFeature">
+            Pojo containing info about a feature that is licensed.
+        </member>
+        <member name="F:iText.License.LicenseKeyProductFeature.featureName">
+            The name of the feature 
+        </member>
+        <member name="F:iText.License.LicenseKeyProductFeature.featureVersion">
+            The version number of the feature 
+        </member>
+        <member name="M:iText.License.LicenseKeyProductFeature.#ctor(System.String,System.Int32)">
+            Creates a product feature Pojo
+            <param name="featureName">the feature name</param>
+            <param name="featureVersion">the feature version</param>
+        </member>
+        <member name="M:iText.License.LicenseKeyProductFeature.GetFeatureName">
+            Getter for the feature name.
+            <returns>	a feature name</returns>
+        </member>
+        <member name="M:iText.License.LicenseKeyProductFeature.GetFeatureVersion">
+            Getter for the feature version number
+            <returns>	a version number</returns>
+        </member>
+    </members>
+</doc>

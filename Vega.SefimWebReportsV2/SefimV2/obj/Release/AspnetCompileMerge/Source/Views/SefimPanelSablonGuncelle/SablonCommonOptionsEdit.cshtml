@@ -1,0 +1,122 @@
+﻿@model SefimV2.ViewModels.SPosVeriGonderimi.UrunEditViewModel
+
+<div class="m-content">
+    <div class="row" style="margin:10px">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div id="notification"></div>
+                </div>
+            </div>
+            <div class="m-portlet">
+                @if (Model.productOptionsCompairsList != null && Model.productOptionsCompairsList.Count > 0)
+                {
+                    <fieldset class="well the-fieldset margin-bottom-5 padding-bottom-10 padding-top-10 style-2">
+                        <legend class="the-legend">Seçenekler</legend>
+
+                        @using (Html.BeginForm("SablonCommonOptionsEdit", "SefimPanelSablonGuncelle", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            @*@Html.ValidationSummary()*@
+                            @Html.HiddenFor(Model => Model.SubeId)
+                            @Html.HiddenFor(Model => Model.SubeIdGrupList)
+
+                            <div class="m-portlet__body">
+
+                                @*<div id="gridView">*@
+                                <table id="tableCommonOptions" class="table table-hover table-bordered table-condensed">
+                                    <thead>
+                                        <tr style="background: #fffaf0; color:black">
+                                            @*<th width="3%">İşlem</th>*@
+                                            <th>@Html.DisplayNameFor(m => m.UrunEditList.First().ProductGroup)</th>
+                                            <th>@Html.DisplayNameFor(m => m.UrunEditList.First().ProductName)</th>
+                                            <th>@Html.DisplayNameFor(m => m.UrunEditList.First().OptionsProductName)</th>
+
+                                            @for (int i = 0; i < Model.SubeList.Count; i++)
+                                            {
+                                                <th width="15%">  @Model.SubeList[i].SubeAdi </th>
+                                                @Html.HiddenFor(m => Model.SubeList[i].SubeAdi)
+                                                @Html.HiddenFor(m => Model.SubeList[i].SubeId)
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            if (Model.productOptionsCompairsList != null && Model.productOptionsCompairsList.Count > 0)
+                                            {
+                                                for (int i = 0; i < Model.productOptionsCompairsList.ToList().OrderBy(x => x.ProductName).Count(); i++)
+                                                {
+                                                    <tr>
+                                                        @*<td hideExcel="false">
+                                                                <a>   <img class='btnCh2Getir btn btn-xs btn-prev' data-url="@Url.Action("Choice2Edit", "SefimPanelVeriGonderimi", new { subeId = Model.productOptionsCompairsList[i].SubeList.FirstOrDefault().SubeId,  productId = Model.productOptionsCompairsList[i].ProductId})" src="~/img/details_open.jpg" rel=@Model.SubeId alt="expand/collapse"></a>
+                                                            </td>*@
+                                                        <td>
+                                                            @Model.productOptionsCompairsList[i].ProductGroup
+                                                            @Html.HiddenFor(m => Model.productOptionsCompairsList[i].Id)
+                                                            @Html.HiddenFor(m => Model.productOptionsCompairsList[i].ProductId)
+                                                            @Html.HiddenFor(m => Model.productOptionsCompairsList[i].OptionsId)
+                                                            @Html.HiddenFor(m => Model.productOptionsCompairsList[i].ProductGroup)
+                                                            @Html.HiddenFor(m => Model.productOptionsCompairsList[i].OptionsProductName)
+                                                        </td>
+                                                        <td>
+                                                            @Model.productOptionsCompairsList[i].ProductName
+                                                            @Html.HiddenFor(m => Model.productOptionsCompairsList[i].ProductName)
+                                                        </td>
+                                                        <td> @Model.productOptionsCompairsList[i].OptionsProductName </td>
+
+                                                        @for (int a = 0; a < Model.SubeList.Count; a++)
+                                                        {
+                                                            var price = Model.productOptionsCompairsList[i].SubeList.Where(y => y.SubeId == Model.SubeList[a].SubeId).FirstOrDefault();
+                                                            var priceIndex = Model.productOptionsCompairsList[i].SubeList.IndexOf(price);
+                                                            @Html.HiddenFor(m => Model.productOptionsCompairsList[i].SubeList[priceIndex].SubeId)
+                                                            @Html.HiddenFor(m => Model.productOptionsCompairsList[i].SubeList[priceIndex].PkId)
+
+                                                            if (Model.productOptionsCompairsList[i].SubeList[priceIndex].SubePriceValue == null /*|| Model.productOptionsCompairsList[i].SubeList[priceIndex].SubePriceValue == 0*/)
+                                                            {
+                                                                <td align="center">
+                                                                    @*<img src="~/img/details_close.jpg" />*@
+                                                                    @*<img style="text-align:center" src="~/img/close.png" />*@
+                                                                    <img src="~/img/noentry.png" />
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td> @Html.EditorFor(m => Model.productOptionsCompairsList[i].SubeList[priceIndex].SubePriceValue, new { htmlAttributes = new { @class = "form-control decimal_input" } }) </td>
+                                                                @Html.HiddenFor(m => Model.productOptionsCompairsList[i].SubeList[priceIndex].SubePriceValue)
+                                                            }
+                                                        }
+                                                    </tr>
+                                                }
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                                @*</div>*@
+
+                                <div class="col-md-offset-5 col-md-7">
+                                    <a class="btn btn-md btn-warning" data-dismiss="modal" aria-label="Close" title="Kapat">
+                                        Vazgeç
+                                    </a>
+                                    <input type="submit" value="Kaydet" class="btn btn-md btn-success" />
+                                </div>
+                            </div>
+                        }
+                    </fieldset>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="~/Assets/plugins/DataTable/DataTables-1.10.20/js/jquery.dataTables.js"></script>
+
+<script type="text/javascript">
+
+    //var oTable = $('#tableCommonOptions').dataTable({
+    //    "pageLength": -1,
+    //});
+    $(document).ready(function () {
+
+        $('#tableCommonOptions_length').remove();
+    });
+
+</script>

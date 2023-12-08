@@ -1,0 +1,168 @@
+﻿@model IEnumerable<SefimV2.ViewModels.VegaDBSettings.VegaDBSettingsViewModel>
+
+@{
+    #region base URL bilgisi set ediliyor
+    var urlHelper = new UrlHelper(Html.ViewContext.RequestContext);
+    string baseUrl = urlHelper.Content("~");
+    #endregion
+
+    var uygulamaTipi = ViewBag.UygulamaTipi;
+
+    #region View tanımları
+    ViewBag.Title = "";
+    string PagecontentClass = "";
+    string CloseButton = "";
+    string CloseButtonHeader = "";
+    string CancelButton = "";
+
+    string Controller = ViewBag.Controller;
+    Dictionary<string, string> PageNavi = ViewBag.PageNavi;
+
+    if (ViewBag.Page == "modal")
+    {
+        Layout = "~/Views/Shared/_Layout_Modal.cshtml";
+        PagecontentClass = "modal-page-margintop";
+        CloseButton = "<button type='button' data-dismiss='modal' class='btn btn-danger' id='CloseModal'> Vazgeç </button>";
+        CloseButtonHeader = "<button type='button' class='close' data-dismiss='modal' aria-hidden='true'></button>";
+    }
+    else
+    {
+
+        if (uygulamaTipi == "sp")
+        {
+            Layout = "~/Views/Shared/_LayoutPageSPos.cshtml";
+        }
+        else
+        {
+            Layout = "~/Views/Shared/_LayoutPage.cshtml";
+            PagecontentClass = "page-content";
+            CancelButton = "<a href='" + Url.Action("Index", "OzetRaporlar/List") + "' class='btn btn-danger'> Vazgeç </a>";
+        }
+    }
+    #endregion
+
+}
+
+<link href="/Assets/css/bootstrap.css" rel="stylesheet" />
+<link href="/Assets/css/custom.css" rel="stylesheet" />
+<link href="/Assets/plugins/fUpload/Uploader-style.css" rel="stylesheet" />
+<link href="~/Content/ContentSefPanel/css/costomfieldset/customfielset.css" rel="stylesheet" />
+<div class="m-content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="notification"></div>
+        </div>
+    </div>
+</div>
+<fieldset class="well the-fieldset coolfieldset">
+    <legend class="the-legend">@ViewBag.PageTitle @ViewBag.ActionTitle </legend>
+    <div class="table-responsive">
+        <div class="table-container">
+            <div style="float:left; padding-top:1px;">
+                @*<a href="javascript:void(0)" onclick="openModalInsert()" class="btn btn-primary"><i class="la la-plus"></i> Yeni Ekle</a>*@
+                <button type="submit" onclick="location.href='@Url.Action("Ekle", "VegaDBSettings",new { ut=uygulamaTipi })'" class="btn btn-success">
+                    <span class="glyphicon glyphicon-plus txt-color-white margin-right-5"></span>
+                    Yeni Kayıt
+                </button>
+            </div>
+            <div class="x_content">
+                <p class="text-muted font-13 m-b-30">
+                </p>
+                <table id="tableRapor" class="table table-striped table-bordered">
+                    <thead>
+                        <tr style="background: #fffaf0">
+                            <th style="width:10px">Düzenle</th>
+                            <th style="width:10px">Sil</th>
+                            <th>Database Adı</th>
+                            <th>SQL Adı </th>
+                            <th>SQL Şifre</th>
+                            <th>İp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <a class="btn btn-primary" href="@Url.Action("Ekle", "VegaDBSettings", new { ID = item.ID , ut=uygulamaTipi})">
+                                            Düzenle
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-danger" href="@Url.Action("Delete", "VegaDBSettings", new { ID= item.ID })">
+                                            Sil
+                                        </a>
+                                    </td>
+                                    <td> @item.DBName </td>
+                                    <td> @item.SqlName </td>
+                                    <td> @item.SqlPassword </td>
+                                    <td> @item.IP </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</fieldset>
+
+<script>
+    $(document).ready(function () {
+        $('.tarihLink').each(function () {
+            $(this).on('click', function (ev) {
+                ev.preventDefault();
+                if (localStorage.durum == null) {
+                    localStorage.durum = "bugun";
+                }
+                document.getElementById("loading").setAttribute("class", "myloading-active");
+                document.getElementById("contbody").setAttribute("style", "position:fixed;");
+                location.href = $(this).attr('href') + '?durum=' + localStorage.durum + '&tarihBas=' + localStorage.tarihBaslangic + '&tarihBitis=' + localStorage.tarihBitis;
+            })
+        });
+        if (localStorage.durum == "bugun") {
+            $(".btnToday").removeClass("LimitButtonBack");
+            $(this).addClass("LimitButtonBack");
+            $("#btnToday").addClass("LimitButtonBack");
+        } else if (localStorage.durum == "dun") {
+            $(".btnYesterday").removeClass("LimitButtonBack");
+            $(this).addClass("LimitButtonBack");
+            $("#btnYesterday").addClass("LimitButtonBack");
+        } else if (localStorage.durum == "buAy") {
+            $(".btnMonth").removeClass("LimitButtonBack");
+            $(this).addClass("LimitButtonBack");
+            $("#btnMonth").addClass("LimitButtonBack");
+        } else if (localStorage.durum = "tarihAraligi") {
+            $(".btnRange").removeClass("LimitButtonBack");
+            $(this).addClass("LimitButtonBack");
+            $("#btnRange").addClass("LimitButtonBack");
+        }
+    });
+    $('.btnToday').click(function () {
+        localStorage.durum = "bugun";
+        location.href = 'List?durum=' + localStorage.durum + '&tarihBas=' + localStorage.tarihBaslangic + '&tarihBitis=' + localStorage.tarihBitis;
+        document.getElementById("loading").setAttribute("class", "myloading-active");
+        document.getElementById("contbody").setAttribute("style", "position:fixed;");
+    });
+    $('.btnYesterday').click(function () {
+        localStorage.durum = "dun";
+        location.href = 'List?durum=' + localStorage.durum + '&tarihBas=' + localStorage.tarihBaslangic + '&tarihBitis=' + localStorage.tarihBitis;
+        document.getElementById("loading").setAttribute("class", "myloading-active");
+        document.getElementById("contbody").setAttribute("style", "position:fixed;");
+    });
+    $('.btnMonth').click(function () {
+        localStorage.durum = "buAy";
+        location.href = 'List?durum=' + localStorage.durum + '&tarihBas=' + localStorage.tarihBaslangic + '&tarihBitis=' + localStorage.tarihBitis;
+        document.getElementById("loading").setAttribute("class", "myloading-active");
+        document.getElementById("contbody").setAttribute("style", "position:fixed;");
+    });
+    $('.btnSave').click(function () {
+        var tarihBaslangic = $("#dateGecerlilikTarihi").val() + ' ' + $("#basSaat").val();
+        var tarihBitis = $("#dateBitisTarihi").val() + ' ' + $("#bitisSaat").val();
+        localStorage.durum = "tarihAraligi";
+        localStorage.tarihBaslangic = tarihBaslangic;
+        localStorage.tarihBitis = tarihBitis;
+        location.href = 'List?durum=' + localStorage.durum + '&tarihBas=' + localStorage.tarihBaslangic + '&tarihBitis=' + localStorage.tarihBitis;
+    });
+</script>

@@ -1,0 +1,326 @@
+﻿@model SefimV2.ViewModels.SPosVeriGonderimi.UrunEditViewModel2
+
+@{
+    Layout = "~/Views/Shared/_LayoutPageSPosPart.cshtml";
+    var urlHelper = new UrlHelper(Html.ViewContext.RequestContext);
+    string baseUrl = urlHelper.Content("~");
+}
+<div class="m-content">
+    <div class="row" style="margin:10px">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div id="notification"></div>
+                </div>
+            </div>
+            <div class="m-portlet">
+                @if (Model.ProductList != null && Model.ProductList.Count > 0)
+                {
+                    <fieldset class="well the-fieldset margin-bottom-5 padding-bottom-10 padding-top-10" @*style="background-color:#f3f3f3"*@>
+                        <legend class="the-legend">Seçim-1</legend>
+
+                        @using (Html.BeginForm("SablonChoice1EditForSubeList", "SefimPanelSablonGuncelle", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            @*@Html.ValidationSummary()*@
+                            @*@Html.HiddenFor(Model => Model.SubeId)*@
+                            @Html.HiddenFor(Model => Model.SubeIdGrupList)
+                            @Html.HiddenFor(Model => Model.SablonName)
+
+                            <div class="m-portlet__body">
+                                @*<div id="gridView">*@
+                                <table id="tableChoice1" class="table table-striped table table-hover table-bordered table-condensed">
+                                    <thead>
+                                        <tr style="background: #fffaf0; color:black">
+                                            <th width="3%">İşlem</th>
+                                            <th> Ürün Grubu</th>
+                                            <th>Ürün</th>
+                                            <th>@Html.DisplayNameFor(m => m.ProductList.First().ChoiceProductName)</th>
+
+                                            @for (int i = 0; i < Model.SubeList.Count; i++)
+                                            {
+                                                <th width="15%">  @Model.SubeList[i].SubeAdi </th>
+                                                @Html.HiddenFor(m => Model.SubeList[i].SubeAdi)
+                                                @Html.HiddenFor(m => Model.SubeList[i].SubeId)
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            var ProductList = Model.ProductList.OrderBy(x => x.ProductGroup).ToList();
+
+                                            for (int i = 0; i < ProductList.Count(); i++)
+                                            {
+                                                @*Yeni eklenen kayıt mı?*@
+                                                var isManuelInsert = Model.ProductList[i].UrunEditPriceList.FirstOrDefault().IsManuelInsert;
+                                                var bColorCode = string.Empty;
+                                                if (isManuelInsert)
+                                                {
+                                                    bColorCode = "#F4BFBF";
+                                                }
+                                                <tr style="background-color:@bColorCode; font-weight:bold;">
+                                                    <td hideExcel="false">
+                                                        @if (Model.ProductList[i].UrunEditPriceList.FirstOrDefault().Choice2VarMi != 0)
+                                                        {
+                                                            <a>
+                                                                <img class='btnCh2Getir btn btn-xs btn-prev' data-url="@Url.Action("SablonChoice2EditForSubeList", "SefimPanelSablonGuncelle",
+                                                                                                                      new {
+                                                                                                                            subeId = Model.ProductList[i].ProductGroup,
+                                                                                                                            choice1Id = Model.ProductList[i].ProductName,
+                                                                                                                            subeIdGrupList = Model.SubeIdGrupList,
+                                                                                                                            sablonName = Model.SablonName
+                                                                                                                      })" src="~/img/details_open.jpg" @*rel=@Model.SubeId*@ alt="expand/collapse">
+                                                            </a>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @Model.ProductList[i].ProductGroup
+
+                                                        @*@Html.HiddenFor(m => Model.ProductList[i].Id)*@
+                                                        @*@Html.HiddenFor(m => Model.ProductList[i].ProductId)
+                                                            @Html.HiddenFor(m => Model.ProductList[i].Choice1Id)*@
+                                                        @Html.HiddenFor(m => Model.ProductList[i].ProductName)
+                                                        @Html.HiddenFor(m => Model.ProductList[i].ProductGroup)
+                                                        @Html.HiddenFor(m => Model.ProductList[i].ChoiceProductName)
+                                                    </td>
+                                                    <td> @Model.ProductList[i].ProductName  </td>
+                                                    <td> @Model.ProductList[i].ChoiceProductName </td>
+
+                                                    @for (int a = 0; a < Model.ProductList[i].UrunEditPriceList.Count; a++)
+                                                    {
+                                                        @*var price = Model.productCompairsList[i].SubeList.Where(y => y.SubeId == Model.SubeList[a].SubeId).FirstOrDefault();
+                                                            var priceIndex = Model.productCompairsList[i].SubeList.IndexOf(price);
+                                                            @Html.HiddenFor(m => Model.productCompairsList[i].SubeList[priceIndex].SubeId)
+                                                            @Html.HiddenFor(m => Model.productCompairsList[i].SubeList[priceIndex].PkId)*@
+
+                                                        @Html.HiddenFor(m => Model.ProductList[i].UrunEditPriceList[a].Id)
+                                                        @Html.HiddenFor(m => Model.ProductList[i].UrunEditPriceList[a].SubeId)
+                                                        @Html.HiddenFor(m => Model.ProductList[i].UrunEditPriceList[a].ProductId)
+                                                        @Html.HiddenFor(m => Model.ProductList[i].UrunEditPriceList[a].Choice1Id)
+
+                                                        if (Model.ProductList[i].UrunEditPriceList[a].ChoicePrice == null)
+                                                        {
+                                                            <td align="center"> <img src="~/img/noentry.png" /> </td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td class="yatay_@i dikey_@a">
+                                                                <a class="fa fa fa-arrows-h  btn btn-xs btn-primary btnyay" yatay="@i" dikey="@a" title="Girilen değeri yatay sütundaki tüm şubelerin fiyatına eşitler."> Yay </a>
+                                                                @Html.EditorFor(m => Model.ProductList[i].UrunEditPriceList[a].ChoicePrice, new { htmlAttributes = new { @class = "form-control decimal_input" } })
+                                                            </td>
+
+                                                        }
+                                                    }
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                                @*</div>*@
+                                <div class="col-md-offset-5 col-md-7">
+                                    <button type="submit" value="Kaydet" class="btn btn-success">Seçim-1 Kaydet </button>
+                                </div>
+                            </div>
+                        }
+                    </fieldset>
+                }
+                @if (Model.ProductOptionsList != null && Model.ProductOptionsList.Count > 0)
+                {
+                    <fieldset class="well the-fieldset margin-bottom-5 padding-bottom-10 padding-top-10 style-2">
+                        <legend class="the-legend">Seçenekler</legend>
+
+                        @using (Html.BeginForm("SablonOptionsEditForSubeList", "SefimPanelSablonGuncelle", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            @*@Html.ValidationSummary()*@
+                            @*@Html.HiddenFor(Model => Model.SubeId)*@
+                            @Html.HiddenFor(Model => Model.SubeIdGrupList)
+                            @Html.HiddenFor(Model => Model.SablonName)
+
+                            <div class="m-portlet__body">
+                                @*<div id="gridView">*@
+                                <table id="tableOptions" class="table table-hover table-bordered table-condensed">
+                                    <thead>
+                                        <tr style="background: #fffaf0; color:black">
+                                            <th> Ürün Grubu</th>
+                                            <th>Ürün</th>
+                                            <th>@Html.DisplayNameFor(m => m.ProductOptionsList.First().OptionsProductName)</th>
+
+                                            @for (int i = 0; i < Model.SubeList.Count; i++)
+                                            {
+                                                <th width="15%">  @Model.SubeList[i].SubeAdi </th>
+                                                @Html.HiddenFor(m => Model.SubeList[i].SubeAdi)
+                                                @Html.HiddenFor(m => Model.SubeList[i].SubeId)
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            for (int i = 0; i < Model.ProductOptionsList.ToList().OrderBy(x => x.ProductName).Count(); i++)
+                                            {
+                                                @*Yeni eklenen kayıt mı?*@
+                                                var isManuelInsert = Model.ProductOptionsList[i].UrunEditPriceList.FirstOrDefault().IsManuelInsert;
+                                                var bColorCode = string.Empty;
+                                                if (isManuelInsert)
+                                                {
+                                                    bColorCode = "#F4BFBF";
+                                                }
+                                                <tr style="background-color:@bColorCode; font-weight:bold;">
+                                                    @*<td hideExcel="false">
+                                                            <a>   <img class='btnCh2Getir btn btn-xs btn-prev' data-url="@Url.Action("Choice2Edit", "SefimPanelVeriGonderimi", new { subeId = Model.productOptionsCompairsList[i].SubeList.FirstOrDefault().SubeId,  productId = Model.productOptionsCompairsList[i].ProductId})" src="~/img/details_open.jpg" rel=@Model.SubeId alt="expand/collapse"></a>
+                                                        </td>*@
+                                                    <td>
+                                                        @Model.ProductOptionsList[i].ProductGroup
+                                                        @*@Html.HiddenFor(m => Model.ProductOptionsList[i].Id)*@
+                                                        @*@Html.HiddenFor(m => Model.ProductOptionsList[i].ProductId)
+                                                            @Html.HiddenFor(m => Model.ProductOptionsList[i].OptionsId)*@
+                                                        @Html.HiddenFor(m => Model.ProductOptionsList[i].ProductGroup)
+                                                        @Html.HiddenFor(m => Model.ProductOptionsList[i].OptionsProductName)
+                                                    </td>
+                                                    <td>
+                                                        @Model.ProductOptionsList[i].ProductName
+                                                        @Html.HiddenFor(m => Model.ProductOptionsList[i].ProductName)
+                                                    </td>
+                                                    <td>
+                                                        <a class='btn btn-xs btn-success btnOrtakUrunEdit' data-url="@Url.Action("SablonCommonOptionsEdit", "SefimPanelSablonGuncelle",
+                                                                                                                                new
+                                                                                                                                {
+                                                                                                                                    productGroup = Model.ProductOptionsList[i].ProductGroup,
+                                                                                                                                    productName = Model.ProductOptionsList[i].ProductName,
+                                                                                                                                    optionsName = Model.ProductOptionsList[i].OptionsProductName,
+                                                                                                                                    subeIdGrupList = Model.SubeIdGrupList
+                                                                                                                                })" title="Hızlı options güncelle">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                        @Model.ProductOptionsList[i].OptionsProductName
+                                                    </td>
+
+                                                    @for (int a = 0; a < Model.ProductOptionsList[i].UrunEditPriceList.Count; a++)
+                                                    {
+                                                        @*var price = Model.ProductOptionsList[i].SubeList.Where(y => y.SubeId == Model.SubeList[a].SubeId).FirstOrDefault();
+                                                            var priceIndex = Model.ProductOptionsList[i].SubeList.IndexOf(price);
+                                                        *@
+
+                                                        @Html.HiddenFor(m => Model.ProductOptionsList[i].UrunEditPriceList[a].Id)
+                                                        @Html.HiddenFor(m => Model.ProductOptionsList[i].UrunEditPriceList[a].SubeId)
+                                                        @Html.HiddenFor(m => Model.ProductOptionsList[i].UrunEditPriceList[a].ProductId)
+
+                                                        if (Model.ProductOptionsList[i].UrunEditPriceList[a].OptionsPrice == null/* || Model.productOptionsCompairsList[i].SubeList[priceIndex].SubePriceValue == 0*/)
+                                                        {
+                                                            <td align="center">
+                                                                <img src="~/img/noentry.png" />
+                                                            </td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td class="yatayoptions_@i dikeyoptions_@a">
+                                                                <a class="fa fa fa-arrows-h  btn btn-xs btn-primary btnyayoptions" yatayoptions="@i" dikeyoptions="@a" title="Girilen değeri yatay sütundaki tüm şubelerin fiyatına eşitler."> Yay </a>
+                                                                @Html.EditorFor(m => Model.ProductOptionsList[i].UrunEditPriceList[a].OptionsPrice, new { htmlAttributes = new { @class = "form-control decimal_input" } })
+                                                            </td>
+                                                        }
+                                                    }
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                                @*</div>*@
+                                <div class="col-md-offset-5 col-md-7">
+                                    <button type="submit" value="Kaydet" class="btn btn-success"> Seçenekler Kaydet   </button>
+                                </div>
+                            </div>
+                        }
+                    </fieldset>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="~/Assets/plugins/DataTable/DataTables-1.10.20/js/jquery.dataTables.js"></script>
+
+<script type="text/javascript">
+
+    var oTable = $('#tableChoice1').dataTable({
+        "pageLength": -1,
+    });
+
+    $('.btnyay').on('click', (ev) => {
+        debugger;
+        var self = $(ev.target);
+        var yatay = self.attr("yatay");
+        var dikey = self.attr("dikey");
+        var editadi = `#productCompairsList_${dikey}__SubeList_${yatay}__SubePriceValue`;
+        var value = self.parent().find('input').val();//$(editadi).val();
+        $('.yatay_' + yatay).find('input').val(value);
+    });
+
+    $('.btnyayoptions').on('click', (ev) => {
+        debugger;
+        var self = $(ev.target);
+        var yatay = self.attr("yatayoptions");
+        var dikey = self.attr("dikeyoptions");
+        var editadi = `#productCompairsList_${dikey}__SubeList_${yatay}__SubePriceValue`;
+        var value = self.parent().find('input').val();//$(editadi).val();
+        $('.yatayoptions_' + yatay).find('input').val(value);
+    });
+
+
+    $(document).ready(function () {
+
+        //$('#tableChoice1 tbody td img').click(function () {
+        //$('.btnCh2Getir').click(function () {
+        //    debugger;
+        //    var oTable = $('#tableChoice1').dataTable();
+        //    var nTr = this.parentNode.parentNode;
+        //    if (this.src.match('details_close')) {
+        //        /* This row is already open - close it */
+        //        this.src = "/img/details_open.jpg";
+        //        oTable.fnClose(nTr);
+        //    }
+        //    else {
+        //        /* Open this row */
+        //        this.src = "/img/details_close.jpg";
+        //        var subeid = $(this).attr("rel");
+        //        localStorage.subeid = subeid;
+        //        var dataurl = $(this).data("url");
+        //        $.get(dataurl, function (details) {
+        //            oTable.fnOpen(nTr, details, 'details');
+        //        });
+        //    }
+        //});
+
+        $('#tableChoice1_length').remove();
+        $('.btnCh2Getir').click(function () {
+            var nTr = this.parentNode.parentNode;
+            console.log(nTr.parentNode)
+            if (this.src.match('details_close')) {
+                /* This row is already open - close it */
+                this.src = "/img/details_open.jpg";
+                oTable.fnClose(nTr);
+            }
+            else {
+
+                var dataurl = $(this).data("url");
+                this.src = "/img/details_close.jpg";
+                var iframe = document.createElement('iframe');
+                iframe.style.width = "100%";
+                iframe.style.height = "400px";
+                iframe.style.overflow = "hidden";
+                iframe.width = "100%";
+                iframe.height = "100%";
+                iframe.src = dataurl;
+                oTable.fnOpen(nTr, iframe, 'details');
+            }
+        });
+    });
+
+    $(".btnOrtakUrunEdit").on("click", function () {
+        $('#genericModal').find(".modal-body").html("");
+        var dataurl = $(this).data("url");
+        callModalPage(dataurl, "Seçenek Listesi");
+        showProgressBar();
+        $("#modalPleaseWait").on('shown.bs.modal', function () {
+        });
+    });
+
+</script>

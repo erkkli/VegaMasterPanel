@@ -1,0 +1,6 @@
+C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\Vega.Belge.Wrapper\bin\Debug\Vega.Belge.Wrapper.dll
+C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\Vega.Belge.Wrapper\bin\Debug\Vega.Belge.Wrapper.pdb
+C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\Vega.Belge.Wrapper\obj\Debug\Vega.Belge.Wrapper.csproj.AssemblyReference.cache
+C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\Vega.Belge.Wrapper\obj\Debug\Vega.Belge.Wrapper.csproj.CoreCompileInputs.cache
+C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\Vega.Belge.Wrapper\obj\Debug\Vega.Belge.Wrapper.dll
+C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\Vega.Belge.Wrapper\obj\Debug\Vega.Belge.Wrapper.pdb

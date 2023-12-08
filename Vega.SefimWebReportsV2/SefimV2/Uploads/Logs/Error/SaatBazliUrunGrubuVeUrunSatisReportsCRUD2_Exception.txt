@@ -1,0 +1,98 @@
+Created on 8.04.2023 13:24:23
+
+Hata Zamanı: 8.04.2023 13:24:23
+Hata Mesajı: SaatBazliUrunGrubuVeUrunSatisReportsCRUD2_Exception <_HATA_>
+Hata Detay Açıklaması: Data alınamadı. Hata Detayı:Must declare the scalar variable "@par3".
+------
+Hata Zamanı: 8.04.2023 13:24:23
+Hata Mesajı: SaatBazliUrunGrubuVeUrunSatisReportsCRUD2_Exception <_HATA_>
+Hata Detay Açıklaması: V-Pos-2
+------
+Hata Zamanı: 8.04.2023 13:24:32
+Hata Mesajı: SaatBazliUrunGrubuVeUrunSatisReportsCRUD2_Exception <_HATA_>
+Hata Detay Açıklaması: Data alınamadı. Hata Detayı:Must declare the scalar variable "@par3".
+------
+Hata Zamanı: 8.04.2023 13:24:32
+Hata Mesajı: SaatBazliUrunGrubuVeUrunSatisReportsCRUD2_Exception <_HATA_>
+Hata Detay Açıklaması: V-Pos-2
+------
+Hata Zamanı: 8.04.2023 13:24:49
+Hata Mesajı: SaatBazliUrunGrubuVeUrunSatisReportsCRUD2_Exception <_HATA_>
+Hata Detay Açıklaması: Data alınamadı. Hata Detayı:Must declare the scalar variable "@par3".
+------
+Hata Zamanı: 8.04.2023 13:24:49
+Hata Mesajı: SaatBazliUrunGrubuVeUrunSatisReportsCRUD2_Exception <_HATA_>
+Hata Detay Açıklaması: V-Pos-2
+------
+Hata Zamanı: 8.04.2023 13:25:10
+Hata Mesajı: SaatBazliUrunGrubuVeUrunSatisReportsCRUD2_Exception <_HATA_>
+Hata Detay Açıklaması: Data alınamadı. Hata Detayı:Must declare the scalar variable "@par3".
+------
+Hata Zamanı: 8.04.2023 13:25:10
+Hata Mesajı: SaatBazliUrunGrubuVeUrunSatisReportsCRUD2_Exception <_HATA_>
+Hata Detay Açıklaması: V-Pos-2
+------
+Hata Zamanı: 8.04.2023 13:25:11
+Hata Mesajı: SaatBazliUrunGrubuVeUrunSatisReportsCRUD2_Exception <_HATA_>
+Hata Detay Açıklaması: Data alınamadı. Hata Detayı:Must declare the scalar variable "@par3".
+------
+Hata Zamanı: 8.04.2023 13:25:11
+Hata Mesajı: SaatBazliUrunGrubuVeUrunSatisReportsCRUD2_Exception <_HATA_>
+Hata Detay Açıklaması: V-Pos-2
+------
+Hata Zamanı: 8.04.2023 13:25:28
+Hata Mesajı: SaatBazliUrunGrubuVeUrunSatisReportsCRUD2_Exception <_HATA_>
+Hata Detay Açıklaması: Data alınamadı. Hata Detayı:Must declare the scalar variable "@par3".
+------
+Hata Zamanı: 8.04.2023 13:25:28
+Hata Mesajı: SaatBazliUrunGrubuVeUrunSatisReportsCRUD2_Exception <_HATA_>
+Hata Detay Açıklaması: V-Pos-2
+------
+Hata Zamanı: 8.04.2023 13:28:05
+Hata Mesajı: SaatBazliUrunGrubuVeUrunSatisReportsCRUD2_Exception <_HATA_>
+Hata Detay Açıklaması: Data alınamadı. Hata Detayı:Must declare the scalar variable "@par3".
+------
+Hata Zamanı: 8.04.2023 13:28:05
+Hata Mesajı: SaatBazliUrunGrubuVeUrunSatisReportsCRUD2_Exception <_HATA_>
+Hata Detay Açıklaması: V-Pos-2
+------
+Hata Zamanı: 8.04.2023 13:32:17
+Hata Mesajı: SaatBazliUrunGrubuVeUrunSatisReportsCRUD2_Exception <_HATA_>
+Hata Detay Açıklaması: Data alınamadı. Hata Detayı:Must declare the scalar variable "@par3".
+------
+Hata Zamanı: 8.04.2023 13:32:17
+Hata Mesajı: SaatBazliUrunGrubuVeUrunSatisReportsCRUD2_Exception <_HATA_>
+Hata Detay Açıklaması: V-Pos-2
+------
+Hata Zamanı: 8.04.2023 13:32:18
+Hata Mesajı: SaatBazliUrunGrubuVeUrunSatisReportsCRUD2_Exception <_HATA_>
+Hata Detay Açıklaması: Data alınamadı. Hata Detayı:Must declare the scalar variable "@par3".
+------
+Hata Zamanı: 8.04.2023 13:32:18
+Hata Mesajı: SaatBazliUrunGrubuVeUrunSatisReportsCRUD2_Exception <_HATA_>
+Hata Detay Açıklaması: V-Pos-2
+------
+Hata Zamanı: 8.04.2023 13:33:25
+Hata Mesajı: SaatBazliUrunGrubuVeUrunSatisReportsCRUD2_Exception <_HATA_>
+Hata Detay Açıklaması: Data alınamadı. Hata Detayı:Must declare the scalar variable "@par3".
+------
+Hata Zamanı: 8.04.2023 13:33:25
+Hata Mesajı: SaatBazliUrunGrubuVeUrunSatisReportsCRUD2_Exception <_HATA_>
+Hata Detay Açıklaması: V-Pos-2
+------
+Hata Zamanı: 8.04.2023 13:33:34
+Hata Mesajı: SaatBazliUrunGrubuVeUrunSatisReportsCRUD2_Exception <_HATA_>
+Hata Detay Açıklaması: Data alınamadı. Hata Detayı:Conversion failed when converting date and/or time from character string.
+------
+Hata Zamanı: 8.04.2023 13:33:34
+Hata Mesajı: SaatBazliUrunGrubuVeUrunSatisReportsCRUD2_Exception <_HATA_>
+Hata Detay Açıklaması: V-Pos-2
+------
+Hata Zamanı: 8.04.2023 13:35:53
+Hata Mesajı: SaatBazliUrunGrubuVeUrunSatisReportsCRUD2_Exception <_HATA_>
+Hata Detay Açıklaması: Data alınamadı. Hata Detayı:Conversion failed when converting date and/or time from character string.
+------
+Hata Zamanı: 8.04.2023 13:35:53
+Hata Mesajı: SaatBazliUrunGrubuVeUrunSatisReportsCRUD2_Exception <_HATA_>
+Hata Detay Açıklaması: V-Pos-2
+------

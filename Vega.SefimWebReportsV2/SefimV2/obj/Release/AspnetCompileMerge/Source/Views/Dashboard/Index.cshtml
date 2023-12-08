@@ -1,0 +1,932 @@
+﻿@{
+    ViewBag.Title = "Özet Raporlar";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+
+@using SefimV2.Models
+
+<link href="/Assets/css/bootstrap.css" rel="stylesheet" />
+<link href="/Assets/css/custom.css" rel="stylesheet" />
+
+<style>
+    .m-widget24 .m-widget24__item .progress {
+        margin-top: 15px !important;
+    }
+
+    .m-widget24__desc {
+        font-size: 13px !important;
+    }
+
+    .progress {
+        border-radius: 0px;
+    }
+
+        .progress.m-progress--sm .progress-bar {
+            border-radius: 0px;
+        }
+
+        .progress.m-progress--sm {
+            height: 4px !important;
+        }
+
+    .LimitGroupBack {
+        background: #22b9ff;
+        color: #ffffff !important;
+    }
+
+    .LimitButtonBack {
+        background: #3bab10;
+        color: #ffffff !important;
+    }
+
+    .CostInfo {
+        background: #fffeea;
+    }
+
+    .txt-center {
+        text-align: center;
+    }
+
+    .td_paddings td {
+        padding-top: 16px;
+    }
+
+    .tableFixHead {
+        overflow-y: auto;
+        height: 500px;
+        margin-right: -10px;
+    }
+
+        .tableFixHead th {
+            position: sticky;
+            top: 0;
+        }
+
+    th, td {
+        padding: 8px 16px;
+    }
+
+    th {
+        background: #eee;
+    }
+
+    .chart_title {
+        position: absolute;
+        top: 40px;
+        width: 100%;
+        text-align: center;
+        font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
+        font-size: 17px;
+    }
+</style>
+
+@*<div style="text-align: center; vertical-align: middle; font-family: Verdana; color: Blue;
+            position: absolute; top: 50%; left: 50%; margin-left: -88px; font-size: small;"
+         id="dvProgress" runat="server">
+        Please Wait ...<img src="~/img/loading_logo_GIF.gif" style="vertical-align: middle" alt="Processing" />
+    </div>*@
+@{
+    try
+    {
+        string tar_ = ViewBag.Gun;
+        string bug = ViewBag.Bugun;
+        string gunSonu_ = ViewBag.GunSonu;
+        string oncekiGun_ = ViewBag.oncekiGun;
+        string oncekiGunSonu_ = ViewBag.oncekiGunSonu;
+        string ID_ = ViewBag.YetkiliID;
+        decimal GelenGunToplamCiro = 0; decimal GelenGunToplamMasa = 0, GelenGunToplamIndirim = 0, GelenGunToplamIkram = 0, GelenGunToplamZayi = 0, GelenGunToplamIptal = 0, GelenGunToplamIade = 0,
+             adisyonOrtalamasi = 0;
+        string subeSirasiGorunsunMu = ViewBag.SubeSirasiGorunsunMu;
+        #region GELEN TARIH ISLEMLERI
+        // Gelen Tarih Cirosu
+        List<SubeCiro> ThisDaySubeCirolari = SubeCiroCRUD.List(Convert.ToDateTime(bug), Convert.ToDateTime(gunSonu_), ID_);
+
+        List<SubeCiro> CiroyaGoreListe = ThisDaySubeCirolari.OrderByDescending(o => o.Ciro).ToList();
+        foreach (SubeCiro item in ThisDaySubeCirolari)
+        {
+            GelenGunToplamCiro += item.Ciro;
+            //GelenGunToplamCash += item.Cash;
+            //GelenGunToplamCredit += item.Credit;
+            //GelenGunToplamDebit += item.Debit;
+            //GelenGunToplamTicket += item.Debit;
+            GelenGunToplamMasa += item.TableNo;
+            GelenGunToplamIndirim += item.Discount;
+            GelenGunToplamIkram += item.ikram;
+            GelenGunToplamZayi += item.Zayi;
+            GelenGunToplamIptal += item.iptal;
+            GelenGunToplamIade += item.iade;
+        }
+
+        if (GelenGunToplamCiro == 0 || GelenGunToplamMasa == 0)
+        {
+            adisyonOrtalamasi = 0;
+        }
+        else
+        {
+            adisyonOrtalamasi = GelenGunToplamCiro / GelenGunToplamMasa;
+        }
+
+
+
+        //int SubeSayisi = ThisDaySubeCirolari.Count;
+        #endregion
+
+        #region Yetkili olduğu şubenin kaçıncı sırada olduğunu gösterir. Kriter Ciro
+        //Geliştirme yapılmalı, performans için iyileştirme yap!!
+
+        int subeSiraSayac = 0;
+        string subeSiraName = string.Empty;
+        Dictionary<string, string> countDataList = new Dictionary<string, string>();
+        if (ID_ != "1" && subeSirasiGorunsunMu == "true")
+        {
+            var ciroList = SubeCiroCRUD.List(Convert.ToDateTime(bug), Convert.ToDateTime(gunSonu_), "1");
+            var subeCiroList = ciroList.OrderByDescending(y => y.Ciro).ToList();
+            var model = UsersListCRUD.YetkiliSubesi(ID_);
+
+            var subeYetkili = model.FR_SubeListesi
+                .Where(x => x.UserID == Convert.ToInt32(ID_))
+                .ToList();
+
+            for (int i = 0; i < subeCiroList.Count; i++)
+            {
+                var subeyeYetkiliMi = subeYetkili.FindAll(z => z.SubeID == Convert.ToInt32(subeCiroList[i].SubeId)).Any();
+                if (subeyeYetkiliMi == true)
+                {
+                    countDataList.Add((i + 1).ToString(), subeCiroList[i].SubeId);
+                }
+            }
+        }
+
+        #endregion Yetkili olduğu şubenin kaçıncı sırada olduğunu gösterir. Kriter Ciro
+
+
+        #region ONCEKIGUN ISLEMLERI
+        // OncekiGunToplamCiro Ciro
+        /*  List<SubeCiro> YesterdaySubeCirolari = SubeCiroCRUD.List(Convert.ToDateTime(oncekiGun_), Convert.ToDateTime(oncekiGunSonu_), ID_);
+          foreach (SubeCiro item in YesterdaySubeCirolari)
+          {
+              OncekiGunToplamCiro += item.Ciro;
+              OncekiGunToplamCash += item.Cash;
+              OncekiGunToplamCredit += item.Credit;
+              OncekiGunToplamDebit += item.Debit;
+              OncekiGunToplamTicket += item.Debit;
+              OncekiGunToplamMasa += item.TableNo;
+              OncekiGunToplamIndirim += item.Discount;
+              OncekiGunToplamIkram += item.ikram;
+              OncekiGunToplamZayi += item.Zayi;
+              OncekiGunToplamIptal += item.iptal;
+          }*/
+        #endregion
+
+        /*
+        #region CİRO YUZDESİ
+        //Cironun Onceki Gün ile Gelen Tarih Yüzdesi
+        int OncekiGuneGoreCiroYuzdesi = 0;
+        if (GelenGunToplamCiro == 0) { OncekiGuneGoreCiroYuzdesi = -100; }
+        else
+        {
+            OncekiGuneGoreCiroYuzdesi = Convert.ToInt32(((GelenGunToplamCiro - OncekiGunToplamCiro) / GelenGunToplamCiro) * 100);
+        }
+        string OncekiGuneGoreCiroYuzdeText = "Fazla", OncekiGuneGoreCiroYuzdeClass = "green", OncekiGuneGoreCiroYuzdeIcon = "up";
+
+        if (OncekiGuneGoreCiroYuzdesi < 0)
+        {
+            OncekiGuneGoreCiroYuzdeText = "Az"; OncekiGuneGoreCiroYuzdeClass = "red"; OncekiGuneGoreCiroYuzdeIcon = "down";
+        }
+        string OncekiGuneGoreCiroYuzdesiStr = OncekiGuneGoreCiroYuzdesi.ToString().Replace("-", "");
+        #endregion
+
+        #region MASA YUZDESİ
+        //Masanın onceki ve gelen gun tarıh yuzdesi
+        int OncekiGuneGoreMasaYuzdesi = 0;
+        if (GelenGunToplamMasa == 0) { OncekiGuneGoreMasaYuzdesi = -100; }
+        else
+        {
+            OncekiGuneGoreMasaYuzdesi = Convert.ToInt32(((GelenGunToplamMasa - OncekiGunToplamMasa) / GelenGunToplamMasa) * 100);
+        }
+        string OncekiGuneGoreMasaYuzdeText = "Fazla", OncekiGuneGoreMasaYuzdeClass = "green", OncekiGuneGoreMasaYuzdeIcon = "up";
+
+        if (OncekiGuneGoreMasaYuzdesi < 0)
+        {
+            OncekiGuneGoreMasaYuzdeText = "Az"; OncekiGuneGoreMasaYuzdeClass = "red"; OncekiGuneGoreMasaYuzdeIcon = "down";
+        }
+        string OncekiGuneGoreMasaYuzdesiStr = OncekiGuneGoreMasaYuzdesi.ToString().Replace("-", "");
+
+        #endregion
+
+        #region IKRAM YUZDESİ
+        //Ikram onceki ve gelen gun tarıh yuzdesi
+        int OncekiGuneGoreIkramYuzdesi = 0;
+        if (GelenGunToplamIkram == 0) { OncekiGuneGoreIkramYuzdesi = -100; }
+        else
+        {
+            OncekiGuneGoreIkramYuzdesi = Convert.ToInt32(((GelenGunToplamIkram - OncekiGunToplamIkram) / GelenGunToplamIkram) * 100);
+        }
+        string OncekiGuneGoreIkramYuzdeText = "Fazla", OncekiGuneGoreIkramYuzdeClass = "green", OncekiGuneGoreIkramYuzdeIcon = "up";
+
+        if (OncekiGuneGoreIkramYuzdesi < 0)
+        {
+            OncekiGuneGoreIkramYuzdeText = "Az"; OncekiGuneGoreIkramYuzdeClass = "red"; OncekiGuneGoreIkramYuzdeIcon = "down";
+        }
+        string OncekiGuneGoreIkramYuzdesiStr = OncekiGuneGoreIkramYuzdesi.ToString().Replace("-", "");
+        #endregion
+
+        #region INDIRIM YUZDESİ
+        //INDIRIM onceki ve gelen gun tarıh yuzdesi
+        int OncekiGuneGoreIndirimYuzdesi = 0;
+        if (GelenGunToplamIndirim == 0) { OncekiGuneGoreIndirimYuzdesi = -100; }
+        else
+        {
+            OncekiGuneGoreIndirimYuzdesi = Convert.ToInt32(((GelenGunToplamIndirim - OncekiGunToplamIndirim) / GelenGunToplamIndirim) * 100);
+        }
+        string OncekiGuneGoreIndirimYuzdeText = "Fazla", OncekiGuneGoreIndirimYuzdeClass = "green", OncekiGuneGoreIndirimYuzdeIcon = "up";
+
+        if (OncekiGuneGoreIndirimYuzdesi < 0)
+        {
+            OncekiGuneGoreIndirimYuzdeText = "Az"; OncekiGuneGoreIndirimYuzdeClass = "red"; OncekiGuneGoreIndirimYuzdeIcon = "down";
+        }
+        string OncekiGuneGoreIndirimYuzdesiStr = OncekiGuneGoreIndirimYuzdesi.ToString().Replace("-", "");
+        #endregion
+
+        #region ZAYILER YUZDESİ
+        //Zayiler onceki ve gelen gun tarıh yuzdesi
+        int OncekiGuneGoreZayiYuzdesi = 0;
+        if (GelenGunToplamZayi == 0) { OncekiGuneGoreZayiYuzdesi = -100; }
+        else
+        {
+            OncekiGuneGoreZayiYuzdesi = Convert.ToInt32(((GelenGunToplamZayi - OncekiGunToplamZayi) / GelenGunToplamZayi) * 100);
+        }
+        string OncekiGuneGoreZayiYuzdeText = "Fazla", OncekiGuneGoreZayiYuzdeClass = "green", OncekiGuneGoreZayiYuzdeIcon = "up";
+
+        if (OncekiGuneGoreZayiYuzdesi < 0)
+        {
+            OncekiGuneGoreZayiYuzdeText = "Az"; OncekiGuneGoreZayiYuzdeClass = "red"; OncekiGuneGoreZayiYuzdeIcon = "down";
+        }
+        string OncekiGuneGoreZayiYuzdesiStr = OncekiGuneGoreZayiYuzdesi.ToString().Replace("-", "");
+        #endregion
+
+        #region IPTAL YUZDESI
+
+        //IPTAL onceki ve gelen gun tarıh yuzdesi
+        int OncekiGuneGoreIptalYuzdesi = 0;
+        if (GelenGunToplamIptal == 0) { OncekiGuneGoreIptalYuzdesi = -100; }
+        else
+        {
+            OncekiGuneGoreIptalYuzdesi = Convert.ToInt32(((GelenGunToplamIptal - OncekiGunToplamIptal) / GelenGunToplamIptal) * 100);
+        }
+        string OncekiGuneGoreIptalYuzdeText = "Fazla", OncekiGuneGoreIptalYuzdeClass = "green", OncekiGuneGoreIptalYuzdeIcon = "up";
+
+        if (OncekiGuneGoreZayiYuzdesi < 0)
+        {
+            OncekiGuneGoreIptalYuzdeText = "Az"; OncekiGuneGoreIptalYuzdeClass = "red"; OncekiGuneGoreIptalYuzdeIcon = "down";
+        }
+        string OncekiGuneGoreIptalYuzdesiStr = OncekiGuneGoreIptalYuzdesi.ToString().Replace("-", "");
+        #endregion
+        */
+
+        string[] GrafikColors = { "#ff4444", "#33b5e5", "#00C851", "#ffbb33", "#9933ff", "#ff3399", "#6633ff", "#E74C3C", "#26B99A", "#3498DB", "666666" };
+        string[] GrafikColorsHover = { "#CC0000", "#0099CC", "#007E33", "#FF8800", "#6600cc", "#cc0066", "#3300cc", "#E95E4F", "#36CAAB", "#49A9EA", "666666" };
+        int say = 0;
+
+        <div class="m-content">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                @*<div class="x_panel">*@
+                <div class="x_title">
+                    <div class="clearfix">
+                        <div style="padding-top:15px; padding-bottom:15px;">
+                            <button type="button" id="RefreshPage" class="btn btn-success pull-left " value="Refresh" name="Command"> <i class="fa fa-refresh"></i> </button>
+                            <button id="btnToday" class="btnToday btn btn-primary pull-left" type="button" href="/Dashboard/Index"><i class="glyphicon"></i>Bugün</button>
+                            <button id="btnYesterday" class="btnYesterday btn btn-primary pull-left" type="button" href="/Dashboard/"><i class="glyphicon"></i>Dün</button>
+                            <button id="btnMonth" class="btnMonth btn btn-primary pull-left" type="button" href="/Dashboard/"><i class="glyphicon"></i>Bu Ay</button>
+                            @*<button id="btnRange" class="btn btn-primary pull-left" type="button" data-toggle="modal" data-target="#modalForm" ><i class="glyphicon"></i>Tarih</button>*@
+                        </div>
+                    </div>
+                </div>
+                <div class="x_content">
+
+                    @*<table id="tableLst" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Başlık</th>
+                                    <th>Resim</th>
+                                    <th>Gösterim Bitiş Tarihi</th>
+                                    <th>Sıra No</th>
+                                    <th>Durum</th>
+                                    <th class="small">Düzenle</th>
+                                    <th class="small">Sil</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var row in Model)
+                                {
+                                    string durum = "Pasif";
+                                    //if (row.i == true) { durum = "Aktif"; }
+                                    <tr id="row_@row.SubeId">
+                                        <td id="col_Baslik_@row.SubeId">@row.Sube</td>
+                                        <td id="col_Resim_@row.SubeId" data-image="@row.BannerImageUrl"><image src="@row.BannerImageUrl" style="width:80px;height:50px;"></image></td>
+                                        <td id="col_Tarih_@row.SubeId" data-date="@row.ExpirationDate">@row.ExpirationDate.ToString("dd.MM.yyyy")</td>
+                                        <td id="col_SiraNo_@row.SubeId">@row.OrderNo</td>
+                                        <td id="col_Durum_@row.SubeId" data-statu="@row.IsShow">@durum</td>
+                                        <td id="col_Edit_@row.SubeId" class="small">
+                                            <button type="button" class="btnRowEdit btn btn-xs btn-primary" data-id="@row.ID" data-toggle="modal" data-target="#modalBannerForm">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
+                                        </td>
+                                        <td id="col_Delete_@row.ID" class="small">
+                                            <button type="button" class="btnRowDelete btn btn-xs btn-danger" data-id="@row.ID">
+                                                <i class="fa fa-eraser"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>*@
+                </div>
+                <div class="row tile_count">
+                    <div class="col-md-2 col-sm-10 col-xs-10 tile_stats_count">
+                        <span class="count_top"><i class="fa fa-try mr-5"> </i></span>  <a class="tarihLink" href="/CiroRaporlar/List"> Toplam Ciro</a>
+                        <div class="count" style="font-size:25px;">@String.Format("{0:#,###.00;-#,###.00;0}", GelenGunToplamCiro)    </div>
+                        @*<span class="count_bottom"><span class="@OncekiGuneGoreCiroYuzdeClass">Düne Göre @OncekiGuneGoreCiroYuzdesiStr %@OncekiGuneGoreCiroYuzdeText<i class="fa fa-caret-@OncekiGuneGoreCiroYuzdeIcon ml-5"></i></span></span>*@
+                    </div>
+                    <div class="col-md-1 col-sm-10 col-xs-10 tile_stats_count">
+                        <span class="count_top"><i class="fa fa-user mr-5"></i>      </span>   <a class="tarihLink" href="/CiroRaporlar/List"> Toplam Adisyon</a>
+                        <div class="count" style="font-size:25px">@Convert.ToInt32(GelenGunToplamMasa) </div>
+                        @*<span class="count_bottom"><span class="@OncekiGuneGoreMasaYuzdeClass">Düne Göre @OncekiGuneGoreMasaYuzdesiStr %@OncekiGuneGoreMasaYuzdeText <i class="fa fa-caret-@OncekiGuneGoreMasaYuzdeIcon ml-5"></i></span></span>*@
+                    </div>
+                    <div class="col-md-1 col-sm-10 col-xs-10 tile_stats_count">
+                        <span class="count_top"><i class="fa fa-user mr-5"></i>      </span>   <a class="tarihLink" href="/CiroRaporlar/List"> Adisyon Ort.</a>
+                        <div class="count" style="font-size:25px"> @String.Format("{0:#,###.00;-#,###.00;0}", adisyonOrtalamasi)  </div>
+                        @*<span class="count_bottom"><span class="@OncekiGuneGoreMasaYuzdeClass">Düne Göre @OncekiGuneGoreMasaYuzdesiStr %@OncekiGuneGoreMasaYuzdeText <i class="fa fa-caret-@OncekiGuneGoreMasaYuzdeIcon ml-5"></i></span></span>*@
+                    </div>
+                    <div class="col-md-2 col-sm-10 col-xs-10 tile_stats_count">
+                        <span class="count_top"><i class="fa fa-coffee mr-5"></i>  </span>   <a class="tarihLink" href="/CiroRaporlar/List"> Toplam İkramlar</a>
+                        <div class="count" style="font-size:25px;">@String.Format("{0:#,###.00;-#,###.00;0}", GelenGunToplamIkram)  </div>
+                        @*<span class="count_bottom"><span class="@OncekiGuneGoreIkramYuzdeClass">Düne Göre @OncekiGuneGoreIkramYuzdesiStr %@OncekiGuneGoreIkramYuzdeText<i class="fa fa-caret-@OncekiGuneGoreIkramYuzdeIcon ml-5"></i></span></span>*@
+                    </div>
+                    <div class="col-md-2 col-sm-10 col-xs-10 tile_stats_count">
+                        <span class="count_top"><i class="fa fa-shopping-bag mr-5"></i>  </span>     <a class="tarihLink" href="/CiroRaporlar/List"> Toplam Zayiler</a>
+                        <div class="count" style="font-size:25px;">@String.Format("{0:#,###.00;-#,###.00;0}", GelenGunToplamZayi)</div>
+                        @*<span class="count_bottom"><span class="@OncekiGuneGoreZayiYuzdeClass">Düne Göre @OncekiGuneGoreZayiYuzdesiStr %@OncekiGuneGoreZayiYuzdeText<i class="fa fa-caret-@OncekiGuneGoreZayiYuzdeIcon ml-5"></i></span></span>*@
+                    </div>
+                    <div class="col-md-2 col-sm-10 col-xs-10 tile_stats_count">
+                        <span class="count_top"><i class="fa fa-calculator mr-5"></i>   </span>    <a class="tarihLink" href="/CiroRaporlar/List"> Toplam İndirimler</a>
+                        <div class="count" style="font-size:25px;">@String.Format("{0:#,###.00;-#,###.00;0}", GelenGunToplamIndirim)   </div>
+                        @*<span class="count_bottom"><span class="@OncekiGuneGoreIndirimYuzdeClass">Düne Göre @OncekiGuneGoreIndirimYuzdesiStr %@OncekiGuneGoreIndirimYuzdeText<i class="fa fa-caret-@OncekiGuneGoreIndirimYuzdeIcon ml-5"></i></span></span>*@
+                    </div>
+                    <div class="col-md-1 col-sm-10 col-xs-10 tile_stats_count">
+                        <span class="count_top"><i class="fa fa-cutlery mr-5"></i>   </span>      <a class="tarihLink" href="/CiroRaporlar/List"> Toplam İptal</a>
+                        <div class="count" style="font-size:25px;">@String.Format("{0:#,###.00;-#,###.00;0}", GelenGunToplamIptal) </div>
+                        @*<span class="count_bottom"><span class="@OncekiGuneGoreIptalYuzdeClass">Düne Göre @OncekiGuneGoreIptalYuzdesiStr % @OncekiGuneGoreIptalYuzdeText<i class="fa fa-caret-@OncekiGuneGoreIptalYuzdeIcon ml-5"></i></span></span>*@
+                    </div>
+                    <div class="col-md-1 col-sm-10 col-xs-10 tile_stats_count">
+                        <span class="count_top"><i class="fa fa-exchange mr-5"></i></span><a class="tarihLink" href="/CiroRaporlar/List"> Toplam İade</a>
+                        <div class="count" style="font-size:25px;">@String.Format("{0:#,###.00;-#,###.00;0}", GelenGunToplamIade) </div>
+                        @*<span class="count_bottom"><span class="@OncekiGuneGoreIptalYuzdeClass">Düne Göre @OncekiGuneGoreIptalYuzdesiStr % @OncekiGuneGoreIptalYuzdeText<i class="fa fa-caret-@OncekiGuneGoreIptalYuzdeIcon ml-5"></i></span></span>*@
+                    </div>
+                </div>
+                @*</div>*@
+            </div>
+            <div class="row">
+                <!--Şube Ciroları Grafiği-->
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="x_panel tile  overflow_hidden">
+                        <div class="x_title">
+                            <h2>Şube Ciroları</h2>
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li>
+                                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </li>
+                                <li><a class=""><i class="fa fa-question"></i></a></li>
+                                <li>
+                                    <a class="close-link"><i class="fa fa-close"></i></a>
+                                </li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <table class="" style="width:100%">
+                                <tr>
+                                    <th>
+                                        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                                            <p class="">En İyi 10 Şube</p>
+                                        </div>
+                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                                            <p class="text-right">Ciro Tutarı (₺)</p>
+                                        </div>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <table class="tile_info">
+                                            @{say = 0; decimal EnTyi5SubeToplam = 0; }
+                                            @foreach (var row in CiroyaGoreListe)
+                                            {
+                                                say++;
+                                                if (say < 11)
+                                                {
+                                                    EnTyi5SubeToplam += row.Ciro;
+                                                    <tr>
+                                                        <td>
+                                                            <p>
+                                                                @{
+                                                                    if (ID_ != "1" && subeSirasiGorunsunMu == "true")
+                                                                    {
+                                                                        var rr = countDataList.Where(x => x.Value == row.SubeId);
+                                                                        if (rr.Any())
+                                                                        {
+                                                                            @rr.FirstOrDefault().Key;
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        @say;
+                                                                    }
+                                                                }-<i class="fa fa-square" style="color:@GrafikColors[say - 1]"></i>@row.Sube
+                                                            </p>
+                                                        </td>
+                                                        <td class="text-right"> @String.Format("{0:#,###.00;-#,###.00;0}", row.Ciro) </td>
+                                                    </tr>
+                                                }
+                                                else
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            <p><i class="fa fa-square" style="color:@GrafikColors[10]"></i>Diğerleri </p>
+                                                        </td>
+                                                        <td class="text-right"> @String.Format("{0:#,###.00;-#,###.00;0}", Convert.ToDecimal(GelenGunToplamCiro - EnTyi5SubeToplam))</td>
+                                                    </tr>
+
+                                                    break;
+                                                }
+                                            }
+
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="x_panel tile  overflow_hidden">
+                        <div class="x_title">
+                            <h2>Şube Ciro Oranları</h2>
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li>
+                                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </li>
+                                <li><a class=""><i class="fa fa-question"></i></a></li>
+                                <li>
+                                    <a class="close-link"><i class="fa fa-close"></i></a>
+                                </li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <table class="" style="width:100%">
+                                <tr>
+                                    <th style="width:37%;">
+                                        <p>En İyi 10 Şube</p>
+                                    </th>
+                                    <th>
+                                        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                                            <p class="">Şube Adı</p>
+                                        </div>
+                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                                            <p class="text-right">Ciro Oranı (%)</p>
+                                        </div>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <canvas class="SubeDaireGrafikCanvas" height="140" width="140" style="margin: 15px 10px 10px 0"></canvas>
+                                    </td>
+                                    <td>
+                                        <table class="tile_info">
+                                            @{say = 0; int EnIyi5SubeOranlari = 0; }
+                                            @foreach (var item in CiroyaGoreListe)
+                                            {
+                                                say++;
+                                                if (say < 11)
+                                                {
+                                                    if (!GelenGunToplamCiro.ToString().Equals("0,00") && !item.Ciro.ToString().Equals("0,00"))
+                                                    {
+                                                        int oran = 0;
+                                                        try
+                                                        {
+                                                            oran = Convert.ToInt32((item.Ciro * 100) / GelenGunToplamCiro);
+                                                        }
+                                                        catch (Exception)
+                                                        { }
+
+                                                        EnIyi5SubeOranlari += oran;
+
+                                                        <tr>
+                                                            <td>
+                                                                <p>
+                                                                    @{
+                                                                        if (ID_ != "1" && subeSirasiGorunsunMu == "true")
+                                                                        {
+                                                                            var rr = countDataList.Where(x => x.Value == item.SubeId);
+                                                                            if (rr.Any())
+                                                                            {
+                                                                                @rr.FirstOrDefault().Key;
+                                                                            }
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            @say;
+                                                                        }
+                                                                    }- <i class="fa fa-square" style="color:@GrafikColors[say - 1]"></i>@item.Sube
+                                                                </p>
+                                                            </td>
+                                                            <td>% @oran</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    int oran = 100 - EnIyi5SubeOranlari;
+                                                    <tr>
+                                                        <td>
+                                                            <p><i class="fa fa-square" style="color:@GrafikColors[10]"></i>Diğerleri </p>
+                                                        </td>
+                                                        <td>% @oran</td>
+                                                    </tr>
+                                                    break;
+                                                }
+                                            }
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                @*<div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="x_panel tile fixed_height_320 overflow_hidden">
+                            <div class="x_title">
+                                <h2>Satış Tipi Oranları</h2>
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li>
+                                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                    </li>
+                                    <li><a class=""><i class="fa fa-question"></i></a></li>
+                                    <li>
+                                        <a class="close-link"><i class="fa fa-close"></i></a>
+                                    </li>
+                                </ul>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <table class="" style="width:100%">
+                                    <tr>
+                                        <th style="width:37%;">
+                                            <p>Toplam 401 Satış</p>
+                                        </th>
+                                        <th>
+                                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                                                <p class="">Satış Tipi</p>
+                                            </div>
+                                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                                                <p class="text-right">Oranı</p>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <canvas class="SatisTipiGrafikCanvas" height="140" width="140" style="margin: 15px 10px 10px 0"></canvas>
+                                        </td>
+                                        <td>
+                                            <table class="tile_info">
+                                                <tr>
+                                                    <td>
+                                                        <p><i class="fa fa-square blue"></i>Masaya Servis </p>
+                                                    </td>
+                                                    <td>50%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <p><i class="fa fa-square red"></i>Kurye </p>
+                                                    </td>
+                                                    <td>30%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <p><i class="fa fa-square green"></i>Paket (Gel-Al) </p>
+                                                    </td>
+                                                    <td>20%</td>
+                                                </tr>
+
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>*@
+            </div>
+
+            <div class="modal fade" id="modalForm" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" onclick="ClearModal()" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Tarih Aralığı Seç</h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="clearfix"></div>
+                            <div class="form-group" style="margin-top:10px !important;">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Başlangıç Tarihi</label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <div class="controls">
+                                        <div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                                            <input type="text" class="form-control has-feedback-left" id="dateGecerlilikTarihi" placeholder="Seçiniz" aria-describedby="inputSuccess2Status4">
+                                            <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                            <span id="inputSuccess2Status4" class="sr-only">(success)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Başlangıç Saati</label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <div class="controls">
+                                        <input type="time" id="basSaat" name="appt" min="9:00" max="18:00" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="form-group" style="margin-top:10px !important;">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Bitiş Tarihi</label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <div class="controls">
+                                        <div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                                            <input type="text" class="form-control has-feedback-left" id="dateBitisTarihi" placeholder="Seçiniz" aria-describedby="inputSuccess2Status5">
+                                            <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                            <span id="inputSuccess2Status5" class="sr-only">(success)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Bitiş Saati</label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <div class="controls">
+                                        <input type="time" id="bitisSaat" name="appt" min="9:00" max="18:00" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="btnSave" type="button" class="btnSave btn btn-success" data-id="0">Kaydet</button>
+                            <button type="button" class="btn btn-warning" onclick="ClearModal()" data-dismiss="modal">Kapat</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*<script src="/Assets/js/jquery.js"></script>*@
+            <script src="/Assets/plugins/fUpload/jquery.blockUI.js"></script>
+            @*<script src="/Assets/js/bootstrap.js"></script>*@
+            @*<script src="~/Assets/js/Chart/src/chart.js"></script>*@
+            @*<script src="~/Assets/js/"></script>*@
+        </div>
+
+        <script>
+            $(document).ready(function () {
+
+                debugger;
+
+                //localStorage.durum = "bugun";
+                //location.href =  'Index?durum=' + localStorage.durum + '&tarihBas=' + localStorage.tarihBaslangic + '&tarihBitis=' + localStorage.tarihBitis;
+                //document.getElementById("loading").setAttribute("class", "myloading-active");
+                //document.getElementById("contbody").setAttribute("style", "position:fixed;");
+
+
+
+                $("#tarihLink").trigger("click");
+
+            $('.tarihLink').each(function () {
+                $(this).on('click', function (ev) {
+                    console.log("Durum_null_bb", localStorage.durum);
+                    ev.preventDefault();
+                    if (localStorage.durum == null)
+                    {
+                        localStorage.durum = "bugun";
+                    }
+                    document.getElementById("loading").setAttribute("class", "myloading-active");
+                    document.getElementById("contbody").setAttribute("style", "position:fixed;");
+                    location.href = $(this).attr('href') + '?durum=' + localStorage.durum + '&tarihBas=' + localStorage.tarihBaslangic + '&tarihBitis=' + localStorage.tarihBitis;
+                })
+            });
+                SubeCiroDaireGrafik();
+            //SatisTipiDaireGrafik();
+             //$("#veriGetirBtnId").trigger("click");
+            console.log("Durum_null_bb", localStorage.durum);
+            //if (localStorage.durum == 'undefined') {
+
+            //    localStorage.durum = "bugun";
+            //    console.log("Durum_null_1_1", localStorage.durum);
+            //}
+            if (localStorage.durum == "tarihAraligi" || localStorage.durum === 'undefined') {
+                localStorage.durum = "bugun";
+                console.log("Durum_null", localStorage.durum);
+            }
+
+            if (localStorage.durum == "bugun") {
+                $(".btnToday").removeClass("LimitButtonBack");
+                $(this).addClass("LimitButtonBack");
+                $("#btnToday").addClass("LimitButtonBack");
+            } else if (localStorage.durum == "dun") {
+                $(".btnYesterday").removeClass("LimitButtonBack");
+                $(this).addClass("LimitButtonBack");
+                $("#btnYesterday").addClass("LimitButtonBack");
+            } else if (localStorage.durum == "buAy") {
+                $(".btnMonth").removeClass("LimitButtonBack");
+                $(this).addClass("LimitButtonBack");
+                $("#btnMonth").addClass("LimitButtonBack");
+            } else if (localStorage.durum == "tarihAraligi") {
+                $(".btnRange").removeClass("LimitButtonBack");
+                $(this).addClass("LimitButtonBack");
+                $("#btnRange").addClass("LimitButtonBack");
+            } else if (localStorage.durum = "bugun") {
+                $(".btnToday").removeClass("LimitButtonBack");
+                $(this).addClass("LimitButtonBack");
+                $("#btnToday").addClass("LimitButtonBack");
+            }
+        });
+
+            $('.btnToday').click(function () {
+                debugger;
+            localStorage.durum = "bugun";
+            location.href = $(this).attr('href') +'?durum=' + localStorage.durum + '&tarihBas=' + localStorage.tarihBaslangic + '&tarihBitis=' + localStorage.tarihBitis;
+            document.getElementById("loading").setAttribute("class", "myloading-active");
+            document.getElementById("contbody").setAttribute("style", "position:fixed;");
+        });
+        $('.btnYesterday').click(function () {
+            localStorage.durum = "dun";
+            location.href = $(this).attr('href') + 'Index?durum=' + localStorage.durum + '&tarihBas=' + localStorage.tarihBaslangic + '&tarihBitis=' + localStorage.tarihBitis;
+            document.getElementById("loading").setAttribute("class", "myloading-active");
+            document.getElementById("contbody").setAttribute("style", "position:fixed;");
+        });
+        $('.btnMonth').click(function () {
+            localStorage.durum = "buAy";
+            location.href = $(this).attr('href') +'Index?durum=' + localStorage.durum + '&tarihBas=' + localStorage.tarihBaslangic + '&tarihBitis=' + localStorage.tarihBitis;
+            document.getElementById("loading").setAttribute("class", "myloading-active");
+            document.getElementById("contbody").setAttribute("style", "position:fixed;");
+        });
+
+        $('.btnSave').click(function () {
+            var tarihBaslangic = $("#dateGecerlilikTarihi").val() + ' ' + $("#basSaat").val();
+            var tarihBitis = $("#dateBitisTarihi").val() + ' ' + $("#bitisSaat").val();
+            localStorage.durum = "tarihAraligi";
+            localStorage.tarihBaslangic = tarihBaslangic;
+            localStorage.tarihBitis = tarihBitis;
+           location.href = $(this).attr('href') + 'Index?durum=' + localStorage.durum + '&tarihBas=' + localStorage.tarihBaslangic + '&tarihBitis=' + localStorage.tarihBitis;
+        });
+
+                    function SubeCiroDaireGrafik() {
+                    if ($('.SubeDaireGrafikCanvas').length) {
+
+                    var chart_doughnut_settings = {
+                        type: 'doughnut',
+                        tooltipFillColor: "rgba(51, 51, 51, 0.55)",
+                        data: {
+                            labels: [
+
+                                @{say = 0; }
+                                @foreach (SubeCiro item in CiroyaGoreListe)
+                                {
+                                    say++;
+                                    var virgul = ",";
+                                    if (say == 1) { virgul = ""; }
+                                    if (say < 6) {
+                                    @virgul<text>"</text>@item.Sube<text>"</text>
+                                    }
+                                    else
+                                    {
+                                    @virgul<text>"Diğerleri"</text>
+                                        break;
+                                    }
+                                }
+                            ],
+                            datasets: [{
+                                data: [
+                                @{
+                                    say = 0; decimal GrafikEnIyi5SubeOranlari = 0;
+                                    foreach (SubeCiro item in CiroyaGoreListe)
+                                    {
+                                        if (!GelenGunToplamCiro.ToString().Equals("0,00") && !GelenGunToplamCiro.ToString().Equals("0.00"))
+                                        {
+                                            int oran = 0;
+                                            try
+                                            {
+                                                say++;  oran = Convert.ToInt32((item.Ciro * 100) / GelenGunToplamCiro); GrafikEnIyi5SubeOranlari += oran;
+                                            }
+                                            catch (Exception)
+                                            { }
+
+                                            var virgul = ",";
+                                            if (say == 1) { virgul = ""; }
+                                            if (say < 6)
+                                            {
+                                        @virgul@oran
+                                            }
+                                            else
+                                            {
+                                        @virgul@Convert.ToInt32(100 - GrafikEnIyi5SubeOranlari)
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    }
+                                ],
+                                backgroundColor: [
+                                    @{for (int i = 0; i <= 5; i++)
+                                        {
+                                            var virgul = ","; string color = "";
+                                            if (i == 0) { virgul = ""; }
+                                            if (i < 5) { color = GrafikColors[i]; } else { color = "#666666"; }
+                                            @virgul<text>"</text>@color<text>"</text>
+                                            if (i >= 5) { break; }
+                                        }}
+                                ],
+                                hoverBackgroundColor: [
+                                    @{ for (int i = 0; i <= 5; i++)
+                                        {
+                                            var virgul = ","; string color = "";
+                                            if (i == 0) { virgul = ""; }
+                                            if (i < 5) { color = GrafikColors[i]; } else { color = "#666666"; }
+                                            @virgul<text>"</text>@color<text>"</text>
+                                            if (i >= 5) { break; }
+                                        } }
+                                ]
+                            }]
+                        },
+                        options: {
+                    legend: false,
+                            responsive: false
+                        }
+                     }
+
+                    var chart_element = $('.SubeDaireGrafikCanvas')
+                    var chart_doughnut = new Chart(chart_element, chart_doughnut_settings);
+
+            }
+           };
+
+       /* function SatisTipiDaireGrafik() {
+            if ($('.SatisTipiGrafikCanvas').length) {
+
+                var chart_doughnut_settings = {
+                        type: 'doughnut',
+                        tooltipFillColor: "rgba(51, 51, 51, 0.55)",
+                        data: {
+                labels: [
+                    "Masaya Servis",
+                    "Kurye",
+                    "Paket",
+                      ],
+                            datasets: [{
+                    data: [50, 30, 20],
+                                backgroundColor: [
+                                    "#3498DB",
+                                    "#E74C3C",
+                                    "#26B99A"
+                                ],
+                                hoverBackgroundColor: [
+                                    "#49A9EA",
+                                    "#E95E4F",
+                                    "#36CAAB"
+                                ]
+                            }]
+                        },
+                        options: {
+                legend: false,
+                            responsive: false
+              }
+            }
+
+                    $('.SatisTipiGrafikCanvas').each(function () {
+
+                var chart_element = $(this);
+                var chart_doughnut = new Chart(chart_element, chart_doughnut_settings);
+            });
+        }
+    }*/
+
+        </script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#RefreshPage').click(function () {
+                    document.getElementById("loading").setAttribute("class", "myloading-active");
+                    document.getElementById("contbody").setAttribute("style", "position:fixed;");
+                    window.location.reload();
+                });
+            });
+        </script>
+    }
+    catch (Exception)
+    { }
+}

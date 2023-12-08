@@ -1,0 +1,3186 @@
+﻿@model IEnumerable<SefimV2.Models.SubeCiro>
+
+@{
+    ViewBag.Title = "Detay Raporları";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+<style>
+
+    body {
+        padding: 10px;
+    }
+
+    #exTab1 .tab-content {
+        color: white;
+        background-color: #428bca;
+        padding: 5px 15px;
+    }
+
+    #exTab2 h3 {
+        color: white;
+        background-color: #428bca;
+        padding: 5px 15px;
+    }
+
+    /* remove border radius for the tab */
+
+    #exTab1 .nav-pills > li > a {
+        border-radius: 0;
+    }
+
+    /* change border radius for the tab , apply corners on top*/
+
+    #exTab3 .nav-pills > li > a {
+        border-radius: 4px 4px 0 0;
+    }
+
+    #exTab3 .tab-content {
+        /*color: white;*/
+        background-color: #e9d8d8;
+        padding: 5px 15px;
+    }
+
+    .m-widget24 .m-widget24__item .progress {
+        margin-top: 15px !important;
+    }
+
+    .m-widget24__desc {
+        font-size: 13px !important;
+    }
+
+    .progress {
+        border-radius: 0px;
+    }
+
+        .progress.m-progress--sm .progress-bar {
+            border-radius: 0px;
+        }
+
+        .progress.m-progress--sm {
+            height: 4px !important;
+        }
+
+    .LimitGroupBack {
+        background: #22b9ff;
+        color: #ffffff !important;
+    }
+
+    .LimitButtonBack {
+        background: #3bab10;
+        color: #ffffff !important;
+    }
+
+    .CostInfo {
+        background: #fffeea;
+    }
+
+    .txt-center {
+        text-align: center;
+    }
+
+    .td_paddings td {
+        padding-top: 16px;
+    }
+
+    .tableFixHead {
+        overflow-y: auto;
+        height: 500px;
+        margin-right: -10px;
+    }
+
+        .tableFixHead th {
+            position: sticky;
+            top: 0;
+        }
+
+    th, td {
+        padding: 8px 16px;
+    }
+
+    th {
+        background: #eee;
+    }
+
+    .chart_title {
+        position: absolute;
+        top: 40px;
+        width: 100%;
+        text-align: center;
+        font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
+        font-size: 17px;
+    }
+
+    /*Fieldset*/
+    .the-legend {
+        border: 3px solid #337ab7; /*#2A3F54 Lacivert left menu rengi*/
+        border-radius: 5px;
+        color: #fff;
+        background-color: #337ab7;
+        font-size: 15px;
+        font-weight: bold;
+        line-height: 13px;
+        margin-bottom: 0;
+    }
+
+    .the-legend-in {
+        border: 4px solid #f4bc42;
+        border-radius: 5px;
+        color: #fff;
+        background-color: #f4bc42;
+        font-size: 15px;
+        font-weight: bold;
+        line-height: 10px;
+        margin-bottom: 0;
+    }
+
+    .the-fieldset {
+        border: 2px solid #337ab7;
+        border-radius: 5px;
+        -webkit-box-shadow: 0px 0px 0px 0px #000;
+        box-shadow: 0px 0px 0px 0px #000;
+    }
+
+    a {
+        cursor: pointer;
+    }
+
+    .the-fieldset-in {
+        border: 2px solid #f4bc42;
+        border-radius: 5px;
+        -webkit-box-shadow: 0px 0px 0px 0px #000;
+        box-shadow: 0px 0px 0px 0px #000;
+    }
+    /*Fieldset*/
+
+
+    /*td.details-control {
+        background: url('../../img/details_open.jpg') no-repeat center center;
+        cursor: pointer;
+    }
+
+    tr.shown td.details-control {
+        background: url('../../img/details_close.jpg') no-repeat center center;
+      }*/
+
+
+    td.details-control {
+        background: url('../../img/details_open.jpg') no-repeat center center;
+        /*background: url('http://www.datatables.net/examples/resources/details_open.png') no-repeat center center;*/
+        cursor: pointer;
+    }
+
+    tr.shown td.details-control {
+        background: url('../../img/details_close.jpg') no-repeat center center;
+        /*background: url('http://www.datatables.net/examples/resources/details_close.png') no-repeat center center;*/
+    }
+
+
+    /*Açılır-Kapanır Panel için */
+
+    .container-stripped > .row {
+        padding: 4px;
+        line-height: 1.42857143;
+        vertical-align: top;
+        border-top: thin solid #ddd;
+    }
+
+    .btn-araad-selected {
+        background-color: #e46f1f !important;
+    }
+
+    .container-sub-title {
+        background-color: #57889c;
+        color: #fff;
+    }
+
+    .the-fieldset > :last-child {
+        margin-bottom: 0;
+    }
+
+    .panel-risklialan {
+        border-color: #57889c;
+        margin-bottom: 5px;
+        box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.25)
+    }
+
+        .panel-risklialan > .panel-heading {
+            background-color: #57889c;
+            color: #fff;
+        }
+</style>
+
+@*<div class="panel panel-risklialan">
+    <div class="panel-heading">
+        <a class="txt-color-white" data-toggle="collapse" href="#kiraYardimiUygunlukKontrolu" aria-expanded="false" data-ajaxcontainer="#kiraYardimiUygunlukKontrolu">
+             UYGUNLUK KONTROLÜ
+            <i class="fa fa-plus-square-o" title="Açmak için tıklayınız."></i>
+            <i class="fa fa-minus-square-o" title="Kapatmak için tıklayınız."></i>
+        </a>
+        <div class="btn-group pull-right">          
+        </div>
+    </div>
+    <div class="panel-body no-padding collapse" id="kiraYardimiUygunlukKontrolu">
+        <div class="container-fluid">
+            <div class="form-group">
+                <span class="glyphicon @(Model.KiraYardimiUygunlukKontroluRiskliYapi == null ? "glyphicon-minus":  (Model.KiraYardimiUygunlukKontroluRiskliYapi.Value ? "glyphicon-ok":"glyphicon-remove"))"></span>
+                <label class="form-check-label">@Html.DisplayNameFor(m => m.KiraYardimiUygunlukKontroluRiskliYapi)</label>
+            </div>
+            <div class="form-group">
+                <span class="glyphicon @(Model.KiraYardimiUygunlukKontroluDigerAlanlar == null ? "glyphicon-minus":  (Model.KiraYardimiUygunlukKontroluDigerAlanlar.Value ? "glyphicon-ok":"glyphicon-remove"))"></span>
+                <label class="form-check-label">@Html.DisplayNameFor(m => m.KiraYardimiUygunlukKontroluDigerAlanlar)</label>
+            </div>
+            <div class="form-group">
+                <span class="glyphicon @(Model.KiraYardimiUygunlukKontroluDonusumAlaniIcinde == null ? "glyphicon-minus":  (Model.KiraYardimiUygunlukKontroluDonusumAlaniIcinde.Value ? "glyphicon-ok":"glyphicon-remove"))"></span>
+                <label class="form-check-label">@Html.DisplayNameFor(m => m.KiraYardimiUygunlukKontroluDonusumAlaniIcinde)</label>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+<div class="m-content">
+    <div class="m-portlet">
+        <div class="m-portlet__body">
+            <div class="row">
+                <fieldset id="aa" class="well  the-fieldset ">
+                    <legend class="the-legend">Şubelerin Satış İstatistikleri</legend>
+                    <div class="col-md-12 col-sm-12 col-xs-12" style="border-right: solid 1px #ebedf2;">
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                                <input type="text" class="form-control has-feedback-left" id="dateGecerlilikTarihi" placeholder="Seçiniz" aria-describedby="inputSuccess2Status4">
+                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                <span id="inputSuccess2Status4" class="sr-only">(success)</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                                <input type="text" class="form-control has-feedback-left" id="dateBitisTarihi" value="" placeholder="Seçiniz" aria-describedby="inputSuccess2Status5">
+                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                <span id="inputSuccess2Status5" class="sr-only">(success)</span>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-danger" id="veriGetirBtnId"> Veri Getir </button>
+                        <button type="button" class="btn btn-success" id="haftalikBtnId"> Haftalık </button>
+                        <button type="button" class="btn btn-primary" id="aylikBtnId"><i class="fa fa-calendar-minus-o"></i> &nbsp; Aylık</button>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="btn-group" role="group" aria-label="Default button group" style="background-color:#ffffff">
+                                <button type="button" class="btn btn-outline-brand SubeCiroTableLimit" id="STL_1" data-id="1"> 1 </button>
+                                <button type="button" class="btn btn-outline-brand SubeCiroTableLimit" id="STL_5" data-id="5"> 5 </button>
+                                <button type="button" class="btn btn-outline-brand SubeCiroTableLimit" id="STL_50" data-id="50"> 50 </button>
+                                <button type="button" class="btn btn-outline-brand SubeCiroTableLimit" id="STL_-1" data-id="-1"> Tümü </button>
+                            </div>
+                        </div>
+                        <input type="hidden" id="SubeCiroTableLimit" value="@ViewBag.LimitSize" />
+                        <div id="SubeCiroSatisIstatistikID" data-limit="@ViewBag.LimitSize" style="min-width: 120px; height: 550px; margin: 0 auto;width:100%;">  </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    @*İKİ TARİH ARALIKLI SATIŞ RAPORU*@
+    <div class="m-portlet" style="background-color:#ffffff;">
+        <div class="m-portlet__body">
+            <div class="row">
+                <fieldset class="well the-fieldset">
+                    <legend class="the-legend">İki Tarih Aralıklı Satış İstatistikleri </legend>
+
+                    <div class="col-md-12 col-sm-12 col-xs-12" style="border-right: solid 1px #ebedf2;">
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="border-right: solid 1px #ebedf2;">
+                            <div class="form-group">
+                                <div class="col-lg-2 col-md-2 col-sm-2" style="width:180px;">
+                                    <div class="form-group" style="background-color:#ffffff">
+                                        <div class="float-left">
+                                            <select class="form-control m-select2" id="ikiTarBirinciSubeId">
+                                                <option value="0" selected="selected">Tümü</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-2" style="width: 1px;"> <p>ile</p></div>
+                                <div class="col-lg-2 col-md-2 col-sm-2" style="width:180px;">
+                                    <div class="form-group" style="background-color:#ffffff">
+                                        <div class="float-left">
+                                            <select class="form-control m-select2" id="ikiTarIkinciSubeId">
+                                                <option value="0" selected="selected">Şube Seç</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-2" style="width:100px; ">
+                                    <div class="form-group" style="background-color:#ffffff">
+                                        @*<div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                                                <input type="text" class="form-control has-feedback-left" id="dateBaslangicA" placeholder="Seçiniz" aria-describedby="inputSuccess2Status4">
+                                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                                <span id="inputSuccess2Status4" class="sr-only">(success)</span>
+                                            </div>*@
+                                        <select class="form-control m-select2" id="ComboStartDateYilId" style="padding-top:5px;">
+                                            <option @(ViewBag.EndMonth == "14" ? "selected" : "") value="2022">2022</option>
+                                            <option @(ViewBag.EndMonth == "01" ? "selected" : "") value="2021">2021</option>
+                                            <option @(ViewBag.EndMonth == "02" ? "selected" : "") value="2020">2020</option>
+                                            <option @(ViewBag.EndMonth == "03" ? "selected" : "") value="2019">2019</option>
+                                            <option @(ViewBag.EndMonth == "04" ? "selected" : "") value="2018">2018</option>
+                                            <option @(ViewBag.EndMonth == "05" ? "selected" : "") value="2017">2017</option>
+                                            <option @(ViewBag.EndMonth == "06" ? "selected" : "") value="2016">2016</option>
+                                            <option @(ViewBag.EndMonth == "07" ? "selected" : "") value="2015">2015</option>
+                                            <option @(ViewBag.EndMonth == "08" ? "selected" : "") value="2014">2014</option>
+                                            <option @(ViewBag.EndMonth == "09" ? "selected" : "") value="2013">2013</option>
+                                            <option @(ViewBag.EndMonth == "10" ? "selected" : "") value="2012">2012</option>
+                                            <option @(ViewBag.EndMonth == "11" ? "selected" : "") value="2011">2011</option>
+                                            <option @(ViewBag.EndMonth == "12" ? "selected" : "") value="2010">2010</option>
+                                            <option @(ViewBag.EndMonth == "13" ? "selected" : "") value="2009">2009</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-2" style="width:120px; ">
+                                    <div class="form-group" style="background-color:#ffffff">
+                                        @*<div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                                                <input type="text" class="form-control has-feedback-left" id="dateBitisA" placeholder="Seçiniz" aria-describedby="inputSuccess2Status4">
+                                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                                <span id="inputSuccess2Status4" class="sr-only">(success)</span>
+                                            </div>*@
+                                        <select class="form-control m-select2" id="ComboStartDateAyId">
+                                            <option @(ViewBag.StartMonth == "01" ? "selected" : "") value="01">Ocak</option>
+                                            <option @(ViewBag.StartMonth == "02" ? "selected" : "") value="02">Şubat</option>
+                                            <option @(ViewBag.StartMonth == "03" ? "selected" : "") value="03">Mart</option>
+                                            <option @(ViewBag.StartMonth == "04" ? "selected" : "") value="04">Nisan</option>
+                                            <option @(ViewBag.StartMonth == "05" ? "selected" : "") value="05">Mayıs</option>
+                                            <option @(ViewBag.StartMonth == "06" ? "selected" : "") value="06">Haziran</option>
+                                            <option @(ViewBag.StartMonth == "07" ? "selected" : "") value="07">Temmuz</option>
+                                            <option @(ViewBag.StartMonth == "08" ? "selected" : "") value="08">Ağustos</option>
+                                            <option @(ViewBag.StartMonth == "09" ? "selected" : "") value="09">Eylül</option>
+                                            <option @(ViewBag.StartMonth == "10" ? "selected" : "") value="10">Ekim</option>
+                                            <option @(ViewBag.StartMonth == "11" ? "selected" : "") value="11">Kasım</option>
+                                            <option @(ViewBag.StartMonth == "12" ? "selected" : "") value="12">Aralık</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-2">
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-danger" id="veriGetirIkiTarihAralikliBtnId"> Veri Getir </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @*<input type="hidden" id="SubeCiroTableLimitpp" value="@ViewBag.LimitSize" />*@
+                        <div id="SubeCiroSatisIstatistikIDa" data-limit="@ViewBag.LimitSize" style="min-width: 120px; height: 550px; margin: 0 auto;width:100%;">  </div>
+                    </div>
+
+
+                    <div class="col-md-12 col-sm-12 col-xs-12" style="border-right: solid 1px #ebedf2; ">
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="border-right: solid 1px #ebedf2; margin-top:5px;">
+                            <div class="form-group">
+                                <div class="col-lg-2 col-md-2 col-sm-2" style="width:200px;">
+                                    <div class="form-group" style="background-color:#ffffff">
+                                        <div class="float-left">
+                                            <select class="form-control m-select2" id="ikiTarUcuncuSubeId">
+                                                <option value="0" selected="selected">Tümü</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-2" style="width:100px; ">
+                                    <div class="form-group" style="background-color:#ffffff">
+                                        @*<div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                                                <input type="text" class="form-control has-feedback-left" id="dateBaslangicA" placeholder="Seçiniz" aria-describedby="inputSuccess2Status4">
+                                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                                <span id="inputSuccess2Status4" class="sr-only">(success)</span>
+                                            </div>*@
+                                        <select class="form-control m-select2" id="ComboStartDateYilIdB" style="padding-top:5px;">
+                                            <option @(ViewBag.EndMonth == "13" ? "selected" : "") value="2022">2022</option>
+                                            <option @(ViewBag.EndMonth == "01" ? "selected" : "") value="2021">2021</option>
+                                            <option @(ViewBag.EndMonth == "01" ? "selected" : "") value="2020">2020</option>
+                                            <option @(ViewBag.EndMonth == "02" ? "selected" : "") value="2019">2019</option>
+                                            <option @(ViewBag.EndMonth == "03" ? "selected" : "") value="2018">2018</option>
+                                            <option @(ViewBag.EndMonth == "04" ? "selected" : "") value="2017">2017</option>
+                                            <option @(ViewBag.EndMonth == "05" ? "selected" : "") value="2016">2016</option>
+                                            <option @(ViewBag.EndMonth == "06" ? "selected" : "") value="2015">2015</option>
+                                            <option @(ViewBag.EndMonth == "07" ? "selected" : "") value="2014">2014</option>
+                                            <option @(ViewBag.EndMonth == "08" ? "selected" : "") value="2013">2013</option>
+                                            <option @(ViewBag.EndMonth == "09" ? "selected" : "") value="2012">2012</option>
+                                            <option @(ViewBag.EndMonth == "10" ? "selected" : "") value="2011">2011</option>
+                                            <option @(ViewBag.EndMonth == "11" ? "selected" : "") value="2010">2010</option>
+                                            <option @(ViewBag.EndMonth == "12" ? "selected" : "") value="2009">2009</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-2" style="width:120px; ">
+                                    <div class="form-group" style="background-color:#ffffff">
+                                        @*<div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                                                <input type="text" class="form-control has-feedback-left" id="dateBitisA" placeholder="Seçiniz" aria-describedby="inputSuccess2Status4">
+                                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                                <span id="inputSuccess2Status4" class="sr-only">(success)</span>
+                                            </div>*@
+                                        <select class="form-control m-select2" id="ComboStartDateAyIdB">
+                                            <option @(ViewBag.StartMonth == "01" ? "selected" : "") value="01">Ocak</option>
+                                            <option @(ViewBag.StartMonth == "02" ? "selected" : "") value="02">Şubat</option>
+                                            <option @(ViewBag.StartMonth == "03" ? "selected" : "") value="03">Mart</option>
+                                            <option @(ViewBag.StartMonth == "04" ? "selected" : "") value="04">Nisan</option>
+                                            <option @(ViewBag.StartMonth == "05" ? "selected" : "") value="05">Mayıs</option>
+                                            <option @(ViewBag.StartMonth == "06" ? "selected" : "") value="06">Haziran</option>
+                                            <option @(ViewBag.StartMonth == "07" ? "selected" : "") value="07">Temmuz</option>
+                                            <option @(ViewBag.StartMonth == "08" ? "selected" : "") value="08">Ağustos</option>
+                                            <option @(ViewBag.StartMonth == "09" ? "selected" : "") value="09">Eylül</option>
+                                            <option @(ViewBag.StartMonth == "10" ? "selected" : "") value="10">Ekim</option>
+                                            <option @(ViewBag.StartMonth == "11" ? "selected" : "") value="11">Kasım</option>
+                                            <option @(ViewBag.StartMonth == "12" ? "selected" : "") value="12">Aralık</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-2">
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-danger" id="veriGetirIkiTarihAralikliBtnIdB"> Veri Getir </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @*<input type="hidden" id="SubeCiroTableLimitpp" value="@ViewBag.LimitSize" />*@
+                        <div id="SubeCiroSatisIstatistikIDb" data-limit="@ViewBag.LimitSize" style="min-width: 80px; height: 550px; margin: 0 auto;width:100%;">  </div>
+                    </div>
+
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    @*Ödeme Tiplerine Göre Ciro Dağılımı*@
+    <div class="m-portlet" style="background-color:#ffffff;">
+        <div class="m-portlet__body">
+            <div class="row">
+                <fieldset id="aa" class="well  the-fieldset ">
+                    <legend class="the-legend">Ödeme Tiplerine Göre Ciro Dağılımı</legend>
+                    <div class="col-md-12 col-sm-12 col-xs-12" style="border-right: solid 1px #ebedf2; ">
+                        @*<div class="select2-container--default" role="group" aria-label="Default select2 group">*@
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                                <input type="text" class="form-control has-feedback-left" id="dateGecerlilikTarihi2" placeholder="Seçiniz" aria-describedby="inputSuccess2Status4">
+                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                <span id="inputSuccess2Status4" class="sr-only">(success)</span>
+                            </div>
+                        </div>
+                        @* <div class="col-lg-2 col-md-2 col-sm-2">*@
+                        @*<label class="control-label col-md-3 col-sm-3 col-xs-12">Saat</label>*@
+                        @*<input type="time" id="basSaat_" name="appt" min="9:00" max="18:00" required>*@
+                        @*</div>*@
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                                <input type="text" class="form-control has-feedback-left" id="dateBitisTarihi2" value="" placeholder="Seçiniz" aria-describedby="inputSuccess2Status5">
+                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                <span id="inputSuccess2Status5" class="sr-only">(success)</span>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-danger" id="veriGetirOdemeTipBtnId"> Veri Getir </button>
+                        <button type="button" class="btn btn-success" id="haftalikOdemeTipBtnId"> Haftalık </button>
+                        <button type="button" class="btn btn-primary" id="aylikOdemeTipBtnId"><i class="fa fa-calendar-minus-o"></i> &nbsp; Aylık</button>
+                        @*</div>*@
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="btn-group" role="group" aria-label="Default button group" style="background-color:#ffffff;margin-bottom:5px;">
+                                @*<button type="button" class="btn btn-outline-brand PaymentTaypeTotalAmountLimit" id="STL_1" data-id="1"> 1 </button>
+                                    <button type="button" class="btn btn-outline-brand PaymentTaypeTotalAmountLimit" id="STL_5" data-id="5"> 5 </button>
+                                    <button type="button" class="btn btn-outline-brand PaymentTaypeTotalAmountLimit" id="STL_50" data-id="50"> 50 </button>
+                                    <button type="button" class="btn btn-outline-brand PaymentTaypeTotalAmountLimit" id="STL_-1" data-id="-1"> Tümü </button>*@
+                            </div>
+                        </div>
+                        <input type="hidden" id="PaymentTaypeTotalAmountTableLimit" value="@ViewBag.LimitSize" />
+                        <div id="PaymentTaypeTotalAmountId" data-limit="@ViewBag.LimitSize" style="min-width: 150px; height: 550px; margin: 0 auto;width:100%;">  </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    @*SUBE_URUN**@
+    <div class="m-portlet" style="background-color:#ffffff;">
+        <div class="m-portlet__body">
+            <div class="row">
+                <fieldset id="aa" class="well  the-fieldset ">
+                    <legend class="the-legend">Şubelerde Satılan Ürün İstatistikleri  </legend>
+
+                    <div class="col-md-12 col-sm-12 col-xs-12" style="border-right: solid 1px #ebedf2;">
+                        @*<div class="select2-container--default" role="group" aria-label="Default select2 group">*@
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="float-left">
+                                <select class="form-control m-select2" id="SubeID">
+                                    <option value="0" selected="selected">Tümü</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                                <input type="text" class="form-control has-feedback-left" id="dateGecerlilikTarihi3SubeUrun" placeholder="Seçiniz" aria-describedby="inputSuccess2Status4">
+                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                <span id="inputSuccess2Status4" class="sr-only">(success)</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                                <input type="text" class="form-control has-feedback-left" id="dateBitisTarihi3SubeUrun" value="" placeholder="Seçiniz" aria-describedby="inputSuccess2Status5">
+                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                <span id="inputSuccess2Status5" class="sr-only">(success)</span>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-danger" id="veriGetirSubeUrunBtnId"> Veri Getir </button>
+                        <button type="button" class="btn btn-success" id="haftalikSubeUrunBtnId"> Haftalık </button>
+                        <button type="button" class="btn btn-primary" id="aylikSubeUrunBtnId"><i class="fa fa-calendar-minus-o"></i> &nbsp; Aylık</button>
+                        @*</div>*@
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                                <div class="btn-group" role="group" aria-label="Default button group" style="background-color:#ffffff;margin-bottom:5px;">
+                                    <button type="button" class="btn btn-outline-brand SubeUrunTableLimit" id="SUTL_10" data-id="10"> 10 </button>
+                                    <button type="button" class="btn btn-outline-brand SubeUrunTableLimit" id="SUTL_25" data-id="25"> 25 </button>
+                                    <button type="button" class="btn btn-outline-brand SubeUrunTableLimit" id="SUTL_50" data-id="50"> 50 </button>
+                                    <button type="button" class="btn btn-outline-brand SubeUrunTableLimit" id="SUTL_-1" data-id="-1"> Tümü </button>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="SubeUrunTableLimit" value="@ViewBag.LimitSizeSubeUrun" />
+                        @*<div id="PaymentTaypeTotalAmountId" data-limit="@ViewBag.LimitSize" style="min-width: 80px; height: 550px; margin: 0 auto;width:100%;">  </div>*@
+                        <div id="SubstationsProductsSalesPieID" data-limit="@ViewBag.LimitSizeSubeUrun" style="min-width: 150px; height: 500px; margin: 0 auto;"></div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    @*SUBE_PERSONEL**@
+    <div class="m-portlet" style="background-color:#ffffff;">
+        <div class="m-portlet__body">
+            <div class="row">
+                <fieldset class="well  the-fieldset ">
+                    <legend class="the-legend">Personel ve Kasiyer Tahsilat İstatistikleri  </legend>
+
+                    <div class="col-md-12 col-sm-6 col-xs-12" style="border-right:solid 1px #ebedf2;">
+                        @*<div class="select2-container--default" role="group" aria-label="Default select2 group">*@
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="float-left">
+                                <select class="form-control m-select2" id="SubePID">
+                                    <option value="0" selected="selected">Tümü</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                                <input type="text" class="form-control has-feedback-left" id="dateGecerlilikTarihi4SubePersonel" placeholder="Seçiniz" aria-describedby="inputSuccess2Status4">
+                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                <span id="inputSuccess2Status4" class="sr-only">(success)</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                                <input type="text" class="form-control has-feedback-left" id="dateBitisTarihi4SubePersonel" value="" placeholder="Seçiniz" aria-describedby="inputSuccess2Status5">
+                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                <span id="inputSuccess2Status5" class="sr-only">(success)</span>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-danger" id="veriGetirSubePersonelBtnId"> Veri Getir </button>
+                        <button type="button" class="btn btn-success" id="haftalikSubePersonelBtnId"> Haftalık </button>
+                        <button type="button" class="btn btn-primary" id="aylikSubePersonelBtnId"><i class="fa fa-calendar-minus-o"></i> &nbsp; Aylık</button>
+
+                        @*</div>*@
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                                <div class="btn-group" role="group" aria-label="Default button group" style="background-color:#ffffff;margin-bottom:5px;">
+                                    <button type="button" class="btn btn-outline-brand SubePersonelTableLimit" id="SPTL_10" data-id="10"> 10 </button>
+                                    <button type="button" class="btn btn-outline-brand SubePersonelTableLimit" id="SPTL_25" data-id="25"> 25 </button>
+                                    <button type="button" class="btn btn-outline-brand SubePersonelTableLimit" id="SPTL_50" data-id="50"> 50 </button>
+                                    <button type="button" class="btn btn-outline-brand SubePersonelTableLimit" id="SPTL_-1" data-id="-1"> Tümü </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-12" style="border-right: solid 1px #ebedf2; margin-top:10px">
+                        <input type="hidden" id="SubePersonelTableLimit" value="@ViewBag.LimitSizeSubeUrun" />
+                        <div id="SubstationsWaiterPersonSalesPieID" data-limit="@ViewBag.LimitSizeSubeUrun" style="min-width: 150px; height: 500px; margin: 0 auto;"></div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-12" style="border-right: solid 1px #ebedf2; margin-top:10px">
+                        <input type="hidden" id="SubePersonelTableLimit" value="@ViewBag.LimitSizeSubeUrun" />
+                        <div id="SubstationsPersonSalesPieID" data-limit="@ViewBag.LimitSizeSubeUrun" style="min-width: 150px; height: 500px; margin: 0 auto;"></div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    @* URUNE GORE SUBELERDEKİ SATIS**@
+    <div class="m-portlet" style="background-color:#ffffff;">
+        <div class="m-portlet__body">
+            <div class="row">
+                <fieldset class="well  the-fieldset ">
+                    <legend class="the-legend">Ürüne Göre Şube Satış İstatistikleri </legend>
+                    <div class="col-md-12 col-sm-12 col-xs-12" style="border-right: solid 1px #ebedf2;">
+                        @*<div class="select2-container--default" role="group" aria-label="Default select2 group">*@
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="float-left">
+                                <select class="form-control m-select2" id="SubeUrunID">
+                                    <option value="0" selected="selected">Tümü</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                                <input type="text" class="form-control has-feedback-left" id="dateGecerlilikTarihi3UruneGoreSubeSatis" placeholder="Seçiniz" aria-describedby="inputSuccess2Status4">
+                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                <span id="inputSuccess2Status4" class="sr-only">(success)</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                                <input type="text" class="form-control has-feedback-left" id="dateBitisTarihi3UruneGoreSubeSatis" value="" placeholder="Seçiniz" aria-describedby="inputSuccess2Status5">
+                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                <span id="inputSuccess2Status5" class="sr-only">(success)</span>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-danger" id="veriGetirUruneGoreSubeSatisBtnId"> Veri Getir </button>
+                        <button type="button" class="btn btn-success" id="haftalikUruneGoreSubeSatisBtnId"> Haftalık </button>
+                        <button type="button" class="btn btn-primary" id="aylikUruneGoreSubeSatisBtnId"><i class="fa fa-calendar-minus-o"></i> &nbsp; Aylık</button>
+                        @*</div>*@
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                                <div class="btn-group" role="group" aria-label="Default button group" style="background-color:#ffffff;margin-bottom:5px;">
+                                    <button type="button" class="btn btn-outline-brand UruneGoreSubeSatisTableLimit" id="UGSSTL_10" data-id="10"> 10 </button>
+                                    <button type="button" class="btn btn-outline-brand UruneGoreSubeSatisTableLimit" id="UGSSTL_25" data-id="25"> 25 </button>
+                                    <button type="button" class="btn btn-outline-brand UruneGoreSubeSatisTableLimit" id="UGSSTL_50" data-id="50"> 50 </button>
+                                    <button type="button" class="btn btn-outline-brand UruneGoreSubeSatisTableLimit" id="UGSSTL_-1" data-id="-1"> Tümü </button>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="UruneGoreSubeSatisTableLimit" value="@ViewBag.LimitSizeSubeUrun" />
+                        @*<div id="PaymentTaypeTotalAmountId" data-limit="@ViewBag.LimitSize" style="min-width: 80px; height: 550px; margin: 0 auto;width:100%;">  </div>*@
+                        <div id="ProductsSubstationsSalesPieID" data-limit="@ViewBag.LimitSizeSubeUrun" style="min-width: 150px; height: 500px; margin: 0 auto;">
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <div class="form-group">
+                                <label> Toplam Satış Tutarı <input type="text" readonly="True" id="toplamSatisTutari" value="0" /></label>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <div class="form-group">
+                                <label> Toplam Adet Sayısı  <input type="text" readonly="True" id="toplamSatisAdedi" value="0" /></label>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    <div class="m-portlet" style="background-color:#ffffff;">
+        <div class="m-portlet__body">
+            <div class="row">
+                <fieldset class="well  the-fieldset ">
+                    <legend class="the-legend">Ürüne Göre Şube Satış İstatistikleri (Liste) </legend>
+                    <div class="col-md-12 col-sm-12 col-xs-12" style="border-right: solid 1px #ebedf2;">
+                        <div class="form-group">
+                            <div class="col-lg-2 col-md-2 col-sm-2">
+                                <div class="form-group" style="background-color:#ffffff">
+                                    <div class="float-left">
+                                        <select class="form-control m-select2" id="CustomerSubeUrunID">
+                                            <option value="0" selected="selected">Tümü</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2">
+                                <div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control has-feedback-left" id="dateCustomerStart" placeholder="Seçiniz" aria-describedby="inputSuccess2Status4">
+                                        <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                        <span id="inputSuccess2Status4" class="sr-only">(success)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2">
+                                <div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control has-feedback-left" id="dateCustomerEnd" value="" placeholder="Seçiniz" aria-describedby="inputSuccess2Status5">
+                                        <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                        <span id="inputSuccess2Status5" class="sr-only">(success)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-danger" id="btnCustomerState"> Veri Getir </button>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12" style="border-right: solid 1px #ebedf2;">
+                                @*<div class="table-responsive">*@
+                                <div class="tab-content tableFixHead">
+                                    <table id="tableRapor" class="table table-hover table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Şube</th>
+                                                <th>Miktar</th>
+                                                <th>Tutar</th>
+                                                <th>Ürün</th>
+                                                <th>Ürün Grubu</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="divCustomerState" style="  font-weight:bold">  </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    <div class="m-portlet" style="background-color:#ffffff;">
+        <div class="m-portlet__body">
+            <div class="row">
+                <fieldset class="well  the-fieldset ">
+                    <legend class="the-legend">Masaüstü Raporları </legend>
+
+                    <div class="container"><h2> Masaüstü Raporları </h2></div>
+                    <div id="exTab3" class="container">
+                        <ul class="nav nav-pills">
+                            <li class="active">
+                                <a href="#1b" data-toggle="tab" class="list-group-item text-center" style="font-size:15px">
+                                    <h4 class="glyphicon glyphicon-shopping-cart"></h4>
+                                    <br>
+                                    Ürün Grubuna Göre
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#2b" data-toggle="tab" class="list-group-item text-center" style="font-size:15px">
+                                    <h4 class="glyphicon glyphicon-shopping-cart"></h4>
+                                    <br>
+                                    Ürüne Göre
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#3b" data-toggle="tab" class="list-group-item text-center" style="font-size:15px">
+                                    <h4 class="glyphicon glyphicon-tasks"></h4>
+                                    <br>
+                                    Şubeye Göre
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#4b" data-toggle="tab" class="list-group-item text-center" style="font-size:15px">
+                                    <h4 class="glyphicon glyphicon-calendar"></h4>
+                                    <br>
+                                    Saat / Gün
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#5b" data-toggle="tab" class="list-group-item text-center" style="font-size:15px">
+                                    <h4 class="glyphicon glyphicon-calendar"></h4>
+                                    <br>
+                                    Gün / Saat
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content clearfix">
+                            <div class="tab-pane  active" id="1b">
+                                <div class="text-center">
+                                    <h2 style="margin-top: 0; color: #55518a"><i class="glyphicon glyphicon-shopping-cart"></i>Ürün Grubuna Göre</h2>
+                                </div>
+                                <div class="panel-group text-center">
+                                    <div class="col-md-3">
+                                        <div class="panel panel-default" style="background-color: #e9d8d8;">
+                                            <div class="panel-heading MyMenuButtonCenter">
+                                                <h4>Şube</h4>
+                                            </div>
+                                            <div class="panel-group">
+                                                <div class="float-left">
+                                                    <select class="form-control m-select2" style="font-size:18px" id="UrungrubunaGoreSubeListID">
+                                                        @*<option value="0" selected="selected">Tümü</option>*@
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="panel panel-default" style="background-color: #e9d8d8;">
+                                            <div class="panel-heading MyMenuButtonCenter">
+                                                <h4>Ay</h4>
+                                            </div>
+                                            <div class="panel-group">
+                                                <div class="float-left">
+                                                    <select class="form-control m-select2" style="font-size:18px" id="UrungrubunaGoreAyList"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12" style="border-right: solid 1px #ebedf2;">
+                                    @*<div class="table-responsive">*@
+                                    <div class="tab-content tableFixHead">
+                                        <table id="tableRaporUrunGrubunaGore" class="table table-hover table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>ÜRÜN GRUBU</th>
+                                                    <th>MİKTAR</th>
+                                                    <th>TUTAR</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="divMasaUstuUrunGrubunaGoreRapor" style="  font-weight:bold; background-color:white">  </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="2b">
+                                <div class="text-center">
+                                    <h2 style="margin-top: 0; color: #55518a"><i class="glyphicon glyphicon-shopping-cart"></i>Ürüne Göre</h2>
+                                </div>
+
+                                <div class="panel-group text-center panel-primary">
+                                    <div class="col-md-3">
+                                        <div class="panel panel-default" style="background-color: #e9d8d8; ">
+                                            <div class="panel-heading">
+                                                <h4>Şube</h4>
+                                            </div>
+                                            <div class="panel-group">
+                                                <div class="float-left">
+                                                    <select class="form-control m-select2" style="font-size:18px" id="UruneGoreSubeListID">
+                                                        @*<option value="0" selected="selected">Tümü</option>*@
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 primary">
+                                        <div class="panel panel-default" style="background-color: #e9d8d8;">
+                                            <div class="panel-heading MyMenuButtonCenter">
+                                                <h4>Ay</h4>
+                                            </div>
+                                            <div class="panel-group">
+                                                <div class="float-left">
+                                                    <select class="form-control m-select2" style="font-size:18px" id="UruneGoreAyList"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12" style="border-right: solid 1px #ebedf2;">
+                                    @*<div class="table-responsive">*@
+                                    <div class="tab-content tableFixHead">
+                                        <table id="tableRaporUrun" class="table table-hover table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>ÜRÜN ADI</th>
+                                                    <th>MİKTAR</th>
+                                                    <th>TUTAR</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="divMasaUstuUruneGoreRapor" style="  font-weight:bold; background-color:white">  </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="3b">
+                                <div class="text-center">
+                                    <h2 style="margin-top: 0; color: #55518a"><i class="glyphicon glyphicon-tasks"></i>Şubeye Göre</h2>
+                                </div>
+                                <div class="panel-group text-center panel-primary">
+                                    <div class="col-md-3">
+                                        <div class="panel panel-default" style="background-color: #e9d8d8; ">
+                                            <div class="panel-heading">
+                                                <h4>Ürün Grubu</h4>
+                                            </div>
+                                            <div class="panel-group">
+                                                <div class="float-left">
+                                                    <select class="form-control m-select2" style="font-size:18px" id="SubeyeGoreUrunGrubuListID">
+                                                        @*<option value="0" selected="selected">Tümü</option>*@
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 primary">
+                                        <div class="panel panel-default" style="background-color: #e9d8d8;">
+                                            <div class="panel-heading MyMenuButtonCenter">
+                                                <h4>Ay</h4>
+                                            </div>
+                                            <div class="panel-group">
+                                                <div class="float-left">
+                                                    <select class="form-control m-select2" style="font-size:18px" id="SubeyeGoreAyList"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12" style="border-right: solid 1px #ebedf2;">
+                                    @*<div class="table-responsive">*@
+                                    <div class="tab-content tableFixHead">
+                                        @*table table-hover table-bordered*@
+                                        @*<div>  <button type="button" class="btn btn-danger" id="btnCustomerState" title="Detayı Görüntüle" onclick="DataTableExport()"> <span class="glyphicon glyphicon-search"></span>    Veri Getir </button></div>*@
+                                        <table id="tableSubeyeGore" class="display nowrap" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>*</th>
+                                                    <th>ŞUBE</th>
+                                                    <th>MİKTAR</th>
+                                                    <th>TUTAR</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="divMasaUstuSubeyeGoreRapor" style="  font-weight:bold; background-color:white"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*Saat/Gün *@
+                            <div class="tab-pane" id="4b">
+                                <div class="text-center">
+                                    <h2 style="margin-top: 0; color: #55518a"><i class="glyphicon glyphicon-calendar"></i>Saat / Gün</h2>
+                                </div>
+                                <div class="panel-group text-center panel-primary">
+                                    <div class="col-md-3">
+                                        <div class="panel panel-default" style="background-color: #e9d8d8; ">
+                                            <div class="panel-heading">
+                                                <h4>Şube</h4>
+                                            </div>
+                                            <div class="panel-group">
+                                                <div class="float-left">
+                                                    <select class="form-control m-select2" style="font-size:18px" id="SaatGunSubeListID"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 primary">
+                                        <div class="panel panel-default" style="background-color: #e9d8d8;">
+                                            <div class="panel-heading MyMenuButtonCenter">
+                                                <h4>Saat</h4>
+                                            </div>
+                                            <div class="panel-group">
+                                                <div class="float-left">
+                                                    @*<select class="form-control m-select2" style="font-size:18px" id="SubeyeGoreAyList"></select>*@
+                                                    <select class="form-control m-select2" style="font-size:18px" id="SaatGunRaporSaatList">
+                                                        <option @(ViewBag.EndMonth == "01" ? "selected" : "") value="06">6:00</option>
+                                                        <option @(ViewBag.EndMonth == "01" ? "selected" : "") value="07">7:00</option>
+                                                        <option @(ViewBag.EndMonth == "02" ? "selected" : "") value="08">8:00</option>
+                                                        <option @(ViewBag.EndMonth == "03" ? "selected" : "") value="09">9:00</option>
+                                                        <option @(ViewBag.EndMonth == "04" ? "selected" : "") value="10">10:00</option>
+                                                        <option @(ViewBag.EndMonth == "05" ? "selected" : "") value="11">11:00</option>
+                                                        <option @(ViewBag.EndMonth == "06" ? "selected" : "") value="12">12:00</option>
+                                                        <option @(ViewBag.EndMonth == "07" ? "selected" : "") value="2014">13:00</option>
+                                                        <option @(ViewBag.EndMonth == "08" ? "selected" : "") value="2013">14:00</option>
+                                                        <option @(ViewBag.EndMonth == "09" ? "selected" : "") value="2012">15:00</option>
+                                                        <option @(ViewBag.EndMonth == "10" ? "selected" : "") value="2011">16:00</option>
+                                                        <option @(ViewBag.EndMonth == "11" ? "selected" : "") value="2010">17:00</option>
+                                                        <option @(ViewBag.EndMonth == "12" ? "selected" : "") value="2009">18:00</option>
+                                                        <option @(ViewBag.EndMonth == "13" ? "selected" : "") value="2009">19:00</option>
+                                                        <option @(ViewBag.EndMonth == "14" ? "selected" : "") value="2009">20:00</option>
+                                                        <option @(ViewBag.EndMonth == "15" ? "selected" : "") value="2009">21:00</option>
+                                                        <option @(ViewBag.EndMonth == "16" ? "selected" : "") value="2009">22:00</option>
+                                                        <option @(ViewBag.EndMonth == "17" ? "selected" : "") value="2009">23:00</option>
+                                                        <option @(ViewBag.EndMonth == "18" ? "selected" : "") value="2009">00:00</option>
+                                                        <option @(ViewBag.EndMonth == "19" ? "selected" : "") value="2009">01:00</option>
+                                                        <option @(ViewBag.EndMonth == "20" ? "selected" : "") value="2009">02:00</option>
+                                                        <option @(ViewBag.EndMonth == "21" ? "selected" : "") value="2009">03:00</option>
+                                                        <option @(ViewBag.EndMonth == "22" ? "selected" : "") value="2009">04:00</option>
+                                                        <option @(ViewBag.EndMonth == "23" ? "selected" : "") value="2009">05:00</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12" style="border-right: solid 1px #ebedf2;">
+                                    <div class="tab-content tableFixHead">
+                                        @*table table-hover table-bordered*@
+                                        @*<div>  <button type="button" class="btn btn-danger" id="btnCustomerState" title="Detayı Görüntüle" onclick="DataTableExport()"> <span class="glyphicon glyphicon-search"></span>    Veri Getir </button></div>*@
+                                        <table id="tableSaatGunRapor" class="table table-hover table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>*</th>
+                                                    <th>GUN</th>
+                                                    <th>TUTAR</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="divMasaUstuSaatGunRapor" style="  font-weight:bold; background-color:white"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*Gün/Saat *@
+                            <div class="tab-pane" id="5b">
+                                <div class="text-center">
+                                    <h2 style="margin-top: 0; color: #55518a"><i class="glyphicon glyphicon-calendar"></i>Gün / Saat</h2>
+                                </div>
+                                <div class="panel-group text-center panel-primary">
+                                    <div class="col-md-3">
+                                        <div class="panel panel-default" style="background-color: #e9d8d8; ">
+                                            <div class="panel-heading">
+                                                <h4>Şube</h4>
+                                            </div>
+                                            <div class="panel-group">
+                                                <div class="float-left">
+                                                    <select class="form-control m-select2" style="font-size:18px" id="GunSaatRaporuSubeListID"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 primary">
+                                        <div class="panel panel-default" style="background-color: #e9d8d8;">
+                                            <div class="panel-heading MyMenuButtonCenter">
+                                                <h4>Gün</h4>
+                                            </div>
+                                            <div class="panel-group">
+                                                <div class="float-left">
+                                                    <select class="form-control m-select2" style="font-size:18px" id="GunSaatRaporAyList"></select>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12" style="border-right: solid 1px #ebedf2;">
+                                    <div class="table-responsive">
+                                        @*<div class="tab-content tableFixHead">*@
+                                        <table id="tableGunSaatRapor" class="display nowrap" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>*</th>
+                                                    <th>SAAT</th>
+                                                    <th>TUTAR</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="divMasaUstuGunSaatRapor" style="  font-weight:bold; background-color:white"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    jQuery(document).ready(function () {
+        //
+        var days = 31; // Days you want to subtract
+        var date = new Date();
+        var last = new Date(date.getTime() - (days * 24 * 60 * 60 * 1000));
+        var day = last.getDate();
+        var month = last.getMonth() + 1;
+        var year = last.getFullYear();
+        var outputDefault = year + '.' +
+            (('' + month).length < 2 ? '0' : '') + month + '.' +
+            (('' + day).length < 2 ? '0' : '') + day;
+
+        var days = 7; // haftalık
+        var date = new Date();
+        var last = new Date(date.getTime() - (days * 24 * 60 * 60 * 1000));
+        var day = last.getDate();
+        var month = last.getMonth() + 1;
+        var year = last.getFullYear();
+        var outputHaftalik = (('' + day).length < 2 ? '0' : '') + day  + '.' +
+            (('' + month).length < 2 ? '0' : '') + month + '.' +
+            year ;
+
+        var days = 31; // aylık
+        var date = new Date();
+        var last = new Date(date.getTime() - (days * 24 * 60 * 60 * 1000));
+        var day = last.getDate();
+        var month = last.getMonth() + 1;
+        var year = last.getFullYear();
+        var outputAylik = (('' + day).length < 2 ? '0' : '') + day + '.' +
+            (('' + month).length < 2 ? '0' : '') + month + '.' +
+            year;
+
+        var d = new Date(); // endDate
+        var month = d.getMonth() + 1;
+        var day = d.getDate();
+        var hours = d.getHours();
+        var minut = d.getMinutes();
+        var second = d.getSeconds();
+        var output = (('' + day).length < 2 ? '0' : '') + day+ '.' +
+            (('' + month).length < 2 ? '0' : '') + month + '.' +
+            d.getFullYear();
+
+        $('#dateGecerlilikTarihi').val(outputAylik);
+        $('#dateBitisTarihi').val(output);
+
+        var Sube_ID = $('#SubeID').val();
+        var t = document.getElementById("SubeID");
+        var selectedText = t.options[t.selectedIndex].text;
+
+        var Sube_ID = $('#SubePID').val();
+        var t = document.getElementById("SubePID");
+        var selectedText = t.options[t.selectedIndex].text;
+
+        @* URUNE GORE SUBE SATIS *@
+        var SubeUrunID = $('#SubeUrunID').val();
+        var t = document.getElementById("SubeUrunID");
+        var UrunAdi = t.options[t.selectedIndex].text;
+
+
+
+
+        @*ODEMETIPLINE *@
+        $('#dateGecerlilikTarihi2').val(outputAylik);
+        $('#dateBitisTarihi2').val(output);
+
+
+        @* SUBE_URUN *@
+        $('#dateGecerlilikTarihi3SubeUrun').val(outputAylik);
+        $('#dateBitisTarihi3SubeUrun').val(output);
+
+
+        @* SUBE_PERSONEL *@
+        $('#dateGecerlilikTarihi4SubePersonel').val(outputAylik);
+        $('#dateBitisTarihi4SubePersonel').val(output);
+
+
+        @* URUNE GORE SUBE SATIS *@
+        $('#dateGecerlilikTarihi3UruneGoreSubeSatis').val(outputAylik);
+        $('#dateBitisTarihi3UruneGoreSubeSatis').val(output);
+
+
+
+        var StartDate = $("#dateGecerlilikTarihi").val() + ' 00:00:00';
+        var EndDate = $("#dateBitisTarihi").val() + ' 23:59:59';
+
+
+        //Veri Getir butonu click durumu
+        $(document).on("click", "#veriGetirBtnId", function (e) {
+            var StartDate = $("#dateGecerlilikTarihi").val()+' 00:00:00' ;
+            var EndDate = $("#dateBitisTarihi").val()+ ' 23:59:59' ;
+            console.log('start', StartDate);
+            console.log('end', EndDate);
+            $.SubeCiroSatisIstatistik(StartDate, EndDate, FilterData);
+        });
+        //haftalık veri butonu click durumu
+        $(document).on("click", "#haftalikBtnId", function (e) {
+            $('#dateGecerlilikTarihi').val(outputHaftalik);
+            $('#dateBitisTarihi').val(output);
+            var StartDate = $("#dateGecerlilikTarihi").val();
+            var EndDate = $("#dateBitisTarihi").val();
+            $.SubeCiroSatisIstatistik(StartDate, EndDate, FilterData);
+        });
+        //aylık Getir butonu click durumu
+        $(document).on("click", "#aylikBtnId", function (e) {
+            $('#dateGecerlilikTarihi').val(outputAylik);
+            $('#dateBitisTarihi').val(output);
+            var StartDate = $("#dateGecerlilikTarihi").val();
+            var EndDate = $("#dateBitisTarihi").val();
+            $.SubeCiroSatisIstatistik(StartDate, EndDate, FilterData);
+        });
+
+
+
+        @*ODEME TIPLERINE GORE LİNE *@
+        //Veri Getir butonu click durumu
+        $(document).on("click", "#veriGetirOdemeTipBtnId", function (e) {
+            var StartDate = $("#dateGecerlilikTarihi2").val()+' 00:00:00';
+            var EndDate = $("#dateBitisTarihi2").val()+" 23:59:59";
+            $.PaymentTaypeTotalAmount(StartDate, EndDate);
+        });
+        //haftalık veri butonu click durumu
+        $(document).on("click", "#haftalikOdemeTipBtnId", function (e) {
+            $('#dateGecerlilikTarihi2').val(outputHaftalik);
+            $('#dateBitisTarihi2').val(output);
+            var StartDate = $("#dateGecerlilikTarihi2").val();
+            var EndDate = $("#dateBitisTarihi2").val();
+            $.PaymentTaypeTotalAmount(StartDate, EndDate);
+        });
+        //aylık Getir butonu click durumu
+        $(document).on("click", "#aylikOdemeTipBtnId", function (e) {
+            $('#dateGecerlilikTarihi2').val(outputAylik);
+            $('#dateBitisTarihi2').val(output);
+            var StartDate = $("#dateGecerlilikTarihi2").val();
+            var EndDate = $("#dateBitisTarihi2").val();
+            $.PaymentTaypeTotalAmount(StartDate, EndDate);
+        });
+
+
+
+
+        @* SUBE URUN PIE *@
+        //Veri Getir butonu click durumu
+        $(document).on("click", "#veriGetirSubeUrunBtnId", function (e) {
+            var StartDate = $("#dateGecerlilikTarihi3SubeUrun").val() + ' 00:00:00';
+            var EndDate = $("#dateBitisTarihi3SubeUrun").val() + " 23:59:59";
+            var Sube_ID = $('#SubeID').val();
+            console.log('SubeID', Sube_ID);
+            var selectedText = "";
+            var t = document.getElementById("SubeID");
+             selectedText = t.options[t.selectedIndex].text;
+            console.log("selectedText", selectedText);
+            $.SubstationsProductsSalesPie(StartDate, EndDate, FilterDataSubeUrun, Sube_ID);
+        });
+        //haftalık veri butonu click durumu
+        $(document).on("click", "#haftalikSubeUrunBtnId", function (e) {
+            $('#dateGecerlilikTarihi3SubeUrun').val(outputHaftalik);
+            $('#dateBitisTarihi3SubeUrun').val(output);
+            var StartDate = $("#dateGecerlilikTarihi3SubeUrun").val();
+            var EndDate = $("#dateBitisTarihi3SubeUrun").val();
+            var Sube_ID = $('#SubeID').val();
+            console.log('SubeID', Sube_ID);
+            $.SubstationsProductsSalesPie(StartDate, EndDate, FilterDataSubeUrun, Sube_ID);
+        });
+        //aylık Getir butonu click durumu
+        $(document).on("click", "#aylikSubeUrunBtnId", function (e) {
+            $('#dateGecerlilikTarihi3SubeUrun').val(outputAylik);
+            $('#dateBitisTarihi3SubeUrun').val(output);
+            var StartDate = $("#dateGecerlilikTarihi3SubeUrun").val();
+            var EndDate = $("#dateBitisTarihi3SubeUrun").val();
+            var Sube_ID = $('#SubeID').val();
+            console.log('SubeID', Sube_ID);
+            $.SubstationsProductsSalesPie(StartDate, EndDate, FilterDataSubeUrun, Sube_ID);
+        });
+
+
+
+        @* SUBE PERSONEL_SATIŞ PIE *@
+        //Veri Getir butonu click durumu
+        $(document).on("click", "#veriGetirSubePersonelBtnId", function (e) {
+            var StartDate = $("#dateGecerlilikTarihi4SubePersonel").val() + ' 00:00:00';
+            var EndDate = $("#dateBitisTarihi4SubePersonel").val() + " 23:59:59";
+            var Sube_ID = $('#SubePID').val();
+            var selectedText = "";
+            var t = document.getElementById("SubePID");
+            selectedText = t.options[t.selectedIndex].text;
+            $.SubstationsPersonSalesPie(StartDate, EndDate, FilterDataSubePersonel, Sube_ID);
+            $.SubstationsWaiterPersonSalesPie(StartDate, EndDate, FilterDataSubePersonel, Sube_ID);
+        });
+        //haftalık veri butonu click durumu
+        $(document).on("click", "#haftalikSubePersonelBtnId", function (e) {
+            $('#dateGecerlilikTarihi4SubePersonel').val(outputHaftalik);
+            $('#dateBitisTarihi4SubePersonel').val(output);
+            var StartDate = $("#dateGecerlilikTarihi4SubePersonel").val();
+            var EndDate = $("#dateBitisTarihi4SubePersonel").val();
+            var Sube_ID = $('#SubePID').val();
+            $.SubstationsPersonSalesPie(StartDate, EndDate, FilterDataSubePersonel, Sube_ID);
+            $.SubstationsWaiterPersonSalesPie(StartDate, EndDate, FilterDataSubePersonel, Sube_ID);
+        });
+        //aylık Getir butonu click durumu
+        $(document).on("click", "#aylikSubePersonelBtnId", function (e) {
+            $('#dateGecerlilikTarihi4SubePersonel').val(outputAylik);
+            $('#dateBitisTarihi4SubePersonel').val(output);
+            var StartDate = $("#dateGecerlilikTarihi4SubePersonel").val();
+            var EndDate = $("#dateBitisTarihi4SubePersonel").val();
+            var Sube_ID = $('#SubePID').val();
+            $.SubstationsPersonSalesPie(StartDate, EndDate, FilterDataSubePersonel, Sube_ID);
+            $.SubstationsWaiterPersonSalesPie(StartDate, EndDate, FilterDataSubePersonel, Sube_ID);
+        });
+
+
+
+
+        @* URUNE GORE SUBEDE SATIS PIE *@
+        //Veri Getir butonu click durumu ViewBag.ToplamSatis
+        $(document).on("click", "#veriGetirUruneGoreSubeSatisBtnId", function (e) {
+            var StartDate = $("#dateGecerlilikTarihi3UruneGoreSubeSatis").val() + ' 00:00:00';
+            var EndDate = $("#dateBitisTarihi3UruneGoreSubeSatis").val() + " 23:59:59";
+            var Sube_ID = $('#SubePID').val();
+            var UrunAdi = "";
+            var SubeUrunID = $('#SubeUrunID').val();
+            var t = document.getElementById("SubeUrunID");
+            var UrunAdi = t.options[t.selectedIndex].text;
+            $.ProductsSubstationsSalesPie(StartDate, EndDate, FilterDataUruneGoreSubeSatis, Sube_ID, UrunAdi);
+        });
+        //haftalık veri butonu click durumu
+        $(document).on("click", "#haftalikUruneGoreSubeSatisBtnId", function (e) {
+            $('#dateGecerlilikTarihi3UruneGoreSubeSatis').val(outputHaftalik);
+            $('#dateBitisTarihi3UruneGoreSubeSatis').val(output);
+            var StartDate = $("#dateGecerlilikTarihi3UruneGoreSubeSatis").val();
+            var EndDate = $("#dateBitisTarihi3UruneGoreSubeSatis").val();
+            var UrunAdi = "";
+            var SubeUrunID = $('#SubeUrunID').val();
+            var t = document.getElementById("SubeUrunID");
+            var UrunAdi = t.options[t.selectedIndex].text;
+            $.ProductsSubstationsSalesPie(StartDate, EndDate, FilterDataUruneGoreSubeSatis, Sube_ID, UrunAdi);
+        });
+        //aylık Getir butonu click durumu
+        $(document).on("click", "#aylikUruneGoreSubeSatisBtnId", function (e) {
+            $('#dateGecerlilikTarihi3UruneGoreSubeSatis').val(outputAylik);
+            $('#dateBitisTarihi3UruneGoreSubeSatis').val(output);
+            var StartDate = $("#dateGecerlilikTarihi3UruneGoreSubeSatis").val();
+            var EndDate = $("#dateBitisTarihi3UruneGoreSubeSatis").val();
+            var UrunAdi = "";
+            var SubeUrunID = $('#SubeUrunID').val();
+            var t = document.getElementById("SubeUrunID");
+            var UrunAdi = t.options[t.selectedIndex].text;
+            $.ProductsSubstationsSalesPie(StartDate, EndDate, FilterDataUruneGoreSubeSatis, Sube_ID, UrunAdi);
+        });
+
+
+        //$("#veriGetirBtnId").trigger("click");
+
+        //AYLIK SATIS CHARTS****
+        Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
+            return {
+                radialGradient: {
+                    cx: 0.5,
+                    cy: 0.3,
+                    r: 0.7
+                },
+                stops: [[0, color], [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+                ]
+            };
+        });
+
+       /*LimitSize SubeCiro*/
+        var FilterData = @ViewBag.Limitsize;
+        $(document).on("click", ".SubeCiroTableLimit", function (e) {
+            var Limit = $(this).data('id');
+            var setLimit = $("#SubeCiroTableLimit").val();
+            if (Limit == setLimit) { return false; }
+            $(".SubeCiroTableLimit").removeClass("LimitGroupBack");
+            $(this).addClass("LimitGroupBack");
+            $("#SubeCiroTableLimit").val(Limit);
+            FilterData = Limit;
+            var StartDate = $("#dateGecerlilikTarihi").val() + ' 00:00:00';
+            var EndDate = $("#dateBitisTarihi").val() + ' 23:59:59';
+            $.SubeCiroSatisIstatistik(StartDate, EndDate, Limit);
+        });
+       /*LimitSize SubeCiro*/
+
+
+
+        @* 2 -) SubeCiroSatisIstatistik *@
+        var SubeCiroSatisIstatistik = Highcharts.chart('SubeCiroSatisIstatistikID', {
+        /* data: {
+             table: ''
+         },*/
+        chart: {
+            //name: 'Rainfall',
+            type: 'line',
+            //styledMode: true,
+            },
+
+        title: {
+            text: 'Subelerin  Satıs İstatistigi'
+        },
+        yAxis: {
+            allowDecimals: false,
+            title: {
+                text: 'TOPLAM SATIŞ'
+            }
+        },
+        /*cubuklarda değerleri gost.*/
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}'
+                }
+            }
+        },
+
+        tooltip: {
+            formatter: function () {
+                //console.log(this.point.category);
+                //return  this.point.y + ' ' + this.point.category +
+                //    ' : <b>' + this.series.name + '</b><br/>';
+                return ' <b>' + ' (' + this.point.category + ') ' + this.series.name + ' : ' + '</b>' + ' <br/>' + this.point.y;
+            }
+        }
+    });
+        //var StartDate = $('#MustGrupGoreAylikSatisComboStartDateId').val();
+        //var EndDate = $('#MustGrupGoreAylikSatisComboEndDateId').val();
+        $.SubeCiroSatisIstatistik = function (StartDate, EndDate, FilterData) {
+            var DataUrl = '/ReportsDetail/SubeCiroSatisIstatistik?StartDate=' + StartDate + '&EndDate=' + EndDate + '&FilterData=' + FilterData +'';
+        $.ajax
+            ({
+                url: DataUrl,
+                type: 'GET',
+                dataType: 'json',
+                beforeSend: function (request) { },
+                complete: function () { /* window.setTimeout(function () { App.unblockUI(); }, 1000); */ },
+                success: function (data) {
+                    //console.log(data);
+                    SubeCiroSatisIstatistik.xAxis[0].setCategories(data.Categories, true, true);
+
+                    while (SubeCiroSatisIstatistik.series.length > 0) {
+                        SubeCiroSatisIstatistik.series[0].remove(true);
+                    }
+
+                    $(data.Name).each(function (index, value) {
+
+                        SubeCiroSatisIstatistik.addSeries({
+                            name: value,
+                            data: []
+                        });
+                    });
+
+                    $(data.Name).each(function (index, value) {
+                        //console.log(data.Data[value]);
+                        SubeCiroSatisIstatistik.series[index].setData(data.Data[value]);
+                        $("#STL_" + FilterData).addClass("LimitGroupBack");
+                        console.log("STL_",FilterData);
+
+                    });
+                }
+            });
+        }
+        $.SubeCiroSatisIstatistik(StartDate, EndDate, FilterData);
+
+
+
+        //İKİ TARİH ARALIKLI RAPOR
+        var StartDate = $("#dateGecerlilikTarihi").val() + ' 00:00:00';
+        var EndDate = $("#dateBitisTarihi").val() + ' 23:59:59';
+        var SubeId_A = 0;
+        //Veri Getir butonu click durumu
+        $(document).on("click", "#veriGetirIkiTarihAralikliBtnId", function (e) {
+            //var StartDate = $("#dateBaslangicA").val() + ' 00:00:00';
+            //var EndDate = $("#dateBitisA").val() + " 23:59:59";
+
+            var subeId_1 = $('#ikiTarBirinciSubeId').val();
+            var subeId_2 = $('#ikiTarIkinciSubeId').val();
+            SubeId_A = subeId_1 + ',' + subeId_2;
+
+
+            var ComboStartDateYilId = $('#ComboStartDateYilId').val();
+            var ComboStartDateAyId = $('#ComboStartDateAyId').val();
+            //var ComboEndDateYilId = $('#ComboEndDateYilId').val();
+            //var ComboEndDateAyId = $('#ComboEndDateAyId').val();
+            var StartDate = ComboStartDateYilId +'.'+ ComboStartDateAyId +'.01'+ ' 00:00:00';
+            var EndDate = ComboStartDateYilId + '.' + ComboStartDateAyId +'.31' + " 23:59:59";
+
+            $.IkiTarihAralikliKarsilastirmaRaporu_A(StartDate, EndDate, SubeId_A);
+        });
+
+
+        @* İKİ TARİH ARALIKLI SATIŞ RAPORU a *@
+        var IkiTarihAralikliKarsilastirmaRaporu_A = Highcharts.chart('SubeCiroSatisIstatistikIDa', {
+            /* data: {
+                 table: ''
+             },*/
+            chart: {
+                //name: 'Rainfall',
+                type: 'column',
+                //styledMode: true,
+            },
+
+            title: {
+                text: 'Satıs İstatistikleri'
+            },
+            yAxis: {
+                allowDecimals: false,
+                title: {
+                    text: 'TOPLAM SATIŞ'
+                }
+            },
+            /*cubuklarda değerleri gost.*/
+            plotOptions: {
+                series: {
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.1f}'
+                    }
+                }
+            },
+
+            tooltip: {
+                formatter: function () {
+                    //console.log(this.point.category);
+                    //return  this.point.y + ' ' + this.point.category +
+                    //    ' : <b>' + this.series.name + '</b><br/>';
+                    return ' <b>' + ' (' + this.point.category + ') ' + this.series.name + ' : ' + '</b>' + ' <br/>' + this.point.y;
+                }
+            }
+        });
+        //var StartDate = $('#MustGrupGoreAylikSatisComboStartDateId').val();
+        //var EndDate = $('#MustGrupGoreAylikSatisComboEndDateId').val();
+        $.IkiTarihAralikliKarsilastirmaRaporu_A = function (StartDate, EndDate, SubeId_A) {
+            var DataUrl = '/ReportsDetail/IkiTarihAralikliKarsilastirmaRaporu?StartDate=' + StartDate + '&EndDate=' + EndDate + '&SubeId_A=' + SubeId_A + '';
+            $.ajax
+                ({
+                    url: DataUrl,
+                    type: 'GET',
+                    dataType: 'json',
+                    beforeSend: function (request) { },
+                    complete: function () { /* window.setTimeout(function () { App.unblockUI(); }, 1000); */ },
+                    success: function (data) {
+                        //console.log(data);
+                        IkiTarihAralikliKarsilastirmaRaporu_A.xAxis[0].setCategories(data.Categories, true, true);
+
+                        while (IkiTarihAralikliKarsilastirmaRaporu_A.series.length > 0) {
+                            IkiTarihAralikliKarsilastirmaRaporu_A.series[0].remove(true);
+                        }
+
+                        $(data.Name).each(function (index, value) {
+
+                            IkiTarihAralikliKarsilastirmaRaporu_A.addSeries({
+                                name: value,
+                                data: []
+                            });
+                        });
+
+                        $(data.Name).each(function (index, value) {
+                            //console.log(data.Data[value]);
+                            IkiTarihAralikliKarsilastirmaRaporu_A.series[index].setData(data.Data[value]);
+
+                        });
+                    }
+                });
+        }
+        $.IkiTarihAralikliKarsilastirmaRaporu_A(StartDate, EndDate, SubeId_A);
+
+
+
+
+        //İKİ TARİH ARALIKLI RAPOR B
+        var StartDate = $("#dateGecerlilikTarihi").val() + ' 00:00:00';
+        var EndDate = $("#dateBitisTarihi").val() + ' 23:59:59';
+        var SubeId_A = 0;
+        //Veri Getir butonu click durumu
+        $(document).on("click", "#veriGetirIkiTarihAralikliBtnIdB", function (e) {
+            //var StartDate = $("#dateBaslangicA").val() + ' 00:00:00';
+            //var EndDate = $("#dateBitisA").val() + " 23:59:59";
+
+            var subeId_1 = $('#ikiTarUcuncuSubeId').val();
+
+            SubeId_A = subeId_1;
+
+
+            var ComboStartDateYilIdB = $('#ComboStartDateYilIdB').val();
+            var ComboStartDateAyIdB = $('#ComboStartDateAyIdB').val();
+            //var ComboEndDateYilId = $('#ComboEndDateYilId').val();
+            //var ComboEndDateAyId = $('#ComboEndDateAyId').val();
+            var StartDate = ComboStartDateYilIdB + '.' + ComboStartDateAyIdB + '.01' + ' 00:00:00';
+            var EndDate = ComboStartDateYilIdB + '.' + ComboStartDateAyIdB + '.31' + " 23:59:59";
+
+            $.IkiTarihAralikliKarsilastirmaRaporu_B(StartDate, EndDate, SubeId_A);
+        });
+
+
+        @* İKİ TARİH ARALIKLI SATIŞ RAPORU b *@
+        var IkiTarihAralikliKarsilastirmaRaporu_B = Highcharts.chart('SubeCiroSatisIstatistikIDb', {
+            /* data: {
+                 table: ''
+             },*/
+            chart: {
+                name: 'Rainfall',
+                type: 'column',
+                //styledMode: true,
+            },
+
+            title: {
+                text: 'Satıs İstatistiki'
+            },
+            yAxis: {
+                allowDecimals: false,
+                title: {
+                    text: 'TOPLAM SATIŞ'
+                }
+            },
+            /*cubuklarda değerleri gost.*/
+            plotOptions: {
+                series: {
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.1f}'
+                    }
+                }
+            },
+
+            tooltip: {
+                formatter: function () {
+                    //console.log(this.point.category);
+                    //return  this.point.y + ' ' + this.point.category +
+                    //    ' : <b>' + this.series.name + '</b><br/>';
+                    return ' <b>' + ' (' + this.point.category + ') ' + this.series.name + ' : ' + '</b>' + ' <br/>' + this.point.y;
+                }
+            }
+        });
+        //var StartDate = $('#MustGrupGoreAylikSatisComboStartDateId').val();
+        //var EndDate = $('#MustGrupGoreAylikSatisComboEndDateId').val();
+        $.IkiTarihAralikliKarsilastirmaRaporu_B = function (StartDate, EndDate, SubeId_A) {
+            var DataUrl = '/ReportsDetail/IkiTarihAralikliKarsilastirmaRaporu?StartDate=' + StartDate + '&EndDate=' + EndDate + '&SubeId_A=' + SubeId_A + '';
+            $.ajax
+                ({
+                    url: DataUrl,
+                    type: 'GET',
+                    dataType: 'json',
+                    beforeSend: function (request) { },
+                    complete: function () { /* window.setTimeout(function () { App.unblockUI(); }, 1000); */ },
+                    success: function (data) {
+                        //console.log(data);
+                        IkiTarihAralikliKarsilastirmaRaporu_B.xAxis[0].setCategories(data.Categories, true, true);
+
+                        while (IkiTarihAralikliKarsilastirmaRaporu_B.series.length > 0) {
+                            IkiTarihAralikliKarsilastirmaRaporu_B.series[0].remove(true);
+                        }
+
+                        $(data.Name).each(function (index, value) {
+
+                            IkiTarihAralikliKarsilastirmaRaporu_B.addSeries({
+                                name: value,
+                                data: []
+                            });
+                        });
+
+                        $(data.Name).each(function (index, value) {
+                            //console.log(data.Data[value]);
+                            IkiTarihAralikliKarsilastirmaRaporu_B.series[index].setData(data.Data[value]);
+                            $("#STL_" + FilterData).addClass("LimitGroupBack");
+                            console.log("STL_", FilterData);
+
+                        });
+                    }
+                });
+        }
+        $.IkiTarihAralikliKarsilastirmaRaporu_B(StartDate, EndDate, SubeId_A);
+
+
+
+
+
+
+        @*ODEMETİPLERİNE GORE LINE *@
+        @* ÖDEME TİPLERİNE GÖRE CİRO DAĞILIMI *@ //HigtCharts_2 ****
+        var PaymentTaypeTotalAmount = new Highcharts.chart('PaymentTaypeTotalAmountId', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Odeme Tiplerine Göre Ciro Dagılımı'
+            },
+            xAxis: {
+                categories: []
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Toplam Ciro'
+                },
+                stackLabels: {
+                    enabled: true,
+                    style: {
+                        fontWeight: 'bold',
+                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                    }
+                }
+            },
+            legend: {
+                align: 'right',
+                x: -30,
+                verticalAlign: 'top',
+                y: 25,
+                floating: true,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+                borderColor: '#CCC',
+                borderWidth: 1,
+                shadow: false
+            },
+            tooltip: {
+                headerFormat: '<b>{point.x}</b><br/>',
+                pointFormat: '{series.name}: {point.y}<br/>Toplam: {point.stackTotal}'
+            },
+
+            plotOptions: {
+                column: {
+                    stacking: 'normal',
+                    dataLabels: {
+                        enabled: false,
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+                    }
+                }
+            },
+            series: []
+        });
+        $.PaymentTaypeTotalAmount = function (StartDate, EndDate) {
+            //console.log(data + ' dept_adı ' + DEPT_ADI + ' Dept_ıd ' + DEPT_ID);
+            var DataUrl = '/OzetRaporlar/PaymentTaypeTotalAmount?StartDateTime=' + StartDate + '&EndDateTime=' + EndDate + '';
+            $.ajax
+                ({
+                    url: DataUrl,
+                    type: 'GET',
+                    dataType: 'json',
+                    beforeSend: function (request) {
+                        //App.blockUI({ boxed: true });
+                    },
+                    complete: function () {
+                        //window.setTimeout(function () { App.unblockUI(); }, 1000);
+                    },
+                    success: function (data) {
+
+                        PaymentTaypeTotalAmount.xAxis[0].setCategories(data.Categories, true, true);
+                        //console.log('GELEN DATA ' + data.Categories);
+                        while (PaymentTaypeTotalAmount.series.length > 0)
+                            PaymentTaypeTotalAmount.series[0].remove(true);
+
+                        $(data.Name).each(function (index, value) {
+
+                            PaymentTaypeTotalAmount.addSeries({
+                                name: value,
+                                data: []
+                            });
+                        });
+                        $(data.Name).each(function (index, value) {
+                            PaymentTaypeTotalAmount.series[index].setData(data.Data[value]);
+
+                            //$("#STL_" + FilterData).addClass("LimitGroupBack");//Limit için
+                        });
+                        //CostDayOrders.series[0].setName(data.Name);
+                    }
+                });
+        }
+        $.PaymentTaypeTotalAmount(StartDate, EndDate);
+        //HigtCharts_2_END****
+        @*ODEMETİPLERİNE GORE LINE *@
+
+
+
+
+     /*LimitSize SubeÜrün*/
+         var FilterDataSubeUrun = @ViewBag.LimitSizeSubeUrun;
+        $(document).on("click", ".SubeUrunTableLimit", function (e) {
+            var Limit = $(this).data('id');
+            var setLimit = $("#SubeUrunTableLimit").val();
+            if (Limit == setLimit) { return false; }
+            $(".SubeUrunTableLimit").removeClass("LimitGroupBack");
+            $(this).addClass("LimitGroupBack");
+            $("#SubeUrunTableLimit").val(Limit);
+            //$.SubstationTablePie(Limit);
+            FilterDataSubeUrun = Limit;
+            console.log("FilterData_", FilterData);
+            var StartDateSubeUrun = $("#dateGecerlilikTarihi3SubeUrun").val() + ' 00:00:00';
+            var EndDateSubeUrun = $("#dateBitisTarihi3SubeUrun").val() + " 23:59:59";
+            var Sube_ID = $('#SubeID').val();
+            console.log("Sube_ID_66", Sube_ID);
+            $.SubstationsProductsSalesPie(StartDateSubeUrun, EndDateSubeUrun, FilterDataSubeUrun, Sube_ID);
+        });
+       /*LimitSize SubeCiro*/
+
+        @* PİE SUBE'YE GORE ÜRÜN DAĞILIMI *@
+        var SubstationsProductsSalesPie = new Highcharts.Chart({
+            chart: {
+                renderTo: 'SubstationsProductsSalesPieID',
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Satilan Urun'
+            },
+            tooltip: {
+                //pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        },
+                        connectorColor: 'silver'
+                    }
+                }
+            },
+            series: [{
+                name: 'Toplam (₺)',
+                data: []
+            }]
+            ,
+              series: [{
+                name: 'k (₺)',
+                data: []
+            }]
+        });
+
+        $.SubstationsProductsSalesPie = function (StartDate, EndDate, FilterDataSubeUrun, Sube_ID) {
+            var DataUrl = '/ReportsDetail/SubstationsProductsSalesPie?StartDateTime=' + StartDate + '&EndDateTime=' + EndDate + '&FilterData=' + FilterDataSubeUrun + '&SubeId=' + Sube_ID + '';
+            $.ajax({
+                url: DataUrl,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    //console.log(data.Data);
+                    while (SubstationsProductsSalesPie.series.length > 0)
+                        SubstationsProductsSalesPie.series[0].remove(true);
+
+                    while (SubstationsProductsSalesPie.series.length > 0)
+                        SubstationsProductsSalesPie.series[1].remove(true);
+                    //var dataEmpty = []
+                    //SubstationsProductsSalesPie.series[0].setData(dataEmpty, true);
+
+                    //console.log(data);
+
+                    SubstationsProductsSalesPie.addSeries({
+                        name: 'Ürün Adeti',
+                        colorByPoint: true,
+                        data: [],
+                        center: [-100000, -100000],
+                        size: 1,
+                        //visible: false,
+                    });
+
+                    SubstationsProductsSalesPie.addSeries({
+                        name: 'Toplam (TL)',
+                        colorByPoint: true,
+                        data: [1,2]
+                        //showInLegend: true,
+                    });
+
+                    var data22 = [];
+                    //console.log(data);
+                    for (i in data.Data) {
+                        data22.push({ "name": data.Data[i]['name'], "y": parseFloat(data.Data[i]['y']) });
+                    }
+                    SubstationsProductsSalesPie.series[1].setData(data22, true);
+
+                    var dataMiktar = [];
+                    //console.log(data);
+                    for (i in data.Data) {
+                        //console.log("data", i);
+                        var dd = (data.Data[i]['y']).toString().split('&')[1];
+                        dataMiktar.push({ "name": data.Data[i]['name'], "y": parseFloat(dd) });
+                        console.log("dd", dd);
+                    }
+                    SubstationsProductsSalesPie.series[0].setData(dataMiktar, true);
+
+                    ////$("#STAL_" + FilterData).addClass("LimitGroupBack");
+                    $("#SUTL_" + FilterDataSubeUrun).addClass("LimitGroupBack");
+                    console.log("SUTL_", FilterDataSubeUrun);
+                }
+            });
+        }
+
+        $.SubstationsProductsSalesPie(StartDate, EndDate, FilterDataSubeUrun, Sube_ID);
+
+
+
+     /*LimitSize subePERSONEL*/
+         var FilterDataSubePersonel = @ViewBag.LimitSizeSubeUrun;
+        $(document).on("click", ".SubePersonelTableLimit", function (e) {
+            var Limit = $(this).data('id');
+            var setLimit = $("#SubePersonelTableLimit").val();
+            if (Limit == setLimit) { return false; }
+            $(".SubePersonelTableLimit").removeClass("LimitGroupBack");
+            $(this).addClass("LimitGroupBack");
+            $("#SubePersonelTableLimit").val(Limit);
+            FilterDataSubePersonel = Limit;
+            var StartDateSubeUrun = $("#dateGecerlilikTarihi4SubePersonel").val() + ' 00:00:00';
+            var EndDateSubeUrun = $("#dateBitisTarihi4SubePersonel").val() + " 23:59:59";
+            var Sube_ID = $('#SubePID').val();
+            $.SubstationsPersonSalesPie(StartDateSubeUrun, EndDateSubeUrun, FilterDataSubePersonel, Sube_ID);
+            $.SubstationsWaiterPersonSalesPie(StartDateSubeUrun, EndDateSubeUrun, FilterDataSubePersonel, Sube_ID);
+        });
+       /*LimitSize subePERSONEL*/
+
+        @* PİE SUBE'YE GORE KASİYER SATIS DAĞILIMI *@
+        var SubstationsPersonSalesPie = new Highcharts.Chart({
+            chart: {
+                renderTo: 'SubstationsPersonSalesPieID',
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Kasiyer Tahsilat'
+            },
+            tooltip: {
+                //pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        },
+                        connectorColor: 'silver'
+                    }
+                }
+            },
+            series: [{
+                name: 'Toplam (₺)',
+                data: []
+            }]
+        });
+
+        $.SubstationsPersonSalesPie = function (StartDate, EndDate, FilterDataSubePersonel, Sube_ID) {
+            var DataUrl = '/ReportsDetail/SubstationsPersonSalesPie?StartDateTime=' + StartDate + '&EndDateTime=' + EndDate + '&FilterData=' + FilterDataSubePersonel + '&SubeId=' + Sube_ID + '';
+            $.ajax({
+                url: DataUrl,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    //console.log(data.Data);
+                    while (SubstationsPersonSalesPie.series.length > 0)
+                        SubstationsPersonSalesPie.series[0].remove(true);
+
+                    while (SubstationsPersonSalesPie.series.length > 0)
+                        SubstationsPersonSalesPie.series[0].remove(true);
+
+                    //var dataEmpty = []
+                    //SubstationsPersonSalesPie.series[0].setData(dataEmpty, true);
+
+                    SubstationsPersonSalesPie.addSeries({
+                        name: 'Uyguladığı Toplam Indirim (TL)',
+                        colorByPoint: true,
+                        data: [],
+                        center: [-100000, -100000],
+                        size: 1,
+                        //visible: false,
+                    });
+
+
+                    //console.log(data);
+                    SubstationsPersonSalesPie.addSeries({
+                        name: 'Toplam (TL)' ,
+                        colorByPoint: true,
+                        data: []
+                    });
+
+                    var data22 = [];
+                    //console.log(data);
+                    for (i in data.Data) {
+                        //console.log("data",i);
+                        data22.push({ "name": data.Data[i]['name'], "y": parseInt(data.Data[i]['y']) });
+                    }
+                    //SubstationsPersonSalesPie.series[index].setData(data22.Data[value]);
+                    SubstationsPersonSalesPie.series[1].setData(data22, true);
+
+
+                    var dataMiktar = [];
+                    for (i in data.Data) {
+                        var dd = (data.Data[i]['y']).toString().split('&')[1];
+                        dataMiktar.push({ "name": data.Data[i]['name'], "y": parseFloat(dd) });
+                    }
+                    SubstationsPersonSalesPie.series[0].setData(dataMiktar, true);
+
+                    ////$("#STAL_" + FilterData).addClass("LimitGroupBack");
+                    $("#SPTL_" + FilterDataSubePersonel).addClass("LimitGroupBack");
+                }
+            });
+        }
+
+        $.SubstationsPersonSalesPie(StartDate, EndDate, FilterDataSubePersonel, Sube_ID);
+
+
+
+        @* PİE SUBE'YE GORE PERSONEL SATIS DAĞILIMI *@
+        var SubstationsWaiterPersonSalesPie = new Highcharts.Chart({
+            chart: {
+                renderTo: 'SubstationsWaiterPersonSalesPieID',
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Personel Tahsilat'
+            },
+            tooltip: {
+                //pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        },
+                        connectorColor: 'silver'
+                    }
+                }
+            },
+            series: [{
+                name: 'Toplam (₺)',
+                data: []
+            }]
+        });
+
+        $.SubstationsWaiterPersonSalesPie = function (StartDate, EndDate, FilterDataSubePersonel, Sube_ID) {
+            var DataUrl = '/ReportsDetail/SubstationsWaiterPersonSalesPie?StartDateTime=' + StartDate + '&EndDateTime=' + EndDate + '&FilterData=' + FilterDataSubePersonel + '&SubeId=' + Sube_ID + '';
+            $.ajax({
+                url: DataUrl,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    //console.log(data.Data);
+                    while (SubstationsWaiterPersonSalesPie.series.length > 0)
+                        SubstationsWaiterPersonSalesPie.series[0].remove(true);
+
+                    //var dataEmpty = []
+                    //SubstationsWaiterPersonSalesPie.series[0].setData(dataEmpty, true);
+
+                    //console.log(data);
+                    SubstationsWaiterPersonSalesPie.addSeries({
+                        name: 'Toplam',
+                        colorByPoint: true,
+                        data: []
+                    });
+
+                    var data22 = [];
+                    for (i in data.Data) {
+                        data22.push({ "name": data.Data[i]['name'], "y": parseInt(data.Data[i]['y']) });
+                    }
+                    //SubstationsWaiterPersonSalesPie.series[index].setData(data22.Data[value]);
+                    SubstationsWaiterPersonSalesPie.series[0].setData(data22, true);
+                    ////$("#STAL_" + FilterData).addClass("LimitGroupBack");
+                    $("#SPTL_" + FilterDataSubePersonel).addClass("LimitGroupBack");
+                    console.log("SPTL_", FilterDataSubePersonel);
+                }
+            });
+        }
+
+        $.SubstationsWaiterPersonSalesPie(StartDate, EndDate, FilterDataSubePersonel, Sube_ID);
+
+
+
+
+
+
+
+         /*LimitSize URUNE GORE SUBEDEKI SATISLAR*/
+         var FilterDataUruneGoreSubeSatis = @ViewBag.LimitSizeSubeUrun;
+            $(document).on("click", ".UruneGoreSubeSatisTableLimit", function (e) {
+            var Limit = $(this).data('id');
+            var setLimit = $("#UruneGoreSubeSatisTableLimit").val();
+            if (Limit == setLimit) { return false; }
+            $(".UruneGoreSubeSatisTableLimit").removeClass("LimitGroupBack");
+            $(this).addClass("LimitGroupBack");
+            $("#UruneGoreSubeSatisTableLimit").val(Limit);
+            //$.SubstationTablePie(Limit);
+            FilterDataUruneGoreSubeSatis = Limit;
+                console.log("FilterData_", FilterDataUruneGoreSubeSatis);
+            var StartDateUruneGoreSubeSatis = $("#dateGecerlilikTarihi3UruneGoreSubeSatis").val() + ' 00:00:00';
+            var EndDateUruneGoreSubeSatis = $("#dateBitisTarihi3UruneGoreSubeSatis").val() + " 23:59:59";
+            var Sube_ID = $('#SubeID').val();
+            var SubeUrunID = $('#SubeUrunID').val();
+            var t = document.getElementById("SubeUrunID");
+            var UrunAdi = t.options[t.selectedIndex].text;
+            console.log("selectedTextSubeUrunID", UrunAdi);
+            $.ProductsSubstationsSalesPie(StartDateUruneGoreSubeSatis, EndDateUruneGoreSubeSatis, FilterDataUruneGoreSubeSatis, Sube_ID, UrunAdi);
+        });
+       /*LimitSize SubeCiro*/
+
+        @* PİE  URUNE GORE SUBELERDEKI SATISLAR *@
+        var ProductsSubstationsSalesPie = new Highcharts.Chart({
+            chart: {
+                renderTo: 'ProductsSubstationsSalesPieID',
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Urune Gore Sube Satis İstatisligi'
+            },
+            tooltip: {
+                //pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                //pointFormat: "Toplam(TL): {point.y:,.0f}"
+                pointFormat: '{series.name}: <b>{point.y:.2f}</b><br/>',
+                valueSuffix: ' cm',
+                shared: true
+
+
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.y:.1f} Adet',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        },
+                        connectorColor: 'silver'
+                    }
+                }
+            },
+            series: [{
+                name: 'Toplam (₺)',
+                data: []
+            }]
+
+        });
+
+        $.ProductsSubstationsSalesPie = function (StartDate, EndDate, FilterDataSubeUrun, Sube_ID,UrunAdi) {
+            var DataUrl = '/ReportsDetail/ProductsSubstationsSalesPie?StartDateTime=' + StartDate + '&EndDateTime=' + EndDate + '&FilterData=' + FilterDataSubeUrun + '&SubeId=' + Sube_ID + '&UrunAdi=' + UrunAdi + '';
+            $.ajax({
+                url: DataUrl,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    //console.log(data.Data);
+                    while (ProductsSubstationsSalesPie.series.length > 0)
+                        ProductsSubstationsSalesPie.series[0].remove(true);
+
+                    while (ProductsSubstationsSalesPie.series.length > 0)
+                        ProductsSubstationsSalesPie.series[1].remove(true);
+
+                    while (ProductsSubstationsSalesPie.series.length > 0)
+                        ProductsSubstationsSalesPie.series[2].remove(true);
+                    //var dataEmpty = []
+                    //SubstationsProductsSalesPie.series[0].setData(dataEmpty, true);
+
+                    ProductsSubstationsSalesPie.addSeries({
+                        name: 'Toplam (TL)',   //name: 'Ürün Adeti', ile yer değiştirdim. Ana ekranda Adeti göstermek için, 04.09.2020
+                        colorByPoint: true,
+                        data: [],
+                        center: [-100000, -100000],
+                        size: 1
+                        //visible: false,
+                    });
+
+                    ProductsSubstationsSalesPie.addSeries({
+                        name: 'Ürün Adeti',
+                        colorByPoint: true,
+                        data: [],
+                        //showInLegend: true// alt kisimda subeleri gostermek icin aktif ediyoruz.
+                    });
+
+
+                    //ProductsSubstationsSalesPie.addSeries({
+                    //    name: 'Ürün Adı',
+                    //    colorByPoint: true,
+                    //    data: [],
+                    //    //showInLegend: true// alt kisimda subeleri gostermek icin aktif ediyoruz.
+                    //});
+
+
+                    var data22 = [];
+                    for (i in data.Data) {
+                        data22.push({ "name": data.Data[i]['name'], "y": parseFloat(data.Data[i]['y']) });
+                    }
+                    ProductsSubstationsSalesPie.series[1].setData(data22, true);
+
+
+                    var dataMiktar = [];
+                    for (i in data.Data) {
+                        var dd = (data.Data[i]['y']).toString().split('&')[1];
+                        dataMiktar.push({ "name": data.Data[i]['name'], "y": parseFloat(dd) });
+                    }
+                    ProductsSubstationsSalesPie.series[0].setData(dataMiktar, true);
+
+
+                    debugger;
+                    //var dataUrunAdi = [];
+                    //for (i in data.Data) {
+                    //    var dataUrn = (data.Data[i]['y']).toString().split('&')[2];
+                    //    dataUrunAdi.push({ "name": data.Data[i]['name'], "y": dataUrn.toString() });
+                    //}
+                    //console.log("UrunAdi",dataUrn);
+                    //ProductsSubstationsSalesPie.series[2].setData(dataUrunAdi, true);
+
+                    ////$("#STAL_" + FilterData).addClass("LimitGroupBack");
+                    $("#UGSSTL_" + FilterDataUruneGoreSubeSatis).addClass("LimitGroupBack");
+                    //console.log("UGSSTL_", FilterDataUruneGoreSubeSatis);
+
+                    document.getElementById("toplamSatisTutari").value = data.ToplamSatisTutari;
+                    document.getElementById("toplamSatisAdedi").value = data.ToplamSatisAdedi;
+
+                }
+            });
+        }
+
+        $.ProductsSubstationsSalesPie(StartDate, EndDate, FilterDataUruneGoreSubeSatis, Sube_ID, UrunAdi);
+
+
+
+        @*Sube listesi*@
+        function FirmaList() {
+            $.ajax({
+                url: '/ReportsDetail/SubelerListJson',
+                type: 'POST',
+                beforeSend: function (request) {
+                    //mApp.blockPage();
+                },
+                complete: function () {
+                    window.setTimeout(function () {
+                        //mApp.unblockPage();
+                    }, 100);
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    var options = $('#SubeID');
+                    $('option', options).remove();
+                    options.append($('<option />').val(0).text("Tümü"));
+                    $.each(data, function () {
+                        options.append($('<option />').val(this.Value).text(this.Text));
+                    });
+
+                    if ('Model.SubeID'> 0) {
+                        $('#SubeID').val('Model.SubeID').trigger('change');
+                    } else { $('#SubeID').val('0').trigger('change'); }
+
+                    var options = $('#SubePID');
+                    $('option', options).remove();
+                    options.append($('<option />').val(0).text("Tümü"));
+                    $.each(data, function () {
+                        options.append($('<option />').val(this.Value).text(this.Text));
+                    });
+                    if ('Model.SubePID' > 0) {
+                        $('#SubePID').val('Model.SubePID').trigger('change');
+                    } else { $('#SubePID').val('0').trigger('change'); }
+
+
+                    //A --ikiTarBirinciSubeId --ikiTarIkinciSubeId
+                    var options = $('#ikiTarBirinciSubeId');
+                    $('option', options).remove();
+                    options.append($('<option />').val(0).text("Tümü"));
+                    $.each(data, function () {
+                        options.append($('<option />').val(this.Value).text(this.Text));
+                    });
+                    if ('Model.ikiTarBirinciSubeId' > 0) {
+                        $('#ikiTarBirinciSubeId').val('Model.ikiTarBirinciSubeId').trigger('change');
+                    } else { $('#ikiTarBirinciSubeId').val('0').trigger('change'); }
+
+                    var options = $('#ikiTarIkinciSubeId');
+                    $('option', options).remove();
+                    options.append($('<option />').val(0).text("Şube Seç"));
+                    $.each(data, function () {
+                        options.append($('<option />').val(this.Value).text(this.Text));
+                    });
+                    if ('Model.ikiTarIkinciSubeId' > 0) {
+                        $('#ikiTarIkinciSubeId').val('Model.ikiTarIkinciSubeId').trigger('change');
+                    } else { $('#ikiTarIkinciSubeId').val('0').trigger('change'); }
+
+                    //--ikiTarSubeId B
+                    var options = $('#ikiTarUcuncuSubeId');
+                    $('option', options).remove();
+                    options.append($('<option />').val(0).text("Tümü"));
+                    $.each(data, function () {
+                        options.append($('<option />').val(this.Value).text(this.Text));
+                    });
+                    if ('Model.ikiTarUcuncuSubeId' > 0) {
+                        $('#ikiTarUcuncuSubeId').val('Model.ikiTarUcuncuSubeId').trigger('change');
+                    } else { $('#ikiTarUcuncuSubeId').val('0').trigger('change'); }
+
+
+                    //Masaüstü Raporu
+                    //1-) Ürün grubuna göre şube listesi
+                    var options = $('#UrungrubunaGoreSubeListID');
+                    $('option', options).remove();
+                    options.append($('<option />').val(0).text("Şube Seçiniz"));
+                    $.each(data, function () {
+                        options.append($('<option />').val(this.Value).text(this.Text));
+                    });
+                    if ('Model.UrungrubunaGoreSubeListID' > 0) {
+                        $('#UrungrubunaGoreSubeListID').val('Model.UrungrubunaGoreSubeListID').trigger('change');
+                    } else { $('#UrungrubunaGoreSubeListID').val('0').trigger('change'); }
+
+                    //2-) Ürüne göre şube listesi
+                    var options = $('#UruneGoreSubeListID');
+                    $('option', options).remove();
+                    options.append($('<option />').val(0).text("Şube Seçiniz"));
+                    $.each(data, function () {
+                        options.append($('<option />').val(this.Value).text(this.Text));
+                    });
+                    if ('Model.UruneGoreSubeListID' > 0) {
+                        $('#UruneGoreSubeListID').val('Model.UruneGoreSubeListID').trigger('change');
+                    } else { $('#UruneGoreSubeListID').val('0').trigger('change'); }
+
+
+                    //2-) Saat/Gün şube listesi
+                    var options = $('#SaatGunSubeListID');
+                    $('option', options).remove();
+                    options.append($('<option />').val(0).text("Şube Seçiniz"));
+                    $.each(data, function () {
+                        options.append($('<option />').val(this.Value).text(this.Text));
+                    });
+                    if ('Model.SaatGunSubeListID' > 0) {
+                        $('#SaatGunSubeListID').val('Model.SaatGunSubeListID').trigger('change');
+                    } else { $('#SaatGunSubeListID').val('0').trigger('change'); }
+
+
+                    //2-) Gün/Saat şube listesi
+                    var options = $('#GunSaatRaporuSubeListID');
+                    $('option', options).remove();
+                    options.append($('<option />').val(0).text("Şube Seçiniz"));
+                    $.each(data, function () {
+                        options.append($('<option />').val(this.Value).text(this.Text));
+                    });
+                    if ('Model.GunSaatRaporuSubeListID' > 0) {
+                        $('#GunSaatRaporuSubeListID').val('Model.GunSaatRaporuSubeListID').trigger('change');
+                    } else { $('#GunSaatRaporuSubeListID').val('0').trigger('change'); }
+
+
+                }
+            });
+        }
+        FirmaList();
+        @* Subede ki ürün listesi *@
+        function SubeUrunList() {
+            $.ajax({
+                url: '/ReportsDetail/SubeUrunListJson',
+                type: 'POST',
+                beforeSend: function (request) {
+                    //mApp.blockPage();
+                },
+                complete: function () {
+                    window.setTimeout(function () {
+                        //mApp.unblockPage();
+                    }, 100);
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var options = $('#SubeUrunID');
+                    $('option', options).remove();
+                    options.append($('<option />').val(0).text("Ürün Seçiniz"));
+                    $.each(data, function () {
+                        options.append($('<option />').val(this.Value).text(this.Text));
+                    });
+
+                    if ('Model.UrunID' > 0) {
+                        $('#SubeUrunID').val('Model.UrunID').trigger('change');
+                    } else { $('#SubeUrunID').val('0').trigger('change'); }
+
+                    var options = $('#SubeUrunID');
+                    $('option', options).remove();
+                    options.append($('<option />').val(0).text("Ürün Seçiniz"));
+                    $.each(data, function () {
+                        options.append($('<option />').val(this.Value).text(this.Text));
+                    });
+                    if ('Model.UrunID' > 0) {
+                        $('#SubeUrunID').val('Model.UrunID').trigger('change');
+                    } else { $('#SubeUrunID').val('0').trigger('change'); }
+
+
+                    //--Customer
+
+                    //--ikiTarSubeId B
+                    var options = $('#CustomerSubeUrunID');
+                    $('option', options).remove();
+                    options.append($('<option />').val(0).text("Ürün Seçiniz"));
+                    $.each(data, function () {
+                        options.append($('<option />').val(this.Value).text(this.Text));
+                    });
+                    if ('Model.UrunID' > 0) {
+                        $('#CustomerSubeUrunID').val('Model.UrunID').trigger('change');
+                    } else { $('#CustomerSubeUrunID').val('0').trigger('change'); }
+                }
+            });
+        }
+        SubeUrunList();
+
+
+
+        $(document).on("click", "#btnCustomerState", function (e) {
+            var StartDate = $("#dateCustomerStart").val() + ' 00:00:00';
+            var EndDate = $("#dateCustomerEnd").val() + " 23:59:59";
+            var Sube_ID =  $('#SubePID').val();
+            var UrunAdi = "";
+            var SubeUrunID = $('#CustomerSubeUrunID').val();
+            var t = document.getElementById("CustomerSubeUrunID");
+            var UrunAdi = t.options[t.selectedIndex].text;
+
+            $.ProductsSubstationsSalesPie_2(StartDate, EndDate, FilterDataUruneGoreSubeSatis, Sube_ID, UrunAdi);
+
+        });
+
+
+        //$(document).on("click", "#veriGetirUruneGoreSubeSatisBtnId", function (e) {
+        //    var StartDate = $("#dateGecerlilikTarihi3UruneGoreSubeSatis").val() + ' 00:00:00';
+        //    var EndDate = $("#dateBitisTarihi3UruneGoreSubeSatis").val() + " 23:59:59";
+        //    var Sube_ID = $('#SubePID').val();
+        //    var UrunAdi = "";
+        //    var SubeUrunID = $('#SubeUrunID').val();
+        //    var t = document.getElementById("SubeUrunID");
+        //    var UrunAdi = t.options[t.selectedIndex].text;
+        //    $.ProductsSubstationsSalesPie(StartDate, EndDate, FilterDataUruneGoreSubeSatis, Sube_ID, UrunAdi);
+        //});
+
+
+
+        $.ProductsSubstationsSalesPie_2 = function (StartDate, EndDate, FilterDataSubeUrun, Sube_ID, UrunAdi) {
+            $.ajax({
+               url: '/ReportsDetail/ProductsSubstationsSalesPie_2?StartDateTime=' + StartDate + '&EndDateTime=' + EndDate + '&FilterData=' + FilterDataSubeUrun + '&SubeId=' + Sube_ID + '&UrunAdi=' + UrunAdi + '',
+                type: 'GET',
+                dataType: 'json',
+                success: function (result) {
+                    var addRow = '';
+                    $.each(result.Data, function (index, value)
+                    {
+                        addRow +=
+                            '<tr>'
+                            + '<td>' + value.Sube + '</td>'
+                            + '<td>' + value.Miktar + '</td>'
+                            + '<td>' + value.Debit + '</td>'
+                            + '<td >' + value.ProductName + '</td>'
+                            + '<td >' + value.ProductGroup + '</td>'
+                            + '</tr>';
+                    });
+
+                    var DateRange = "( " + result.StartDate + " / " + result.EndDate + " )";
+                    $("#CustomerDateRange").html('').append(DateRange);
+                    $("#divCustomerState").html('');
+                    //$("#CustomerState_" + Limit).addClass("LimitGroupBack");
+                    $("#divCustomerState").append(addRow);
+                    //window.setTimeout(function () { $("#divCustomerState").append(addRow); }, 1000);
+
+                }
+            });
+        }
+        $.ProductsSubstationsSalesPie_2(StartDate, EndDate, FilterDataUruneGoreSubeSatis, Sube_ID, UrunAdi);
+
+
+        @*  //Masa üstü raporu ürün grubu list *@
+        function MasaUstuRaporuUrunGrubuList() {
+            $.ajax({
+                url: '/ReportsDetail/SubeUrunGrubuListJson',
+                type: 'POST',
+                beforeSend: function (request) {
+                    //mApp.blockPage();
+                },
+                complete: function () {
+                    window.setTimeout(function () {
+                        //mApp.unblockPage();
+                    }, 100);
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    //Masaüstü Raporu
+                    //Ürün grubu list
+                    var options = $('#SubeyeGoreUrunGrubuListID');
+                    $('option', options).remove();
+                    options.append($('<option />').val(0).text("Seçiniz"));
+                    $.each(data, function () {
+                        options.append($('<option />').val(this.Value).text(this.Text));
+                    });
+                    if ('Model.SubeyeGoreUrunGrubuListID' > 0) {
+                        $('#SubeyeGoreUrunGrubuListID').val('Model.SubeyeGoreUrunGrubuListID').trigger('change');
+                    } else { $('#SubeyeGoreUrunGrubuListID').val('0').trigger('change'); }
+                }
+            });
+        }
+        MasaUstuRaporuUrunGrubuList();
+
+
+        //Masa üstü raporu ay list
+        @* Sube listesi *@
+        function MasaUstuRaporAyList() {
+            $.ajax({
+                url: '/ReportsDetail/MasaUstuRaporAyListJson',
+                type: 'POST',
+                beforeSend: function (request) {
+                    //mApp.blockPage();
+                },
+                complete: function () {
+                    window.setTimeout(function () {
+                        //mApp.unblockPage();
+                    }, 100);
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    //Masaüstü Raporu
+                    //1-) Ürün grubuna göre Ay listesi
+                    var options = $('#UrungrubunaGoreAyList');
+                    $('option', options).remove();
+                    options.append($('<option />').val(0).text("Seçiniz"));
+                    $.each(data, function () {
+                        options.append($('<option />').val(this.Value).text(this.Text));
+                    });
+                    if ('Model.UrungrubunaGoreAyList' > 0) {
+                        $('#UrungrubunaGoreAyList').val('Model.UrungrubunaGoreAyList').trigger('change');
+                    } else { $('#UrungrubunaGoreAyList').val('0').trigger('change'); }
+
+
+                    //2-) Ürüne göre Ay listesi
+                    var options = $('#UruneGoreAyList');
+                    $('option', options).remove();
+                    options.append($('<option />').val(0).text("Seçiniz"));
+                    $.each(data, function () {
+                        options.append($('<option />').val(this.Value).text(this.Text));
+                    });
+                    if ('Model.UruneGoreAyList' > 0) {
+                        $('#UruneGoreAyList').val('Model.UruneGoreAyList').trigger('change');
+                    } else { $('#UruneGoreAyList').val('0').trigger('change'); }
+
+
+
+                    //2-) Şubeye göre Ay listesi
+                    var options = $('#SubeyeGoreAyList');
+                    $('option', options).remove();
+                    options.append($('<option />').val(0).text("Seçiniz"));
+                    $.each(data, function () {
+                        options.append($('<option />').val(this.Value).text(this.Text));
+                    });
+                    if ('Model.SubeyeGoreAyList' > 0) {
+                        $('#SubeyeGoreAyList').val('Model.SubeyeGoreAyList').trigger('change');
+                    } else { $('#SubeyeGoreAyList').val('0').trigger('change'); }
+
+                }
+            });
+        }
+        MasaUstuRaporAyList();
+
+
+        //Masa üstü raporu Gün Ay list
+        @* Gün/ Ay *@
+        function MasaUstuRaporGunAyListJson() {
+            $.ajax({
+                url: '/ReportsDetail/MasaUstuRaporGunAyListJson',
+                type: 'POST',
+                beforeSend: function (request) {
+                    //mApp.blockPage();
+                },
+                complete: function () {
+                    window.setTimeout(function () {
+                        //mApp.unblockPage();
+                    }, 100);
+                },
+                dataType: 'json',
+                success: function (data) {
+
+
+                    //2-) Gün/Saat Ay listesi
+                    var options = $('#GunSaatRaporAyList');
+                    $('option', options).remove();
+                    options.append($('<option />').val(0).text("Seçiniz"));
+                    $.each(data, function () {
+                        options.append($('<option />').val(this.Value).text(this.Text));
+                    });
+                    if ('Model.GunSaatRaporAyList' > 0) {
+                        $('#GunSaatRaporAyList').val('Model.GunSaatRaporAyList').trigger('change');
+                    } else { $('#GunSaatRaporAyList').val('0').trigger('change'); }
+
+                }
+            });
+        }
+        MasaUstuRaporGunAyListJson();
+
+
+        //Masaüstü raporu
+
+
+        @*******************************Ürün grubuna göre rapor *************************@
+        $(document).on("change", "#UrungrubunaGoreAyList", function (e) {
+
+            var subeId = $('#UrungrubunaGoreSubeListID').val();
+            if (subeId != 0 && subeId!="") {
+
+                var aySelected = document.getElementById("UrungrubunaGoreAyList");
+                var StartDate = aySelected.options[aySelected.selectedIndex].text;
+                var EndDate = $("#UrungrubunaGoreAyList").val();
+
+            } else {
+                var EndDate = 0;
+                var StartDate = 0;
+            }
+
+            if (subeId == 0 && subeId == "") { return false; }
+            //var data = { ilId: ilId, bolgeId: bolgeId };
+
+            $.ajax({
+                url: '/ReportsDetail/UrunGrubunaGoreMasaUstuRapor?StartDateTime=' + StartDate + '&EndDateTime=' + EndDate + '&FilterData=' + FilterDataSubeUrun + '&SubeId=' + subeId + '&UrunAdi=' + UrunAdi + '',
+                type: 'GET',
+                dataType: 'json',
+                success: function (result) {
+                    var addRow = '';
+                    $.each(result.Data, function (index, value) {
+                        addRow +=
+                            '<tr>'
+                            + '<td >' + value.ProductGroup + '</td>'
+                            + '<td>' + value.Miktar + '</td>'
+                            + '<td>' + value.Debit + '</td>'
+                            + '</tr>';
+                    });
+
+                    var DateRange = "( " + result.StartDate + " / " + result.EndDate + " )";
+                    $("#CustomerDateRange").html('').append(DateRange);
+                    $("#divMasaUstuUrunGrubunaGoreRapor").html('');
+                    //$("#CustomerState_" + Limit).addClass("LimitGroupBack");
+                    $("#divMasaUstuUrunGrubunaGoreRapor").append(addRow);
+                    //window.setTimeout(function () { $("#divCustomerState").append(addRow); }, 1000);
+                }
+            });
+        });
+        //
+
+        @*******************************Ürüne göre rapor *************************@
+        $(document).on("change", "#UruneGoreAyList", function (e) {
+
+            var subeId = $('#UruneGoreSubeListID').val();
+            if (subeId != 0 && subeId != "") {
+
+                var aySelected = document.getElementById("UruneGoreAyList");
+                var StartDate = aySelected.options[aySelected.selectedIndex].text;
+                var EndDate = $("#UruneGoreAyList").val();
+
+            } else {
+
+                var EndDate = 0;
+                var StartDate = 0;
+            }
+
+            if (subeId == 0 && subeId == "") { return false; }
+            //var data = { ilId: ilId, bolgeId: bolgeId };
+            $.ajax({
+                url: '/ReportsDetail/UruneGoreMasaUstuRapor?StartDateTime=' + StartDate + '&EndDateTime=' + EndDate + '&FilterData=' + FilterDataSubeUrun + '&SubeId=' + subeId + '&UrunAdi=' + UrunAdi + '',
+                type: 'GET',
+                dataType: 'json',
+                success: function (result) {
+                    var addRow = '';
+                    $.each(result.Data, function (index, value) {
+                        addRow +=
+                            '<tr>'
+                            + '<td >' + value.ProductName + '</td>'
+                            + '<td>' + value.Miktar + '</td>'
+                            + '<td>' + value.Debit + '</td>'
+                            + '</tr>';
+                    });
+
+                    var DateRange = "( " + result.StartDate + " / " + result.EndDate + " )";
+                    $("#CustomerDateRange").html('').append(DateRange);
+                    $("#divMasaUstuUruneGoreRapor").html('');
+                    //$("#CustomerState_" + Limit).addClass("LimitGroupBack");
+                    $("#divMasaUstuUruneGoreRapor").append(addRow);
+                    //window.setTimeout(function () { $("#divCustomerState").append(addRow); }, 1000);
+                }
+            });
+        });
+
+
+        @******************************* Şubeye göre rapor *************************@
+        $(document).on("change", "#SubeyeGoreAyList", function (e) {
+            var subeId ="";
+            var UrunAdi = $('#SubeyeGoreUrunGrubuListID').val();
+            if (UrunAdi != 0 && UrunAdi != "") {
+                var aySelected = document.getElementById("SubeyeGoreAyList");
+                var StartDate = aySelected.options[aySelected.selectedIndex].text;
+                var EndDate = $("#SubeyeGoreAyList").val();
+            } else {
+                var EndDate = 0;
+                var StartDate = 0;
+            }
+
+            if (UrunAdi == 0 && UrunAdi == "") { return false; }
+            //var data = { ilId: ilId, bolgeId: bolgeId };
+
+            $.ajax({
+                url: '/ReportsDetail/SubeyeGoreMasaUstuRapor?StartDateTime=' + StartDate + '&EndDateTime=' + EndDate + '&FilterData=' + FilterDataSubeUrun + '&SubeId=' + subeId + '&UrunAdi=' + UrunAdi + '',
+                type: 'GET',
+                dataType: 'json',
+                success: function (result) {
+                    var addRow = '';
+                    $.each(result.Data, function (index, value) {
+                        addRow +=
+                        '<tr childDataGosterSubeyeGore="SubeyeGore_'+index+'" data-child-value="hidden ' + value.SubeID + '" role="row" class="odd" style="color:#000000;font-weight:bold">'
+                        + '<td class="details-controlTable_"  id="' + value.SubeID + '">  <a class="btn btn-s btn-success " title="Detayı Görüntüle">   <span class="glyphicon glyphicon-search"></span> </a> </td>'
+                        //+ '<td class="details-control"   id="' + value.SubeID + '"></td>'
+                        + '<td>' + value.Sube + '</td>'
+                        + '<td>' + value.ToplamMiktar + '</td>'
+                        + '<td>' + value.TotalDebit + '</td>'
+                        + '</tr>';
+
+                        addRow += '<tr id="SubeyeGore_' + index +'" dataGosterSubeyeGore="SubeyeGore_'+index+'" style="display:none"></tr>';
+                        //addRow += " <tr><td><table><tbody><tr><th>name</th><th>value</th></tr><tr><td>test1</td><td>val1</td></tr><tr><td>test2</td><td>val2</td></tr></tbody></table></td></tr>";
+                    });
+
+                    //var DateRange = "( " + result.StartDate + " / " + result.EndDate + " )";
+                    //$("#CustomerDateRange").html('').append(DateRange);
+                    $("#divMasaUstuSubeyeGoreRapor").html('');
+                    //$("#CustomerState_" + Limit).addClass("LimitGroupBack");
+                    //$("#divMasaUstuSubeyeGoreRapor").append(addRow);
+                    window.setTimeout(function () { $("#divMasaUstuSubeyeGoreRapor").append(addRow); }, 1000);
+                }
+            });
+        });
+        //
+
+        ////$(document).ready(function () {
+            debugger;
+        ////       var buttonCommon = {
+        ////    exportOptions: {
+        ////        format: {
+        ////            body: function (data, row, column, node) {
+        ////                var ank = data.lastIndexOf('>');
+        ////                return data.replace(/[$,.]/g, '.').substring(data.length - (data.length - parseInt(ank) - 1), data.length)
+        ////                data;
+        ////            }
+        ////        }
+        ////    }
+        ////};
+            var table = $('#tableSubeyeGore').DataTable(
+                {
+                    language: {
+                info: "_TOTAL_ kayıttan _START_ - _END_ kayıt gösteriliyor.",
+                infoEmpty: ".",
+                loadingRecords: "Kayıtlar yükleniyor.",
+                zeroRecords: "Tablo boş",
+                search: "Arama:",
+                infoFiltered: "(toplam _MAX_ kayıttan filtrelenenler)",
+                //buttons: {
+                //    ////copyTitle: "Panoya kopyalandı.",
+                //    ////copySuccess: "Panoya %d satır kopyalandı",
+                //    ////copy: "Kopyala",
+                //    ////print: "Yazdır",
+                //},
+                paginate: {
+                    first: "İlk",
+                    previous: "Önceki",
+                    next: "Sonraki",
+                    last: "Son"
+                },
+            },
+                    dom: 'Bfrtip',
+                    //buttons: [
+                    //    'colvis'
+
+                    //]
+            ////"pageLength": 80,
+            ////"bDestroy": true,
+            ////buttons: [
+            ////    $.extend(true, {}, buttonCommon, {
+            ////        extend: 'copyHtml5'
+            ////    }),
+            ////    $.extend(true, {}, buttonCommon, {
+            ////        extend: 'excelHtml5'
+            ////    }),
+            ////    $.extend(true, {}, buttonCommon, {
+            ////        extend: 'pdfHtml5'
+            ////    }),
+            ////    'print'
+            ////],
+            }
+        );
+        table.buttons().remove();
+        //table.search.remove();
+        //table.buttons().container()
+        //    .appendTo($('.col-sm-6:eq(0)', table.table().container()));
+
+        var table = $('#tableSubeyeGore').DataTable();
+            // Add event listener for opening and closing details
+        $('#tableSubeyeGore').on('click', 'td.details-controlTable_', function () {
+            //var table = $('#tableSubeyeGore').DataTable();
+                debugger;
+                var childTable = $(this).parent("tr").attr("childDataGosterSubeyeGore");
+            $('[dataGosterSubeyeGore="' + childTable + '"]').slideToggle();
+                var tr = $(this).closest('tr');
+                var row = table.row(tr);
+                var subeid = $(this).attr("id");
+
+            //if (row.child.isShown()) {
+            //    // This row is already open - close it
+            //    row.child.hide();
+            //    tr.removeClass('shown');
+            //} else {
+                // Open this row
+            SubeyeGoreChild(row.child, $('[dataGosterSubeyeGore="' + childTable + '"]'), subeid);
+            //    tr.addClass('shown');
+            //}
+            });
+
+            function SubeyeGoreChild(callback, element,subeid) {
+                var UrunAdi = $('#SubeyeGoreUrunGrubuListID').val();
+                var aySelected = document.getElementById("SubeyeGoreAyList");
+                var StartDate = aySelected.options[aySelected.selectedIndex].text;
+                var EndDate = $("#SubeyeGoreAyList").val();
+                $.ajax({
+                    url: '/ReportsDetail/SubeyeGoreMasaUstuRapor?StartDateTime=' + StartDate + '&EndDateTime=' + EndDate + '&FilterData=' + FilterDataSubeUrun + '&SubeId=' + subeid + '&UrunAdi=' + UrunAdi + '',
+                    dataType: "json",
+                    success: function (result) {
+                        var thead = '', tbody = '';
+                        thead += '<th> ÜRÜN ADI </th>';
+                        thead += '<th> MİKTAR </th>';
+                        thead += '<th> TUTAR </th>';
+                        sayac = 0;
+                        $.each(result.Data, function (index, value) {
+                            tbody +=
+                             '<tr>'
+                            //+ '<td> <a class="btn btn-m btn-success " id="testClick" title="Detayı Görüntüle"  onclick="myFunction()" > <span class="glyphicon glyphicon-search"></span>  </a> </td>'
+                            + '<td> ' + value.ProductName + '</td>'
+                            + '<td>' + value.Miktar + '</td>'
+                            + '<td>' + value.Debit + '</td>'
+                            + '</tr>';
+                            sayac += 1;
+                        });
+                        console.log('<table>' + thead + tbody + '</table>');
+                        callback($('<table id="tableDetay">' + thead + tbody + '</table>')).show();
+                        var test = $('<table id="tableDetay" style="width:100%">' + thead + tbody + '</table>');
+                        element.html("").append(test);
+                    },
+                    error: function () {
+                        $('#output').html('Bummer: there was an error!');
+                    }
+                });
+            }
+        //});
+
+
+
+
+        @******************************* Saat / Gün *************************@
+        //Saat/Gün rapor
+        $(document).on("change", "#SaatGunRaporSaatList", function (e) {
+            var subeId = $('#SaatGunSubeListID').val();
+            var Saat = $('#SaatGunRaporSaatList').val();
+            //if (UrunAdi != 0 && UrunAdi != "") {
+            //var SaatSelected = document.getElementById("SaatGunRaporSaatList");
+            //var Saat = SaatSelected.options[SaatSelected.selectedIndex].text;
+            //    var EndDate = $("#SubeyeGoreAyList").val();
+            //} else {
+            var EndDate = 0;
+            var StartDate = 0;
+            var SaatGunQuery = 0;
+            //}
+
+            //if (UrunAdi == 0 && UrunAdi == "") { return false; }
+            //var data = { ilId: ilId, bolgeId: bolgeId };
+
+            $.ajax({
+                url: '/ReportsDetail/SaatGunMasaUstuRapor?StartDateTime=' + StartDate + '&EndDateTime=' + EndDate + '&FilterData=' + FilterDataSubeUrun + '&SubeId=' + subeId + '&Saat=' + Saat +'&SaatGunQuery=' + SaatGunQuery + '',
+                type: 'GET',
+                dataType: 'json',
+                success: function (result) {
+                    var addRow = '';
+                    $.each(result.Data, function (index, value) {
+                        addRow +=
+                            '<tr TarihGun=' + value.TarihGun + '    childDataGosterSaatGun="test_' + index + '" data-child-value="hidden ' + value.SubeID + '" role="row" class="odd" style="color:#000000;font-weight:bold">'
+                            + '<td class="details-controlTable"  id="' + value.SubeID + '" >  <a class="btn btn-s btn-success " title="Detayı Görüntüle">   <span class="glyphicon glyphicon-search"></span> </a> </td>'
+                            //+ '<td class="details-control"   id="' + value.SubeID + '"></td>'
+                            + '<td>' + value.TarihGun + '</td>'
+                            + '<td>' + value.Debit + '</td>'
+                            + '</tr>';
+
+                        addRow += '<tr id="test_' + index + '" dataGosterSaatGun="test_' + index + '" style="display:none"></tr>';
+                        //addRow += " <tr><td><table><tbody><tr><th>name</th><th>value</th></tr><tr><td>test1</td><td>val1</td></tr><tr><td>test2</td><td>val2</td></tr></tbody></table></td></tr>";
+                    });
+
+                    //var DateRange = "( " + result.StartDate + " / " + result.EndDate + " )";
+                    //$("#CustomerDateRange").html('').append(DateRange);
+                    $("#divMasaUstuSaatGunRapor").html('');
+                    //$("#CustomerState_" + Limit).addClass("LimitGroupBack");
+                    //$("#divMasaUstuSaatGunRapor").append(addRow);
+                    window.setTimeout(function () { $("#divMasaUstuSaatGunRapor").append(addRow); }, 1000);
+                }
+            });
+        });
+        //
+
+        var table = $('#tableSaatGunRapor').DataTable(
+            {
+                language: {
+                    info: "_TOTAL_ kayıttan _START_ - _END_ kayıt gösteriliyor.",
+                    infoEmpty: ".",
+                    loadingRecords: "Kayıtlar yükleniyor.",
+                    zeroRecords: "Tablo boş",
+                    search: "Arama:",
+                    infoFiltered: "(toplam _MAX_ kayıttan filtrelenenler)",
+                    //buttons: {
+                    //    ////copyTitle: "Panoya kopyalandı.",
+                    //    ////copySuccess: "Panoya %d satır kopyalandı",
+                    //    ////copy: "Kopyala",
+                    //    ////print: "Yazdır",
+                    //},
+                    paginate: {
+                        first: "İlk",
+                        previous: "Önceki",
+                        next: "Sonraki",
+                        last: "Son"
+                    },
+                },
+                dom: 'Bfrtip',
+                //buttons: [
+                //    'colvis'
+
+                //]
+                ////"pageLength": 80,
+                ////"bDestroy": true,
+                ////buttons: [
+                ////    $.extend(true, {}, buttonCommon, {
+                ////        extend: 'copyHtml5'
+                ////    }),
+                ////    $.extend(true, {}, buttonCommon, {
+                ////        extend: 'excelHtml5'
+                ////    }),
+                ////    $.extend(true, {}, buttonCommon, {
+                ////        extend: 'pdfHtml5'
+                ////    }),
+                ////    'print'
+                ////],
+            }
+        );
+        table.buttons().remove();
+        //table.search.remove();
+        //table.buttons().container()
+        //    .appendTo($('.col-sm-6:eq(0)', table.table().container()));
+
+        var table = $('#tableSaatGunRapor').DataTable();
+        // Add event listener for opening and closing details
+        $('#tableSaatGunRapor').on('click', 'td.details-controlTable', function () {
+            //var table = $('#tableSaatGun').DataTable();
+            debugger;
+            var childTable = $(this).parent("tr").attr("childDataGosterSaatGun");
+            $('[dataGosterSaatGun="' + childTable + '"]').slideToggle();
+            var tr = $(this).closest('tr');
+            var row = table.row(tr);
+            var subeid = $(this).attr("id");
+            var StartDate = $(this).parent("tr").attr("TarihGun");
+            var EndDate = $(this).parent("tr").attr("TarihGun");
+
+            SaatGunChild(row.child, $('[dataGosterSaatGun="' + childTable + '"]'), subeid, StartDate, EndDate);
+
+        });
+
+        function SaatGunChild(callback, element, subeid, StartDate, EndDate) {
+            debugger;
+            var UrunAdi = "";
+            var aySelected = document.getElementById("SubeyeGoreAyList");
+            //var StartDate = aySelected.options[aySelected.selectedIndex].text;
+            //var EndDate = $("#SubeyeGoreAyList").val();
+            var Saat = $('#SaatGunRaporSaatList').val();
+            var SaatGunQuery = 1;
+            $.ajax({
+                url: '/ReportsDetail/SaatGunMasaUstuRapor?StartDateTime=' + StartDate + '&EndDateTime=' + EndDate + '&FilterData=' + FilterDataSubeUrun + '&SubeId=' + subeid + '&Saat=' + Saat + '&SaatGunQuery=' + SaatGunQuery + '',
+                dataType: "json",
+                success: function (result) {
+                    var thead = '', tbody = '';
+                    thead += '<th> ÜRÜN ADI </th>';
+                    thead += '<th> MİKTAR </th>';
+                    thead += '<th> TUTAR </th>';
+                    sayac = 0;
+                    $.each(result.Data, function (index, value) {
+                        tbody +=
+                            '<tr>'
+                            //+ '<td> <a class="btn btn-m btn-success " id="testClick" title="Detayı Görüntüle"  onclick="myFunction()" > <span class="glyphicon glyphicon-search"></span>  </a> </td>'
+                            + '<td> ' + value.ProductName + '</td>'
+                            + '<td>' + value.Miktar + '</td>'
+                            + '<td>' + value.Debit + '</td>'
+                            + '</tr>';
+                        sayac += 1;
+                    });
+                    console.log('<table>' + thead + tbody + '</table>');
+                    callback($('<table id="tableDetay">' + thead + tbody + '</table>')).show();
+                    var test = $('<table id="tableDetay" style="width:100%">' + thead + tbody + '</table>');
+                    element.html("").append(test);
+                },
+                error: function () {
+                    $('#output').html('Bummer: there was an error!');
+                }
+            });
+        }
+        //});
+
+
+
+
+        @******************************* Gün / Saat *************************@
+        //Saat/Gün rapor
+        $(document).on("change", "#GunSaatRaporAyList", function (e) {
+            var subeId = $('#GunSaatRaporuSubeListID').val();
+            var Gun = $('#GunSaatRaporAyList').val();
+
+            var EndDate = 0;
+            var StartDate = 0;
+            var SaatGunQuery = 3;
+
+            $.ajax({
+                url: '/ReportsDetail/GunSaatMasaUstuRapor?StartDateTime=' + StartDate + '&EndDateTime=' + EndDate + '&FilterData=' + FilterDataSubeUrun + '&SubeId=' + subeId + '&Gun='  + Gun + '&SaatGunQuery=' + SaatGunQuery + '',              
+                type: 'GET',
+                dataType: 'json',
+                success: function (result) {
+                    var addRow = '';
+                    $.each(result.Data, function (index, value) {
+                        addRow +=
+                            '<tr TarihGunSaat=' + value.TarihSaat + '    childDataGosterGunSaat="test_' + index + '" data-child-value="hidden ' + value.SubeID + '" role="row" class="odd" style="color:#000000;font-weight:bold">'
+                            + '<td class="details-controlTable"  id="' + value.SubeID + '" >  <a class="btn btn-s btn-success " title="Detayı Görüntüle">   <span class="glyphicon glyphicon-search"></span> </a> </td>'
+                            //+ '<td class="details-control"   id="' + value.SubeID + '"></td>'
+                            + '<td>' + value.TarihSaat + '</td>'
+                            + '<td>' + value.Debit + '</td>'
+                            + '</tr>';
+
+                        addRow += '<tr id="test_' + index + '" dataGosterGunSaat="test_' + index + '" style="display:none"></tr>';
+                        //addRow += " <tr><td><table><tbody><tr><th>name</th><th>value</th></tr><tr><td>test1</td><td>val1</td></tr><tr><td>test2</td><td>val2</td></tr></tbody></table></td></tr>";
+                    });
+
+                    //var DateRange = "( " + result.StartDate + " / " + result.EndDate + " )";
+                    //$("#CustomerDateRange").html('').append(DateRange);
+                    $("#divMasaUstuGunSaatRapor").html('');
+                    //$("#CustomerState_" + Limit).addClass("LimitGroupBack");
+                    //$("#divMasaUstuSaatGunRapor").append(addRow);
+                    window.setTimeout(function () { $("#divMasaUstuGunSaatRapor").append(addRow); }, 1000);
+                }
+            });
+        });
+        //
+
+        var table = $('#tableGunSaatRapor').DataTable(
+            {
+                language: {
+                    info: "_TOTAL_ kayıttan _START_ - _END_ kayıt gösteriliyor.",
+                    infoEmpty: ".",
+                    loadingRecords: "Kayıtlar yükleniyor.",
+                    zeroRecords: "Tablo boş",
+                    search: "Arama:",
+                    infoFiltered: "(toplam _MAX_ kayıttan filtrelenenler)",
+                    //buttons: {
+                    //    ////copyTitle: "Panoya kopyalandı.",
+                    //    ////copySuccess: "Panoya %d satır kopyalandı",
+                    //    ////copy: "Kopyala",
+                    //    ////print: "Yazdır",
+                    //},
+                    paginate: {
+                        first: "İlk",
+                        previous: "Önceki",
+                        next: "Sonraki",
+                        last: "Son"
+                    },
+                },
+                dom: 'Bfrtip',
+                //buttons: [
+                //    'colvis'
+
+                //]
+                ////"pageLength": 80,
+                ////"bDestroy": true,
+                ////buttons: [
+                ////    $.extend(true, {}, buttonCommon, {
+                ////        extend: 'copyHtml5'
+                ////    }),
+                ////    $.extend(true, {}, buttonCommon, {
+                ////        extend: 'excelHtml5'
+                ////    }),
+                ////    $.extend(true, {}, buttonCommon, {
+                ////        extend: 'pdfHtml5'
+                ////    }),
+                ////    'print'
+                ////],
+            }
+        );
+        table.buttons().remove();
+
+        var table = $('#tableGunSaatRapor').DataTable();
+        // Add event listener for opening and closing details
+        $('#tableGunSaatRapor').on('click', 'td.details-controlTable', function () {
+            //var table = $('#tableSaatGun').DataTable();
+            debugger;
+            var childTable = $(this).parent("tr").attr("childDataGosterGunSaat");
+            $('[dataGosterGunSaat="' + childTable + '"]').slideToggle();
+            var tr = $(this).closest('tr');
+            var row = table.row(tr);
+            var subeid = $(this).attr("id");
+            var StartDate = $(this).parent("tr").attr("TarihGunSaat");
+            var EndDate = $(this).parent("tr").attr("TarihGunSaat");
+
+            debugger;
+            GunSaatChild(row.child, $('[dataGosterGunSaat="' + childTable + '"]'), subeid, StartDate, EndDate);
+
+        });
+
+        function GunSaatChild(callback, element, subeid, StartDate, EndDate) {
+            debugger;
+            var UrunAdi = "";
+            var aySelected = document.getElementById("SubeyeGoreAyList");
+
+            var Gun = $('#GunSaatRaporAyList').val();
+            var SaatGunQuery = "1";
+            $.ajax({
+                url: '/ReportsDetail/GunSaatMasaUstuRapor?StartDateTime=' + StartDate + '&EndDateTime=' + EndDate + '&FilterData=' + FilterDataSubeUrun + '&SubeId=' + subeid + '&Gun=' + Gun + '&SaatGunQuery=1' + SaatGunQuery + '',
+                dataType: "json",
+                success: function (result) {
+                    var thead = '', tbody = '';
+                    thead += '<th> ÜRÜN ADI </th>';
+                    thead += '<th> MİKTAR </th>';
+                    thead += '<th> TUTAR </th>';
+                    sayac = 0;
+                    $.each(result.Data, function (index, value) {
+                        tbody +=
+                            '<tr>'
+                            //+ '<td> <a class="btn btn-m btn-success " id="testClick" title="Detayı Görüntüle"  onclick="myFunction()" > <span class="glyphicon glyphicon-search"></span>  </a> </td>'
+                            + '<td> ' + value.ProductName + '</td>'
+                            + '<td>' + value.Miktar + '</td>'
+                            + '<td>' + value.Debit + '</td>'
+                            + '</tr>';
+                        sayac += 1;
+                    });
+                    console.log('<table>' + thead + tbody + '</table>');
+                    callback($('<table id="tableDetay">' + thead + tbody + '</table>')).show();
+                    var test = $('<table id="tableDetay" style="width:100%">' + thead + tbody + '</table>');
+                    element.html("").append(test);
+                },
+                error: function () {
+                    $('#output').html('Bummer: there was an error!');
+                }
+            });
+        }
+        //});
+
+    });
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $('.tarihLink').each(function () {
+            $(this).on('click', function (ev) {
+                ev.preventDefault();
+                if (localStorage.durum == null) {
+                    localStorage.durum = "bugun";
+                }
+                document.getElementById("loading").setAttribute("class", "myloading-active");
+                document.getElementById("contbody").setAttribute("style", "position:fixed;");
+                location.href = $(this).attr('href') + '?durum=' + localStorage.durum + '&tarihBas=' + localStorage.tarihBaslangic + '&tarihBitis=' + localStorage.tarihBitis;
+            })
+        });
+
+        if (localStorage.durum == "bugun") {
+            $(".btnToday").removeClass("LimitButtonBack");
+            $(this).addClass("LimitButtonBack");
+            $("#btnToday").addClass("LimitButtonBack");
+        } else if (localStorage.durum == "dun") {
+            $(".btnYesterday").removeClass("LimitButtonBack");
+            $(this).addClass("LimitButtonBack");
+            $("#btnYesterday").addClass("LimitButtonBack");
+        } else if (localStorage.durum == "buAy") {
+            $(".btnMonth").removeClass("LimitButtonBack");
+            $(this).addClass("LimitButtonBack");
+            $("#btnMonth").addClass("LimitButtonBack");
+        } else if (localStorage.durum = "tarihAraligi") {
+            $(".btnRange").removeClass("LimitButtonBack");
+            $(this).addClass("LimitButtonBack");
+            $("#btnRange").addClass("LimitButtonBack");
+        }
+    });
+    $('.btnToday').click(function () {
+        localStorage.durum = "bugun";
+        location.href = 'List?durum=' + localStorage.durum + '&tarihBas=' + localStorage.tarihBaslangic + '&tarihBitis=' + localStorage.tarihBitis;
+        document.getElementById("loading").setAttribute("class", "myloading-active");
+        document.getElementById("contbody").setAttribute("style", "position:fixed;");
+    });
+    $('.btnYesterday').click(function () {
+        localStorage.durum = "dun";
+        location.href = 'List?durum=' + localStorage.durum + '&tarihBas=' + localStorage.tarihBaslangic + '&tarihBitis=' + localStorage.tarihBitis;
+        document.getElementById("loading").setAttribute("class", "myloading-active");
+        document.getElementById("contbody").setAttribute("style", "position:fixed;");
+    });
+    $('.btnMonth').click(function () {
+        localStorage.durum = "buAy";
+        location.href = 'List?durum=' + localStorage.durum + '&tarihBas=' + localStorage.tarihBaslangic + '&tarihBitis=' + localStorage.tarihBitis;
+        document.getElementById("loading").setAttribute("class", "myloading-active");
+        document.getElementById("contbody").setAttribute("style", "position:fixed;");
+    });
+    $('.btnSave').click(function () {
+        var tarihBaslangic = $("#dateGecerlilikTarihi").val() + ' ' + $("#basSaat").val();
+        var tarihBitis = $("#dateBitisTarihi").val() + ' ' + $("#bitisSaat").val();
+        localStorage.durum = "tarihAraligi";
+        localStorage.tarihBaslangic = tarihBaslangic;
+        localStorage.tarihBitis = tarihBitis;
+        location.href = 'List?durum=' + localStorage.durum + '&tarihBas=' + localStorage.tarihBaslangic + '&tarihBitis=' + localStorage.tarihBitis;
+    });
+</script>

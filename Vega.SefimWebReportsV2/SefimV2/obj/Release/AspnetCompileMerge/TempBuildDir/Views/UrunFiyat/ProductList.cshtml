@@ -1,0 +1,2411 @@
+﻿
+
+@{
+
+    ViewBag.Title = "Ürün Listesi";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+
+@model IEnumerable<SefimV2.Models.SefimPanelUrunEkleViewModel>
+<link href="/Assets/css/bootstrap.css" rel="stylesheet" />
+<link href="/Assets/css/custom.css" rel="stylesheet" />
+<link href="/Assets/plugins/fUpload/Uploader-style.css" rel="stylesheet" />
+<link href="~/Content/ContentSefPanel/css/costomfieldset/customfielset.css" rel="stylesheet" />
+
+<style>
+    .LimitButtonBack {
+        background: #3bab10; /* #28bf3a;*/
+        color: #ffffff !important;
+    }
+</style>
+
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <fieldset class="well  the-fieldset">
+        <legend class="the-legend">Ürün Listesi</legend>
+        <!-- BEGIN: Subheader -->
+        <!--<div class="m-subheader ">
+            <div class="d-flex align-items-center">
+                <div class="mr-auto">
+                    <h4 class="m-subheader__title m-subheader__title--separator" style="text-align:center;margin-top:1px;margin-bottom:1px">@ViewBag.PageNavi</h4>
+                </div>
+            </div>
+        </div>-->
+        <!-- END: Subheader -->
+        @*<div class="x_panel">*@
+
+        <div class="table-responsive table-responsive-lg">
+            @*<div class="table-container">
+                <div class="x_content">*@
+            @*<p class="text-muted font-13 m-b-30"></p>*@
+
+            <div class="col-sm-12" style="padding:0">
+                <select name="SubelerForMainList" class="form-control m-select2" id="SubelerForMainList"></select>
+            </div>
+            <div class="col-sm-2" style="padding:0">
+                <button id="btnFilter" class="btn btn-primary" type="button">Getir</button>
+            </div>
+
+
+            <table id="tableUrun" class="table table-hover table-bordered table-responsive table-condensed">
+                <thead>
+                    <tr style="background-color:#e3e6eb">
+
+                        <th width="5%">İşlemler</th>
+                        <th hidden>ŞubeId</th>
+                        <th>Şube Adı</th>
+                        <th>Ürün Kodu</th>
+                        <th>Ürün Adı</th>
+                        <th hidden>YeniUrunMu</th>
+                        <th>Ürün Grubu</th>
+                        <th>Fiyat</th>
+                        <th>Kdv</th>
+                        @*<th>R</th>
+                            <th>S</th>
+                            <th width="5%">Seç</th>*@
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+
+                        foreach (var row in Model)
+                        {
+
+                            <tr id="row_@row.Id">
+
+                                <td>
+                                    @if (row.YeniUrunMu)
+                                    {<span class="pull-left">
+
+                                            <a class="btn btn-xs btn-primary" onclick="lib.duzenle(@row.Id)" title="Şubedeki ürün bilgilerini güncelle">
+                                                Detay
+                                            </a>
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-xs btn-primary" onclick="lib.duzenleRemoteProduct(@row.Id,@row.SubeId)" title="Şubedeki ürün bilgilerini güncelle">
+                                            Detay
+                                        </a>
+                                    }
+                                </td>
+                                <td hidden style="color:#000000;font-weight:bold ">@row.SubeId</td>
+                                <td style="color:#000000;font-weight:bold ">@row.SubeName</td>
+                                <td style="color:#000000;font-weight:bold ">@row.ProductCode</td>
+                                <td style="color:#000000;font-weight:bold ">@row.ProductName</td>
+                                <td hidden>@row.YeniUrunMu</td>
+                                <td style="color:#000000;font-weight:bold ">@row.ProductGroup</td>
+                                <td style="color:#000000;font-weight:bold ">  @row.Price  @*@decimal.Round(Convert.ToDecimal(row.Price), 2, MidpointRounding.AwayFromZero)*@  </td>
+                                <td style="color:#000000;font-weight:bold ">@row.VatRate</td>
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+
+            @*</div>
+                </div>*@
+        </div>
+        @*</div>*@
+    </fieldset>
+</div>
+
+
+<div class="modal fade" id="modalAdd" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <span class="modal-title">Ürün Detay</span>
+                <a class="pull-right txt-color-white" data-dismiss="modal" aria-label="Close" title="Kapat">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </a>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" style="margin-top:10px !important;">
+                    <div class="col-xs-12">
+                        <div class="controls">
+                            <div class="form-group m-form__group row  has-feedback ">
+
+                                <fieldset class="well  the-fieldset">
+                                    <legend class="the-legend">Ürün</legend>
+                                    <form>
+                                        <input id="Id" name="Id" hidden />
+                                        <div class="form-group m-form__group row">
+                                            @*<div class="col-sm-12">
+                                                    <div class="col-sm-2" style="padding:0">
+                                                        <label>Şube :</label>
+                                                    </div>
+                                                    <div class="col-sm-10" style="padding:0">
+                                                        <span style="padding-right: 5px">Hepsini Seç / Temizle </span>
+                                                        <input type="checkbox" id="hepsiniSec">
+                                                        <select name="Sube" class="form-control m-select2" id="Sube" multiple="multiple"></select>
+                                                    </div>
+                                                </div>*@
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                            <div class="col-sm-8">
+                                                <input type="text" id="ProductName" name="ProductName" class="form-control" aria-describedby="ProductName" placeholder="Ürün Adı " readonly>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="text" id="ProductCode" name="ProductCode" class="form-control" aria-describedby="ProductCode" placeholder="Ürün Kodu " readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                            <div class="col-sm-4">
+                                                <input type="text" id="ProductGroup" name="ProductGroup" class="form-control" aria-describedby="ProductGroup" autocomplete="off" placeholder="Ürün Grubu " readonly>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="text" id="InvoiceName" name="InvoiceName" class="form-control" aria-describedby="InvoiceName" autocomplete="off" placeholder="Fatura Grubu " readonly>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="text" id="Favorites" name="Favorites" class="form-control" aria-describedby="Favorites" autocomplete="off" placeholder="Favoriler" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12" style="padding:0">
+                                                <div class="col-sm-2">
+                                                    <div class="col-sm-5">
+                                                        <label>KDV:</label>
+                                                    </div>
+                                                    <div class="col-sm-7">
+                                                        <input type="number" id="VatRate" style="padding:0;margin:0" name="VatRate" class="form-control" aria-describedby="VatRate" placeholder="KDV Oranı Giriniz" readonly>
+                                                    </div>
+                                                </div>
+                                                @*<div class="form-group m-form__group row">
+                                                        <label class="col-form-label col-md-3 col-sm-3 col-xs-12">Kullanıcı Adı<span class="required"> * </span></label>
+                                                        <div class="col-lg-9 col-md-12 col-sm-12">
+                                                            <div class="col-sm-7">
+                                                                <input type="number" id="VatRate" style="padding:0;margin:0" name="VatRate" class="form-control" aria-describedby="VatRate" placeholder="KDV Oranı Giriniz">
+                                                            </div>
+                                                        </div>
+                                                    </div>*@
+                                                <div class="col-sm-2">
+                                                    <input type="number" id="Price" name="Price" class="form-control" aria-describedby="Price" placeholder="KDV Dahil Fiyat" readonly>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <input type="text" id="ProductType" name="ProductType" class="form-control" aria-describedby="ProductType" autocomplete="off" placeholder="Ürün Tipi" readonly>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <div class="col-sm-10 col-md-10 col-lg-10 col-xs-10"><label>İkram</label></div>
+                                                    <div class="col-sm-2 col-md-2 col-lg-2 col-xs-2">
+                                                        <input type="checkbox" id="FreeItem" name="FreeItem" class="form-check-input" aria-describedby="FreeItem" placeholder="İkram" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <input type="text" id="Order" name="Order" class="form-control" aria-describedby="Order" placeholder="Ürün Sırası" readonly>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <input type="text" id="Plu" name="Plu" class="form-control" aria-describedby="Plu" placeholder="PLU" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </fieldset>
+
+                                <div role="tabpanel">
+                                    <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6" style="padding:0">
+                                            <fieldset class="well  the-fieldset">
+                                                <legend class="the-legend">1. Seviye</legend>
+                                                <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                    <table id="tableSecim1" class="table table-hover table-bordered table-responsive">
+                                                        <thead>
+                                                            <tr style="background-color:#e3e6eb">
+                                                                @*<th>İşlem</th>*@
+                                                                <th>Seçim</th>
+                                                                <th>Fiyat</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6" style="padding:0">
+                                            <fieldset class="well  the-fieldset">
+                                                <legend class="the-legend">  2. Seviye</legend>
+
+                                                <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                    <table id="tableSecim2" class="table table-hover table-bordered">
+                                                        <thead>
+                                                            <tr style="background-color:#e3e6eb">
+                                                                @*<th>İşlem</th>*@
+                                                                <th>Seçim</th>
+                                                                <th>Fiyat</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 " style="padding:0">
+                                            <fieldset class="well  the-fieldset">
+                                                <legend class="the-legend">Seçenekler</legend>
+
+
+
+                                                <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                    <table id="tableOptions" class="table table-hover table-bordered">
+                                                        <thead>
+                                                            <tr style="background-color:#e3e6eb">
+                                                                @*<th>İşlem</th>*@
+                                                                <th>Seçenek</th>
+                                                                <th>Kategori</th>
+                                                                <th>Fiyat</th>
+                                                                <th>Miktarlı</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody></tbody>
+
+                                                    </table>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12" style="padding:0">
+                                            <fieldset class="well  the-fieldset">
+                                                <legend class="the-legend">Kategori</legend>
+
+
+                                                <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                    <table id="tableKategori" class="table table-hover table-bordered">
+                                                        <thead>
+                                                            <tr style="background-color:#e3e6eb">
+                                                                @*<th>İşlem</th>*@
+                                                                <th>Kategori</th>
+                                                                <th>En Az</th>
+                                                                <th>En Çok</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
+                    @*<button id="btnProductsave" type="button" class="btnProductsave btn btn-success" data-id="0">Kaydet</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalKopyala" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <span class="modal-title">Ürünü Şubelere Kopyala</span>
+                <a class="pull-right txt-color-white" data-dismiss="modal" aria-label="Close" title="Kapat">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </a>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" style="margin-top:10px !important;">
+                    <div class="col-xs-12">
+                        <div class="controls">
+                            <div class="form-group m-form__group row  has-feedback ">
+                                <form>
+                                    <br />
+                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                        <fieldset class="well the-fieldset margin-bottom-5 padding-bottom-10 padding-top-10 table-responsive-lg">
+                                            <legend class="the-legend">Kopyalanacak Ürün</legend>
+                                            <input id="copyId" hidden />
+                                            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                <label>Kopyalanacak Ürün:</label> <label style="color:black" id="productNameForModal"></label>
+                                            </div>
+                                            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                <div class="form-group m-form__group row">
+                                                    <div class="col-sm-12">
+                                                        <div class="col-sm-2" style="padding:0">
+                                                            <label>Şubeler :</label>
+                                                        </div>
+                                                        <div class="col-sm-10" style="padding:0">
+                                                            <span style="padding-right: 5px">Hepsini Seç / Temizle </span>
+                                                            <input type="checkbox" id="hepsiniSecForModalKopyala">
+                                                            <select name="Subeler" class="form-control m-select2" id="Subeler" multiple="multiple"></select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                <input id="yeniUrunMuforModal" hidden />
+                                                <input id="SubeIdforModal" hidden />
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
+                    <button id="btnKopyala" type="button" class="btnKopyala btn btn-success" data-id="0">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalKopyalaSubeRecete" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <span class="modal-title">Şubedeki Reçeteleri Şubelere Kopyala</span>
+                <a class="pull-right txt-color-white" data-dismiss="modal" aria-label="Close" title="Kapat">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </a>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" style="margin-top:10px !important;">
+                    <div class="col-xs-12">
+                        <div class="controls">
+                            <div class="form-group m-form__group row  has-feedback ">
+                                <form>
+                                    @*<div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                            <label>Şubeler</label>
+                                            <select name="SubelerForKopyaRecete" class="form-control m-select2" id="SubelerForKopyaRecete" multiple="multiple"></select>
+                                        </div>*@
+                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                        <div class="form-group m-form__group row">
+                                            <div class="col-sm-12">
+                                                <div class="col-sm-2" style="padding:0">
+                                                    <label>Şubeler :</label>
+                                                </div>
+                                                <div class="col-sm-10" style="padding:0">
+                                                    <span style="padding-right: 5px">Hepsini Seç / Temizle </span>
+                                                    <input type="checkbox" id="hepsiniSecSubelerForKopyaRecete">
+                                                    <select name="SubelerForKopyaRecete" class="form-control m-select2" id="SubelerForKopyaRecete" multiple="multiple"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table id="tableBekleyenRecete" class="table table-hover table-bordered table-responsive table-condensed">
+                    <thead>
+                        <tr style="background-color:#e3e6eb">
+                            <th>Şube Adı</th>
+                            <th>Reçete Adedi</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
+                    <button id="btnKopyalaForKopyaRecete" type="button" class="btnKopyalaForKopyaRecete btn btn-success" data-id="0">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalKopyalaProduct" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <span class="modal-title">Şubedeki Ürünleri Şubelere Kopyala</span>
+                <a class="pull-right txt-color-white" data-dismiss="modal" aria-label="Close" title="Kapat">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </a>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" style="margin-top:10px !important;">
+                    <div class="col-xs-12">
+                        <div class="controls">
+                            <div class="form-group m-form__group row  has-feedback ">
+                                <form>
+                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                        <div class="form-group m-form__group row">
+                                            <div class="col-sm-12">
+                                                <div class="col-sm-2" style="padding:0">
+                                                    <label>Şubeler :</label>
+                                                </div>
+                                                <div class="col-sm-10" style="padding:0">
+                                                    <span style="padding-right: 5px">Hepsini Seç / Temizle </span>
+                                                    <input type="checkbox" id="hepsiniSecSubelerForKopyaProduct">
+                                                    <select name="SubelerForKopyaProduct" class="form-control m-select2" id="SubelerForKopyaProduct" multiple="multiple"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table id="tableSelectedProduct" class="table table-hover table-bordered table-responsive table-condensed">
+                    <thead>
+                        <tr style="background-color:#e3e6eb">
+                            <th>Ürün Adı</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
+                    <button id="btnKopyalaForKopyaProduct" type="button" class="btnKopyalaForKopyaRecete btn btn-success" data-id="0">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalRecete" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <span class="modal-title">Ürünü Şubelere Kopyala</span>
+                <a class="pull-right txt-color-white" data-dismiss="modal" aria-label="Close" title="Kapat">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </a>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" style="margin-top:10px !important;">
+                    <div class="col-xs-12">
+                        <div class="controls">
+                            <div class="form-group m-form__group row  has-feedback ">
+                                <form>
+                                    <br />
+                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                        <fieldset class="well the-fieldset margin-bottom-5 padding-bottom-10 padding-top-10 table-responsive-lg">
+                                            <legend class="the-legend">Reçete Eklenecek Ürün ve Şube</legend>
+                                            <input id="receteId" hidden />
+                                            <input id="productIdForRecete" hidden />
+                                            <input id="productNameForRecete" hidden />
+                                            <input id="subeIdForRecete" hidden />
+                                            <input id="yeniUrunMuForRecete" hidden />
+
+                                            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                <label><strong>Reçete Eklenecek Ürün:</strong> </label> <label id="productNameForReceteModal"></label>
+                                            </div>
+                                            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                <label><strong>Reçete Eklenecek Şube:</strong> </label> <label id="SubeNameForReceteModal"></label>
+                                            </div>
+                                            <div class="row col-sm-8 col-md-8 col-lg-8 col-xs-8">
+                                                <select name="OptionsNameForRecete" class="form-control m-select2" id="OptionsNameForRecete" multiple="multiple" placeholder="Option Adı Giriniz"></select>
+                                            </div>
+                                            <div class="row col-sm-2 col-md-2 col-lg-2 col-xs-2">
+                                                <button class="btn btn-primary" type="button" style="width:100%" onclick="lib.copyColumn(this)">Kopyala</button>
+                                            </div>
+                                            <div class="row col-sm-2 col-md-2 col-lg-2 col-xs-2" id="pastediv">
+                                                <button class="btn btn-primary" type="button" style="width:100%" onclick="lib.paste()">Yapıştır</button>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                        <fieldset class="well the-fieldset margin-bottom-5 padding-bottom-10 padding-top-10 table-responsive-lg">
+                                            <legend class="the-legend">Reçete</legend>
+                                            <div class="form-group m-form__group row">
+                                                <div class="row col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                                    <select name="MaterialName" class="form-control m-select2" id="MaterialName" placeholder="Malzeme Adı Giriniz"></select>
+                                                </div>
+                                                <div class="row col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                                    <input type="number" id="QuantityForRecete" class="form-control" aria-describedby="QuantityForRecete" placeholder="Miktar">
+                                                </div>
+                                                <div class="row col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                                    <input type="text" id="Unit" readonly name="Unit" class="form-control" aria-describedby="Unit" placeholder="Birim Adı Giriniz">
+                                                </div>
+                                            </div>
+                                            <div class="form-group m-form__group row">
+                                                <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                    <button id="btnReceteAdd" class="btn btn-xs btn-primary pull-right" type="button">Ekle</button>
+                                                </div>
+                                            </div>
+                                            <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                <table id="tableRecete" class="table table-hover table-bordered">
+                                                    <thead>
+                                                        <tr style="background-color:#e3e6eb">
+                                                            <th>İşlem</th>
+                                                            <th>Ürün Adı</th>
+                                                            <th>Stok Kodu</th>
+                                                            <th>Malzeme Adı</th>
+                                                            <th>Miktar</th>
+                                                            <th>Birim</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                        <fieldset class="well  the-fieldset">
+                                            <legend class="the-legend">Seçenek</legend>
+                                            <div class="form-group m-form__group row">
+                                                <div class="row col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                                    <select name="MaterialNameForBomOptions" class="form-control m-select2" id="MaterialNameForBomOptions" placeholder="Malzeme Adı Giriniz"></select>
+                                                </div>
+                                                <div class="row col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                                    <select name="OptionsForBomOptions" class="form-control m-select2" id="OptionsForBomOptions" placeholder="Seçenek Giriniz"></select>
+                                                </div>
+                                                <div class="row col-sm-2 col-md-2 col-lg-2 col-xs-2">
+                                                    <input type="number" id="QuantityForBomOptions" class="form-control" aria-describedby="QuantityForBomOptions" placeholder="Miktar">
+                                                </div>
+                                                <div class="row col-sm-2 col-md-2 col-lg-2 col-xs-2">
+                                                    <input type="text" readonly id="UnitForBomOptions" name="UnitForBomOptions" class="form-control" aria-describedby="Unit" placeholder="Birim Adı Giriniz">
+                                                </div>
+                                            </div>
+                                            <div class="form-group m-form__group row">
+                                                <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                    <button id="btnBomOptionsAdd" class="btn btn-xs btn-primary pull-right" type="button">Ekle</button>
+                                                </div>
+                                            </div>
+                                            <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                <table id="tableBomOptions" class="table table-hover table-bordered">
+                                                    <thead>
+                                                        <tr style="background-color:#e3e6eb">
+                                                            <th>İşlem</th>
+                                                            <th>Ürün Adı</th>
+                                                            <th>Malzeme Adı</th>
+                                                            <th>Seçenek Adı</th>
+                                                            <th>Miktar</th>
+                                                            <th>Birim</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
+                    <button id="btnSaveRecete" type="button" class="btnProductsave btn btn-success" data-id="0">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/Assets/js/jquery.js"></script>
+<script src="/Assets/plugins/fUpload/jquery.blockUI.js"></script>
+<script src="/Assets/js/bootstrap.js"></script>
+
+@*<script type="text/javascript">
+        $(document).ready(function () {
+            $('#tableRapor').DataTable({
+                dom: 'Bfrtip',
+               "bDestroy": true,
+                buttons: [
+                    'copy', 'excel', 'pdf', 'print'
+                ]
+            });
+        });
+    </script>*@
+
+<script type="text/javascript">
+
+    var lib = {};
+    var product = {};
+    var recete = [];
+    var receteOptions = [];
+    product.Choice1 = [];
+    product.Choice2 = [];
+    product.Options = [];
+    product.OptionCats = [];
+    product.Boms = [];
+    product.BomOptionss = [];
+    lib.SubeList = [];
+    lib.editChoice2List = [];
+    lib.editChoice1Obj;
+    lib.editChoice2iid;
+    lib.editOptionsiid;
+    lib.editReceteiid;
+    lib.editReceteOptions;
+    lib.kopyaBoms = [];
+    lib.kopyaBomOptions = [];
+
+    $(document).ready(function () {
+
+        //hepsiniSec kodlarımız
+        $("#hepsiniSec").on("click", function () {
+            if ($(this).is(':checked')) {
+                $("#Sube > option").prop("selected", "selected");
+                $("#Sube").trigger("change");
+            } else {
+                $("#Sube > option").removeAttr("selected");
+                $("#Sube").trigger("change");
+            }
+        });
+
+        //hepsiniSec Şubedeki Ürünleri Şubelere Kopyala
+        $("#hepsiniSecSubelerForKopyaProduct").on("click", function () {
+            if ($(this).is(':checked')) {
+                $("#SubelerForKopyaProduct > option").prop("selected", "selected");
+                $("#SubelerForKopyaProduct").trigger("change");
+            } else {
+                $("#SubelerForKopyaProduct > option").removeAttr("selected");
+                $("#SubelerForKopyaProduct").trigger("change");
+            }
+        });
+
+        //hepsiniSec Şubedeki Reçeteleri Şubelere Kopyala
+        $("#hepsiniSecSubelerForKopyaRecete").on("click", function () {
+            if ($(this).is(':checked')) {
+                $("#SubelerForKopyaRecete > option").prop("selected", "selected");
+                $("#SubelerForKopyaRecete").trigger("change");
+            } else {
+                $("#SubelerForKopyaRecete > option").removeAttr("selected");
+                $("#SubelerForKopyaRecete").trigger("change");
+            }
+        });
+
+        $("#hepsiniSecForMain").on("click", function () {
+            if ($(this).is(':checked')) {
+                $("#SubelerForMainList > option").prop("selected", "selected");
+                $("#SubelerForMainList").trigger("change");
+            } else {
+                $("#SubelerForMainList > option").removeAttr("selected");
+                $("#SubelerForMainList").trigger("change");
+            }
+        });
+
+        $("#hepsiniSecForModalKopyala").on("click", function () {
+            if ($(this).is(':checked')) {
+                $("#Subeler > option").prop("selected", "selected");
+                $("#Subeler").trigger("change");
+            } else {
+                $("#Subeler > option").removeAttr("selected");
+                $("#Subeler").trigger("change");
+            }
+        });
+
+        $("#MaterialName").on("change", function () {
+            if ($('#MaterialName').val()) {
+                $.ajax(
+                    {
+                        url: '/SefimPanelBelgeIslemleri/StokDetayListJson?StokId=' + $('#MaterialName').val() + '&Cari=1',
+                        type: 'GET',
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        success: function (response) {
+                            console.log(response)
+                            if (response && response.length > 0) {
+                                $('#Unit').val(response[0].BirimAdi);
+                            } else {
+                                $('#Unit').val('');
+                            }
+                        },
+                        error: function () {
+                            alert("error");
+                        }
+                    });
+            }
+        });
+
+        $("#MaterialNameForBomOptions").on("change", function () {
+            if ($('#MaterialNameForBomOptions').val()) {
+                $.ajax(
+                    {
+                        url: '/SefimPanelBelgeIslemleri/StokDetayListJson?StokId=' + $('#MaterialNameForBomOptions').val() + '&Cari=1',
+                        type: 'GET',
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        success: function (response) {
+                            console.log(response)
+                            if (response && response.length > 0) {
+                                $('#UnitForBomOptions').val(response[0].BirimAdi);
+                            } else {
+                                $('#UnitForBomOptions').val('');
+                            }
+                        },
+                        error: function () {
+                            alert("error");
+                        }
+
+                    });
+            }
+        });
+
+        function ProductGroupsJsonList() {
+            $.ajax({
+                url: '/SefimPanelUrunEkle/ProductGroupsJson',
+                type: 'POST',
+                beforeSend: function (request) {
+                    //mApp.blockPage();
+                },
+                complete: function () {
+                    window.setTimeout(function () {
+                        //mApp.unblockPage();
+                    }, 100);
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    // var countries = ['test', 'deneme', 'deneme', 'test', 'deneme', 'deneme test sdadjalksdj ırewrfsadhfukafhdusf sdkfhsksudkhaudasd', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme']
+                    autocomplete(document.getElementById("ProductGroup"), data);
+                }
+            });
+        }
+
+        function ProductOptionsJsonList(id, subeId) {
+            $.ajax({
+                url: '/SefimPanelUrunEkle/ProductOptionsJson',
+                type: 'POST',
+                data: { Id: id, SubeId: subeId },
+                beforeSend: function (request) {
+                    //mApp.blockPage();
+                },
+                complete: function () {
+                    window.setTimeout(function () {
+                        //mApp.unblockPage();
+                    }, 100);
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    // var countries = ['test', 'deneme', 'deneme', 'test', 'deneme', 'deneme test sdadjalksdj ırewrfsadhfukafhdusf sdkfhsksudkhaudasd', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme']
+                    console.log(data)
+                    var options = $('#OptionsNameForRecete');
+
+                    $('option', options).remove();
+
+                    /* options.append($('<option />').val(0).text("Seçiniz"));*/
+                    $.each(data, function () {
+                        var gid = guid();
+                        options.append($('<option />').val(this.Value).text(this.Text));
+                    });
+
+                }
+            });
+        }
+
+        function ProductTypesJsonList() {
+            $.ajax({
+                url: '/SefimPanelUrunEkle/ProductTypesJson',
+                type: 'POST',
+                beforeSend: function (request) {
+                    //mApp.blockPage();
+                },
+                complete: function () {
+                    window.setTimeout(function () {
+                        //mApp.unblockPage();
+                    }, 100);
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    // var countries = ['test', 'deneme', 'deneme', 'test', 'deneme', 'deneme test sdadjalksdj ırewrfsadhfukafhdusf sdkfhsksudkhaudasd', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme']
+                    autocomplete(document.getElementById("ProductType"), data);
+
+                }
+            });
+        }
+
+        function InvoiceNamesJsonList() {
+            $.ajax({
+                url: '/SefimPanelUrunEkle/InvoiceNamesJson',
+                type: 'POST',
+                beforeSend: function (request) {
+                    //mApp.blockPage();
+                },
+                complete: function () {
+                    window.setTimeout(function () {
+                        //mApp.unblockPage();
+                    }, 100);
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    // var countries = ['test', 'deneme', 'deneme', 'test', 'deneme', 'deneme test sdadjalksdj ırewrfsadhfukafhdusf sdkfhsksudkhaudasd', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme']
+                    autocomplete(document.getElementById("InvoiceName"), data);
+
+                }
+            });
+        }
+
+        function FavoritessJsonList() {
+            $.ajax({
+                url: '/SefimPanelUrunEkle/FavoritessJson',
+                type: 'POST',
+                beforeSend: function (request) {
+                    //mApp.blockPage();
+                },
+                complete: function () {
+                    window.setTimeout(function () {
+                        //mApp.unblockPage();
+                    }, 100);
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    // var countries = ['test', 'deneme', 'deneme', 'test', 'deneme', 'deneme test sdadjalksdj ırewrfsadhfukafhdusf sdkfhsksudkhaudasd', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme']
+                    autocomplete(document.getElementById("Favorites"), data);
+
+                }
+            });
+        }
+
+        $('#Subeler').select2({ width: "100%" });
+        $('#SubelerForMainList').select2({ width: "100%" });
+        $('#SubelerForKopyaRecete').select2({ width: "100%" });
+        $('#SubelerForKopyaProduct').select2({ width: "100%" });
+
+        $('#Sube').select2({ width: "100%" });
+        $('#MaterialName').select2({ width: "100%" });
+        $('#MaterialNameForBomOptions').select2({ width: "100%" });
+        $('#OptionsForBomOptions').select2({ width: "100%" });
+        $('#OptionsNameForRecete').select2({ width: "100%" });
+        var tblUrun = $('#tableUrun').DataTable({
+            language: {
+                info: "_TOTAL_ kayıttan _START_ - _END_ kayıt gösteriliyor.",
+                infoEmpty: "Gösterilecek hiç kayıt yok.",
+                loadingRecords: "Kayıtlar yükleniyor.",
+                zeroRecords: "Tablo boş",
+                search: "Arama:",
+                infoFiltered: "(toplam _MAX_ kayıttan filtrelenenler)",
+                buttons: {
+                    copyTitle: "Panoya kopyalandı.",
+                    copySuccess: "Panoya %d satır kopyalandı",
+                    copy: "Kopyala",
+                    print: "Yazdır",
+                },
+                paginate: {
+                    first: "İlk",
+                    previous: "Önceki",
+                    next: "Sonraki",
+                    last: "Son"
+                },
+            },
+            dom: 'Bfrtip',
+            "pageLength": 500,
+            "bDestroy": true,
+            buttons: [
+                'copy', 'excel', 'pdf', 'print'
+            ],
+            //responsive: true
+        });
+
+        /* Custom filtering function which will search data in column four between two values */
+        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+            var subearr = $('#SubelerForMainList').val();
+            var sube = data[1] || 0;
+            if (subearr && subearr.length > 0) {
+                if (subearr.indexOf(sube) > -1) {
+                    return true;
+                }
+                return false;
+            } else {
+                console.log("tümü")
+                return true;
+            }
+
+        });
+
+        var table1 = $('#tableSecim1').DataTable({
+            searching: false,
+            "bLengthChange": false, //thought this line could hide the LengthMenu
+            "bInfo": false
+        });
+
+        var table2 = $('#tableSecim2').DataTable({
+            searching: false,
+            "bLengthChange": false, //thought this line could hide the LengthMenu
+            "bInfo": false
+        });
+
+        var tableOptions = $('#tableOptions').DataTable({
+            searching: false,
+            "bLengthChange": false, //thought this line could hide the LengthMenu
+            "bInfo": false
+        });
+
+        var tableKategori = $('#tableKategori').DataTable({
+            searching: false,
+            "bLengthChange": false, //thought this line could hide the LengthMenu
+            "bInfo": false
+        });
+
+        var tableRecete = $('#tableRecete').DataTable({
+            searching: false,
+            "bLengthChange": false, //thought this line could hide the LengthMenu
+            "bInfo": false
+        });
+
+        var tableBomOptions = $('#tableBomOptions').DataTable({
+            searching: false,
+            "bLengthChange": false, //thought this line could hide the LengthMenu
+            "bInfo": false
+        });
+
+        $('#tableSecim1 tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                $('#tableSecim1 tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                var id = $(this).data('id');
+
+                $('#tableSecim2 tbody tr').each(function (index) {
+                    if ($(this).data('meta') == id) {
+                        $(this).removeClass('hidden');
+                    } else {
+                        $(this).addClass('hidden');
+                    }
+                    $(this).removeClass('selected');
+                })
+            }
+        });
+
+        $('#tableSecim2 tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                $('#tableSecim2 tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                /*                console.log($(this).data('id'));*/
+            }
+        });
+
+        $('#tableSecim1_paginate')[0].classList.add('hide');
+        $('#tableSecim2_paginate')[0].classList.add('hide');
+        $('#tableOptions_paginate')[0].classList.add('hide');
+        $('#tableKategori_paginate')[0].classList.add('hide');
+        $('#tableRecete_paginate')[0].classList.add('hide');
+        $('#tableBomOptions_paginate')[0].classList.add('hide');
+
+        $('#btnAdd').click(function () {
+            lib.clear();
+            $('#VatRate').val(8);
+            $('#ProductCode').val('00000');
+            $('#ProductType').val('Normal');
+            ProductGroupsJsonList();
+            ProductTypesJsonList();
+            InvoiceNamesJsonList();
+            FavoritessJsonList();
+            $('#modalAdd').modal('show');
+        })
+
+
+        $('#btnFilter').click(function () {
+            //tblUrun.draw();
+            location.href = "/UrunFiyat/ProductList?SubeIds=" + $('#SubelerForMainList').val().toString()
+        })
+
+        $('#btnSecimAdd').click(function () {
+            var secim1 = $('#seviye1Secim').val();
+            var secim1Fiyat = $('#seviye1Fiyat').val();
+
+            if (!secim1) {
+                return alert('Lütfen öncelikle Seçenek giriniz.')
+            }
+
+            if (!secim1Fiyat) {
+                secim1Fiyat = 0;
+            }
+
+            $('#seviye1Secim').val('');
+            $('#seviye1Fiyat').val('');
+
+            var gid = guid();
+            var iid = guid();
+
+            if (lib.editChoice1Obj) {
+                lib.editChoice1Obj.iid = iid;
+                lib.editChoice1Obj.secimId = gid;
+
+                //product.Choice1.push({ iid: lib.editChoice1Obj.iid, secimId: lib.editChoice1Obj.secimId, Name: secim1, Price: secim1Fiyat });
+                //lib.addRow(lib.editChoice1Obj.secimId, table1, '', { secim: secim1, fiyat: secim1Fiyat }, lib.editChoice1Obj.iid, undefined, true);
+                //lib.editChoice2List.forEach(function (ch2) {
+                //    ch2.secim1id = lib.editChoice1Obj.iid;
+                //    product.Choice2.push({ iid: ch2.iid, secim1id: lib.editChoice1Obj.secimId, Name: ch2.Name, Price: ch2.Price });
+                //    lib.addRow(ch2.iid, table2, lib.editChoice1Obj.iid, { secim: ch2.Name, fiyat: ch2.Price }, lib.editChoice1Obj.secimId, undefined, true);
+                //})
+
+                product.Choice1.push({ iid: lib.editChoice1Obj.iid, secimId: lib.editChoice1Obj.secimId, Name: secim1, Price: secim1Fiyat });
+                lib.addRow(lib.editChoice1Obj.iid, table1, '', { secim: secim1, fiyat: secim1Fiyat }, lib.editChoice1Obj.secimId, undefined, true);
+
+                lib.editChoice2List.forEach(function (ch2) {
+                    ch2.secim1id = lib.editChoice1Obj.iid;
+                    product.Choice2.push({ iid: ch2.iid, secim1id: lib.editChoice1Obj.secimId, Name: ch2.Name, Price: ch2.Price });
+                    lib.addRow(ch2.iid, table2, lib.editChoice1Obj.secimId, { secim: ch2.Name, fiyat: ch2.Price }, lib.editChoice1Obj.iid, undefined, true);
+                })
+            } else {
+                product.Choice1.push({ iid: iid, secimId: gid, Name: secim1, Price: secim1Fiyat });
+                lib.addRow(iid, table1, '', { secim: secim1, fiyat: secim1Fiyat }, gid, undefined, true);
+            }
+
+            lib.editChoice2List = [];
+            lib.editChoice1Obj = undefined;
+
+            //table1.row.add([
+            //    secim1, secim1Fiyat
+            //]).draw(false);
+        })
+
+        $('#btnSecim2Add').click(function () {
+            var id = $('#tableSecim1 tr.selected').data('id');
+            if ($('#tableSecim1 tr.selected').length && id) {
+
+                var secim2 = $('#seviye2Secim').val();
+                var secim2Fiyat = $('#seviye2Fiyat').val();
+
+                if (!secim2) {
+                    return alert('Lütfen öncelikle Seçenek giriniz.')
+                }
+
+                if (!secim2Fiyat) {
+                    secim2Fiyat = 0;
+                }
+
+                $('#seviye2Secim').val('');
+                $('#seviye2Fiyat').val('');
+
+                var gid = guid();
+                var iid = guid();
+                product.Choice2.push({ iid: iid, secim1id: id, Name: secim2, Price: secim2Fiyat });
+                lib.addRow(iid, table2, id, { secim: secim2, fiyat: secim2Fiyat }, gid, undefined, true);
+                lib.editChoice2iid = undefined;
+            } else {
+                alert('Öncelikle geçerli bir Seçim 1 seçiniz.')
+            }
+            //table1.row.add([
+            //    secim1, secim1Fiyat
+            //]).draw(false);
+        })
+
+        $('#btnOptionsAdd').click(function () {
+            var secenek = $('#optionsSecenek').val();
+            var kategori = $('#optionsKategori').val();
+            var fiyat = $('#optionsFiyat').val();
+            var miktarli = $('#miktarli:checked').val();
+            var opCatsId = $('#optionsKategori').val();
+
+            if (!secenek) {
+                return alert('Lütfen öncelikle Seçenek giriniz.')
+            }
+
+            if (!fiyat) {
+                fiyat = 0;
+            }
+
+            var kategoriName = "";
+            if ($('#optionsKategori')[0].selectedOptions && $('#optionsKategori')[0].selectedOptions.length > 0)
+                kategoriName = $('#optionsKategori')[0].selectedOptions[0].innerHTML;
+
+            $('#optionsSecenek').val('');
+            $('#optionsKategori').val('');
+            $('#optionsFiyat').val('');
+
+
+            var gid = guid();
+            var iid = guid();
+
+            if (miktarli || miktarli == 'on' || miktarli == '')
+                miktarli = true;
+            else
+                miktarli = false;
+
+            product.Options.push({ iid: iid, OptionCatsId: opCatsId, Name: secenek, Category: kategori, Price: fiyat, Quantitative: miktarli });
+            lib.addRow(iid, tableOptions, '', { secenek: secenek, kategori: kategoriName, fiyat: fiyat, miktarli: miktarli }, gid, undefined, true);
+            lib.editOptionsiid = undefined;
+        })
+
+        $('#btnKategoriAdd').click(function () {
+            var kategori = $('#Kategori').val();
+            var enAz = $('#EnAz').val();
+            var enCok = $('#EnCok').val();
+
+            if (!kategori) {
+                return alert('Lütfen öncelikle Kategori giriniz.')
+            }
+            if (!enAz) {
+                return alert('Lütfen En Az miktarını giriniz.')
+            }
+            if (!enCok) {
+                return alert('Lütfen En Çok miktarını giriniz.')
+            }
+            $('#Kategori').val('');
+            $('#EnAz').val('');
+            $('#EnCok').val('');
+
+
+            var gid = guid();
+            var iid = guid();
+            product.OptionCats.push({ iid: iid, optionCatsId: gid, Name: kategori, MinSelections: enAz, MaxSelections: enCok });
+            lib.addRow(iid, tableKategori, '', { Name: kategori, MinSelections: enAz, MaxSelections: enCok }, gid);
+
+            var optionsKategori = $('#optionsKategori');
+
+            $('option', optionsKategori).remove();
+            optionsKategori.append($('<option />').val('').text(''));
+            /* options.append($('<option />').val(0).text("Seçiniz"));*/
+            $.each(product.OptionCats, function () {
+                optionsKategori.append($('<option />').val(gid).text(this.Name));
+
+            });
+        })
+
+        $('#btnReceteAdd').click(function () {
+            debugger;
+            var materialName = $('#MaterialName')[0].selectedOptions[0].innerHTML.substr(0, $('#MaterialName')[0].selectedOptions[0].innerHTML.indexOf("|")); /*13.03.2023 Eminin B.Yıkmaz ile görüşmesine istinaden güncellendi.*///$('#MaterialName')[0].selectedOptions[0].innerHTML.substr(0, $('#MaterialName')[0].selectedOptions[0].innerHTML.indexOf("|"));
+            var stokId = $('#MaterialName').val();
+            var quantity = $('#QuantityForRecete').val();
+            var unit = $('#Unit').val();
+            var productName = $('#productNameForRecete').val();
+            var malinCinsi = $('#MaterialName')[0].selectedOptions[0].innerHTML.split("|")[1];
+
+            var productId = $('#productIdForRecete').val();
+            var subeId = $('#subeIdForRecete').val();
+            if (!materialName) {
+                return alert('Lütfen öncelikle Malzeme Adı giriniz.')
+            }
+            if (!quantity) {
+                return alert('Lütfen miktar giriniz.')
+            }
+            if (!unit) {
+                return alert('Lütfen birim giriniz.')
+            }
+            $('#MaterialName').val('0').trigger('change');
+            $('#QuantityForRecete').val('');
+            $('#Unit').val('');
+
+
+            if ($('#OptionsNameForRecete').val()) {
+
+                debugger;
+                $('#OptionsNameForRecete').val().forEach(function (optNameEk) {
+                    var gid = guid();
+                    var iid = guid();
+                    recete.push({ iid: iid, ProductName: productName + optNameEk, MaterialName: materialName, MalinCinsi: malinCinsi, Quantity: quantity, Unit: unit, StokID: stokId, ProductId: productId, SubeId: subeId });
+                    lib.addRow(iid, tableRecete, '', { ProductName: productName + optNameEk, Name: materialName, MalinCinsi: malinCinsi, quantity: quantity, unit: unit }, gid, undefined, true);
+                })
+            } else {
+                var gid = guid();
+                var iid = guid();
+                recete.push({ iid: iid, ProductName: productName, MaterialName: materialName, MalinCinsi: malinCinsi, Quantity: quantity, Unit: unit, StokID: stokId, ProductId: productId, SubeId: subeId });
+                lib.addRow(iid, tableRecete, '', { ProductName: productName, Name: materialName, MalinCinsi: malinCinsi, quantity: quantity, unit: unit }, gid, undefined, true);
+
+            }
+
+            lib.editReceteiid = undefined;
+        })
+
+        $('#btnBomOptionsAdd').click(function () {
+            var materialName = $('#MaterialNameForBomOptions')[0].selectedOptions[0].innerHTML.substr(0, $('#MaterialNameForBomOptions')[0].selectedOptions[0].innerHTML.indexOf("|"));
+            var optionsId = $('#OptionsForBomOptions').val();
+            var optionsName = $('#OptionsForBomOptions')[0].selectedOptions[0].innerHTML;
+            var stokId = $('#MaterialNameForBomOptions').val();
+            var quantity = $('#QuantityForBomOptions').val();
+            var unit = $('#UnitForBomOptions').val();
+            var productName = $('#productNameForRecete').val();
+
+            var productId = $('#productIdForRecete').val();
+            var subeId = $('#subeIdForRecete').val();
+            if (!materialName) {
+                return alert('Lütfen öncelikle Malzeme Adı giriniz.')
+            }
+            if (!quantity) {
+                return alert('Lütfen miktar giriniz.')
+            }
+            if (!unit) {
+                return alert('Lütfen birim giriniz.')
+            }
+            $('#MaterialNameForBomOptions').val('0').trigger('change');
+            $('#OptionsForBomOptions').val('0').trigger('change');
+            $('#QuantityForBomOptions').val('');
+            $('#UnitForBomOptions').val('');
+
+
+            if ($('#OptionsNameForRecete').val()) {
+                $('#OptionsNameForRecete').val().forEach(function (optNameEk) {
+                    var gid = guid();
+                    var iid = guid();
+                    receteOptions.push({ iid: iid, OptionsId: optionsId, OptionsName: optionsName, ProductName: productName + optNameEk, MaterialName: materialName, Quantity: quantity, Unit: unit, StokID: stokId, ProductId: productId, SubeId: subeId });
+                    lib.addRow(iid, tableBomOptions, '', { ProductName: productName + optNameEk, Name: materialName, OptionsName: optionsName, quantity: quantity, unit: unit }, gid, undefined, true);
+
+                })
+
+            } else {
+                var gid = guid();
+                var iid = guid();
+                receteOptions.push({ iid: iid, OptionsId: optionsId, OptionsName: optionsName, ProductName: productName, MaterialName: materialName, Quantity: quantity, Unit: unit, StokID: stokId, ProductId: productId, SubeId: subeId });
+                lib.addRow(iid, tableBomOptions, '', { ProductName: productName, Name: materialName, OptionsName: optionsName, quantity: quantity, unit: unit }, gid, undefined, true);
+
+            }
+            lib.editReceteOptions = undefined;
+        })
+
+        function guid() {
+            function _p8(s) {
+                var p = (Math.random().toString(16) + "000000000").substr(2, 8);
+                return s ? "-" + p.substr(0, 4) + "-" + p.substr(4, 4) : p;
+            }
+            return _p8() + _p8(true) + _p8(true) + _p8();
+        }
+
+        lib.addRow = function (iid, table, rowid, row, gid, copyName, edit) {
+            var tr = $("<tr calss='odd' id='" + iid + "'data-id='" + gid + "' data-meta='" + rowid + "' role='row'>");
+            var removeColum = '<a class="btn btn-xs btn-danger" onClick="lib.delColumn(\'' + iid + '\')">Sil</a>'
+            if (copyName) {
+                //removeColum += '<a class="btn btn-xs btn-primary" onClick="lib.copyColumn(\'' + copyName + '\',\'' + iid + '\',this)">Kopyala</a>'
+
+            }
+            if (edit) {
+                //removeColum += '<a class="btn btn-xs btn-warning" onClick="lib.delandeditColumn(\'' + iid + '\')">Düzenle</a>'
+            }
+            //tr.append($('<td>' + removeColum + '</td>'));
+            Object.keys(row).forEach(function (column) {
+                var td = $('<td>' + row[column] + '</td>')
+                tr.append(td)
+            })
+            table.row.add(tr).draw();
+        }
+
+        lib.delColumn = function (iid) {
+            product.Options.forEach(function (opt, index) {
+                if (opt.iid == iid) {
+                    product.Options.splice(index, 1)
+                    tableOptions.row('#' + iid).remove().draw();
+                }
+            })
+
+            product.Choice1.forEach(function (ch1, index) {
+                if (ch1.iid == iid) {
+                    product.Choice1.splice(index, 1)
+                    table1.row('#' + iid).remove().draw();
+                    product.Choice2.forEach(function (ch2, index) {
+                        if (ch2.secim1id == ch1.id) {
+                            product.Choice2.splice(index, 1)
+                            table2.row('#' + ch2.iid).remove().draw();
+                        }
+                    })
+                }
+            })
+            product.Choice2.forEach(function (ch2, index) {
+                if (ch2.iid == iid) {
+                    product.Choice2.splice(index, 1)
+                    table2.row('#' + iid).remove().draw();
+                }
+            })
+
+            product.OptionCats.forEach(function (optCat, index) {
+                if (optCat.iid == iid) {
+                    product.OptionCats.splice(index, 1)
+                    tableKategori.row('#' + iid).remove().draw();
+                }
+            })
+            recete.forEach(function (rec, index) {
+                if (rec.iid == iid) {
+                    recete.splice(index, 1)
+                    tableRecete.row('#' + iid).remove().draw();
+                }
+            })
+            receteOptions.forEach(function (rec, index) {
+                if (rec.iid == iid) {
+                    receteOptions.splice(index, 1)
+                    tableBomOptions.row('#' + iid).remove().draw();
+                }
+            })
+        }
+
+        lib.delandeditColumn = function (iid) {
+            product.Options.forEach(function (opt, index) {
+                if (opt.iid == iid) {
+                    if (!lib.editOptionsiid) {
+                        lib.editOptionsiid = iid;
+                        $('#optionsSecenek').val(opt.Name);
+                        $('#optionsKategori').val(opt.Category).trigger("change");
+                        $('#optionsFiyat').val(opt.Price);
+                        $('#miktarli').val(opt.Quantitative).trigger("change");
+
+                        product.Options.splice(index, 1)
+                        tableOptions.row('#' + iid).remove().draw();
+                    } else {
+                        alert("Düzenlenen Seçenek bulunmaktadır. Lütfen öncelikle gerekli düzenleme sonrası Ekle butonuna basınız.")
+                    }
+                }
+            })
+
+            product.Choice1.forEach(function (ch1, index) {
+                if (ch1.iid == iid) {
+                    if (!lib.editChoice1Obj) {
+                        lib.editChoice1Obj = ch1;
+                        $('#seviye1Secim').val(ch1.Name);
+                        $('#seviye1Fiyat').val(ch1.Price);
+                        product.Choice1.splice(index, 1)
+                        table1.row('#' + ch1.iid).remove().draw();
+
+                        product.Choice2.forEach(function (ch2, index) {
+                            if (ch2.secim1id == ch1.secimId && ch2.secim1Id != '00000000-0000-0000-0000-000000000000') {
+                                lib.editChoice2List.push(ch2);
+                                product.Choice2.splice(index, 1)
+                                table2.row('#' + ch2.iid).remove().draw();
+                            } else if (ch2.Choice1Id == ch1.Id && ch2.Choice1Id > 0) {
+                                lib.editChoice2List.push(ch2);
+                                product.Choice2.splice(index, 1)
+                                table2.row('#' + ch2.iid).remove().draw();
+                            }
+                        })
+                    } else {
+                        alert("Düzenlenen 1. Seviye bulunmaktadır. Lütfen öncelikle gerekli düzenleme sonrası Ekle butonuna basınız.")
+                    }
+
+                }
+            })
+            product.Choice2.forEach(function (ch2, index) {
+                if (ch2.iid == iid) {
+                    if (!lib.editChoice2iid) {
+                        lib.editChoice2iid = iid;
+                        $('#seviye2Secim').val(ch2.Name);
+                        $('#seviye2Fiyat').val(ch2.Price);
+                        product.Choice2.splice(index, 1)
+                        table2.row('#' + iid).remove().draw();
+                    } else {
+                        alert("Düzenlenen 2. Seviye bulunmaktadır. Lütfen öncelikle gerekli düzenleme sonrası Ekle butonuna basınız.")
+                    }
+
+                }
+            })
+
+            product.OptionCats.forEach(function (optCat, index) {
+                if (optCat.iid == iid) {
+                    product.OptionCats.splice(index, 1)
+                    tableKategori.row('#' + iid).remove().draw();
+                }
+            })
+            recete.forEach(function (rec, index) {
+                debugger;
+                if (rec.iid == iid) {
+                    if (!lib.editReceteiid) {
+                        lib.editReceteiid = iid;
+
+                        $('#MaterialName').val(rec.StokID).trigger("change");
+                        $('#QuantityForRecete').val(rec.Quantity);
+
+                        recete.splice(index, 1)
+                        tableRecete.row('#' + iid).remove().draw();
+                    } else {
+                        alert("Düzenlenen Recete bulunmaktadır. Lütfen öncelikle gerekli düzenleme sonrası Ekle butonuna basınız.")
+                    }
+
+                }
+            })
+            receteOptions.forEach(function (rec, index) {
+                if (rec.iid == iid) {
+                    if (!lib.editReceteOptions) {
+                        lib.editReceteOptions = iid;
+                        $('#MaterialNameForBomOptions').val(rec.StokID).trigger("change");
+                        $('#OptionsForBomOptions').val(rec.OptionsId).trigger("change");
+                        $('#QuantityForBomOptions').val(rec.Quantity);
+
+                        receteOptions.splice(index, 1)
+                        tableBomOptions.row('#' + iid).remove().draw();
+                    } else {
+                        alert("Düzenlenen Seçenek bulunmaktadır. Lütfen öncelikle gerekli düzenleme sonrası Ekle butonuna basınız.")
+                    }
+
+                }
+            })
+        }
+
+        lib.clear = function () {
+            product = {};
+            product.Choice1 = [];
+            product.Choice2 = [];
+            product.Options = [];
+            product.OptionCats = [];
+            product.Boms = [];
+            product.BomOptionss = [];
+            lib.editChoice2List = [];
+            lib.editChoice1Obj = undefined;
+            lib.editChoice2iid = undefined;
+            lib.editOptionsiid = undefined;
+            lib.editReceteiid = undefined;
+            lib.editReceteOptions = undefined;
+
+
+            $('#ProductCode').val('');
+            $('#ProductName').val('');
+            $('#Order').val('');
+            $('#ProductType').val('');
+            $('#Price').val('');
+            $('#Plu').val('');
+            $('#VatRate').val('');
+            $('#ProductGroup').val('');
+            $('#InvoiceName').val('');
+            $('#Favorites').val('');
+
+            $('#seviye1Secim').val('');
+            $('#seviye1Fiyat').val('');
+
+            $('#seviye2Secim').val('');
+            $('#seviye2Fiyat').val('');
+
+            $('#optionsSecenek').val('');
+            $('#optionsKategori').val('');
+            $('#optionsFiyat').val('');
+            $('#miktarli').val('');
+
+            $('#Kategori').val('');
+            $('#EnAz').val('');
+            $('#EnCok').val('');
+            $('#Id').val('');
+            table1.clear().draw();
+            table2.clear().draw();
+            tableOptions.clear().draw();
+            tableKategori.clear().draw();
+
+            tableRecete.clear().draw();
+            tableBomOptions.clear().draw();
+
+            var optionsKategori = $('#optionsKategori');
+            $('option', optionsKategori).remove();
+            optionsKategori.append($('<option />').val('').text(''));
+            SubeList();
+        }
+
+        lib.kopyala = function (id, subeId, yeniUrunMu, productName) {
+
+            $('#copyId').val(id);
+            $('#yeniUrunMuforModal').val(yeniUrunMu);
+            $('#SubeIdforModal').val(subeId);
+            $('#productNameForModal')[0].innerHTML = "";
+            $('#productNameForModal')[0].innerHTML = productName;
+
+            $('#modalKopyala').modal('show');
+        }
+
+        $('#btnFullReceteCopy').click(function () {
+            debugger;
+            //tableBekleyenRecete
+            $('#modalKopyalaSubeRecete').modal('show');
+            $.ajax({
+                url: '/SefimPanelUrunEkle/SubeSendBomListJson',
+                type: 'POST',
+                beforeSend: function (request) {
+                    //mApp.blockPage();
+                },
+                complete: function () {
+                    window.setTimeout(function () {
+                        //mApp.unblockPage();
+                    }, 100);
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if ($('#tableBekleyenRecete tbody')[0].rows) {
+                        var cnt = $('#tableBekleyenRecete tbody')[0].rows.length;
+                        for (var i = 0; i < cnt; i++) {
+                            $('#tableBekleyenRecete tbody')[0].deleteRow(0);
+                        }
+                    }
+
+                    var j = 0;
+                    data.forEach(function (dt) {
+                        var row = $('#tableBekleyenRecete tbody')[0].insertRow(j);
+                        var cell0 = row.insertCell(0);
+
+                        cell0.innerHTML = dt.Text;
+                        var cell1 = row.insertCell(1);
+                        cell1.innerHTML = dt.Value;
+                        j++;
+                    })
+                }
+            });
+        });
+
+        lib.recete = function (id, subeId, yeniUrunMu, productName) {
+            debugger;
+            recete = [];
+            receteOptions = [];
+            if (lib.kopyaBoms.length > 0 || lib.kopyaBomOptions.length > 0) {
+                $('#pastediv').removeAttr('hidden')
+            } else {
+                $('#pastediv')[0].setAttribute('hidden', '')
+            }
+            $('#productNameForReceteModal')[0].innerHTML = "";
+            $('#productNameForReceteModal')[0].innerHTML = productName;
+
+            $('#productNameForRecete').val("");
+            $('#productNameForRecete').val(productName);
+            $('#subeIdForRecete').val("");
+            $('#subeIdForRecete').val(subeId);
+            $('#yeniUrunMuForRecete').val(yeniUrunMu);
+
+            $('#Unit').val("");
+
+            $('#productIdForRecete').val(id);
+            $('#SubeNameForReceteModal')[0].innerHTML = "";
+
+
+
+            $('#MaterialNameForBomOptions').val("");
+            $('#OptionsForBomOptions').val("");
+            $('#QuantityForBomOptions').val('');
+            $('#UnitForBomOptions').val("");
+
+
+            var sube = lib.SubeList.filter(function (obj) { return obj.id == subeId })
+            $('#SubeNameForReceteModal')[0].innerHTML = sube[0].name;
+            ProductOptionsJsonList(id, subeId);
+            StokList();
+            if (yeniUrunMu) {
+                lib.receteFill(id);
+            } else {
+                lib.receteFillForSube(id, subeId);
+            }
+
+            $('#modalRecete').modal('show');
+        }
+
+        $('#btnKopyalaForKopyaRecete').click(function (e) {
+            e.preventDefault();
+            document.getElementById("loading").setAttribute("class", "myloading-active");
+            document.getElementById("contbody").setAttribute("style", "position:fixed;");
+            var selForMainList = [];
+            $('#SubelerForMainList').select2('data').forEach(function (data) {
+                if (data.text && data.id) {
+                    selForMainList.push({ Text: data.text, Value: data.id })
+                }
+            })
+
+            var selList = [];
+            $('#SubelerForKopyaRecete').select2('data').forEach(function (data) {
+                if (data.text && data.id) {
+                    selList.push({ Text: data.text, Value: data.id })
+                }
+            })
+
+            if (selList.length > 0) {
+                $.ajax(
+                    {
+                        url: '/SefimPanelUrunEkle/ReceteCopyForSube',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: { MainSubeList: selForMainList, SubeList: selList },
+                        success: function (response) {
+                            if (response.IsSuccess) {
+
+                                location.reload();
+                            } else {
+                                alert(response.UserMessage)
+                                document.getElementById("loading").setAttribute("class", "");
+                                document.getElementById("contbody").setAttribute("style", "");
+                            }
+                        },
+                        error: function () {
+                            alert("error");
+                        }
+
+                    });
+            }
+        })
+
+        $('#btnKopyala').click(function () {
+
+            var selList = [];
+            $('#Subeler').select2('data').forEach(function (data) {
+
+                if (data.text && data.id) {
+                    selList.push({ Text: data.text, Value: data.id })
+                }
+            })
+
+            if (selList.length > 0) {
+                document.getElementById("loading").setAttribute("class", "myloading-active");
+                document.getElementById("contbody").setAttribute("style", "position:fixed;");
+                var yeniUrunMuforModal = $('#yeniUrunMuforModal').val();
+
+                $.ajax(
+                    {
+                        url: '/SefimPanelUrunEkle/ProductCopy',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: { Id: $('#copyId').val(), SubeList: selList, SubeId: $('#SubeIdforModal').val(), YeniUrunMu: yeniUrunMuforModal },
+                        success: function (response) {
+                            if (response.IsSuccess) {
+
+                                location.reload();
+                            } else {
+                                alert(response.UserMessage)
+                                document.getElementById("loading").setAttribute("class", "");
+                                document.getElementById("contbody").setAttribute("style", "");
+                            }
+                        },
+                        error: function () {
+                            alert("error");
+                        }
+                    });
+            } else {
+                alert('Lütfen öncelikle kopyalanmasını istediğiniz şubeleri seçin.')
+            }
+        })
+
+        $('#btnSaveRecete').click(function () {
+            debugger;
+            if (lib.editChoice2List.length > 0 ||
+                lib.editChoice1Obj ||
+                lib.editChoice2iid ||
+                lib.editOptionsiid ||
+                lib.editReceteiid ||
+                lib.editReceteOptions) {
+                return alert("Lütfen düzenleme yapılan kaydı Ekle butonuyla tekrar ekleyiniz yada Kapat butonuyla çıkış yapınız.")
+            }
+            if (recete.length > 0) {
+                document.getElementById("loading").setAttribute("class", "myloading-active");
+                document.getElementById("contbody").setAttribute("style", "position:fixed;");
+                $.ajax(
+                    {
+                        url: '/SefimPanelUrunEkle/ReceteInsert',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: { bomList: recete, bomOptionsList: receteOptions, yeniUrunMu: $('#yeniUrunMuForRecete').val() },
+                        success: function (data) {
+                            if (data != "" && data != null && data.length > 0 && data == '/SefimPanelUrunEkle/ProductList') {
+
+                                if (location.search) {
+                                    window.location.href = data + location.search;
+                                } else {
+                                    window.location.href = data;
+                                }
+                            }
+                        },
+                        error: function () {
+                            alert("error");
+                            document.getElementById("loading").setAttribute("class", "");
+                            document.getElementById("contbody").setAttribute("style", "");
+                        }
+                    });
+            } else {
+                alert('Lütfen öncelikle Recete girişi yapın.')
+            }
+        })
+
+        $('#btnSendSube').click(function () {
+            if (confirm("Ürünleri göndermek istiyor musunuz?")) {
+                document.getElementById("loading").setAttribute("class", "myloading-active");
+                document.getElementById("contbody").setAttribute("style", "position:fixed;");
+                $.ajax(
+                    {
+                        url: '/SefimPanelUrunEkle/SendProductSube',
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data != "" && data != null && data.length > 0 && data == '/SefimPanelUrunEkle/ProductList') {
+                                if (location.search) {
+                                    window.location.href = data + location.search;
+                                } else {
+                                    window.location.href = data;
+                                }
+                            }
+                        },
+                        error: function () {
+                            alert("error");
+                            document.getElementById("loading").setAttribute("class", "");
+                            document.getElementById("contbody").setAttribute("style", "");
+                        }
+                    });
+            }
+        })
+
+        lib.receteFill = function (id) {
+            debugger;
+            $.ajax({
+                url: '/SefimPanelUrunEkle/GetProduct',
+                type: 'POST',
+                data: { Id: id },
+                beforeSend: function (request) {
+                    //mApp.blockPage();
+                },
+                complete: function () {
+                    window.setTimeout(function () {
+                        //mApp.unblockPage();
+                    }, 100);
+                },
+                dataType: 'json',
+                success: function (data) {
+                    lib.clear();
+                    lib.fill(data);
+                }
+            });
+        }
+        lib.receteFillForSube = function (id, subeId) {
+            debugger;
+            $.ajax({
+                url: '/SefimPanelUrunEkle/GetProductForSube',
+                type: 'POST',
+                data: { Id: id, SubeId: subeId },
+                beforeSend: function (request) {
+                    //mApp.blockPage();
+                },
+                complete: function () {
+                    window.setTimeout(function () {
+                        //mApp.unblockPage();
+                    }, 100);
+                },
+                dataType: 'json',
+                success: function (data) {
+                    lib.clear();
+                    lib.fill(data);
+                }
+            });
+        }
+        lib.fill = function (Product) {
+            debugger;
+            $('#ProductCode').val(Product.ProductCode);
+            $('#ProductName').val(Product.ProductName);
+            $('#Order').val(Product.Order);
+            $('#ProductType').val(Product.ProductType);
+            $('#Price').val(Product.Price.replace(',', '.'));
+            $('#Plu').val(Product.Plu);
+            $('#VatRate').val(Product.VatRate.replace(',', '.'));
+            $('#ProductGroup').val(Product.ProductGroup);
+            $('#InvoiceName').val(Product.InvoiceName);
+            $('#Favorites').val(Product.Favorites);
+            $('#Sube').val(Product.SubeId);
+            SubeList(Product);
+            $('#Id').val(Product.Id);
+
+            product = Product;
+            product.Choice1.forEach(function (ch1) {
+                var gid = guid();
+                var iid = guid();
+                ch1.iid = iid;
+                ch1.secimId = gid;
+                lib.addRow(iid, table1, '', { secim: ch1.Name, fiyat: ch1.Price }, gid, undefined, true);
+                product.Choice2.forEach(function (ch2) {
+                    var ch2gid = guid();
+                    var ch2iid = guid();
+                    if (ch1.Id == ch2.Choice1Id) {
+                        ch2.iid = ch2iid;
+                        ch2.secim1id = gid;
+                        lib.addRow(ch2iid, table2, gid, { secim: ch2.Name, fiyat: ch2.Price }, ch2gid, undefined, true);
+                    }
+                })
+            })
+
+            var optionsKategori = $('#optionsKategori');
+            $('option', optionsKategori).remove();
+            optionsKategori.append($('<option />').val('').text(''));
+            product.OptionCats.forEach(function (optCat) {
+                var optCatgid = guid();
+                var iid = guid();
+                optCat.optionCatsId = optCatgid;
+                optCat.iid = iid;
+                lib.addRow(iid, tableKategori, '', { Name: optCat.Name, MinSelections: optCat.MinSelections, MaxSelections: optCat.MaxSelections }, optCatgid);
+                optionsKategori.append($('<option />').val(optCatgid).text(optCat.Name));
+                //category dolu olanlar
+                console.log("pr op:", product.Options)
+                product.Options.forEach(function (opt) {
+                    var optgid = guid();
+                    var optiid = guid();
+                    var name = "";
+                    if (opt.Category == optCat.Id) {
+                        name = optCat.Name;
+                        lib.addRow(optiid, tableOptions, '', { secenek: opt.Name, kategori: name || opt.Category, fiyat: opt.Price, miktarli: opt.Quantitative }, optgid, undefined, true);
+                        opt.OptionCatsId = optCatgid;
+                        opt.iid = optiid;
+                    }
+                })
+            })
+
+            var optionsForBomOptions = $('#OptionsForBomOptions');
+            $('option', optionsForBomOptions).remove();
+            optionsForBomOptions.append($('<option />').val(0).text('Seçiniz'));
+            //category boş olanlar
+            product.Options.forEach(function (opt) {
+                var optgid = guid();
+                var iid = guid();
+                var name = "";
+                if (!opt.Category) {
+                    product.OptionCats.forEach(function (cat) {
+                        if (cat.Id == opt.Category) {
+                            name = cat.Name;
+                        }
+                    })
+                    opt.iid = iid;
+                    lib.addRow(iid, tableOptions, '', { secenek: opt.Name, kategori: name || opt.Category, fiyat: opt.Price, miktarli: opt.Quantitative }, optgid, undefined, true);
+                }
+
+                optionsForBomOptions.append($('<option />').val(opt.Id).text(opt.Name));
+            })
+            product.Boms.forEach(function (bom) {
+
+                var gid = guid();
+                var iid = guid();
+                bom.iid = iid;
+                recete.push(bom);
+                //recete.push({ iid: iid, ProductName: productName, MaterialName: materialName, Quantity: quantity, Unit: unit, StokID: 0, ProductId: productId, SubeId: subeId });
+                //lib.addRow(iid, tableRecete, '', { ProductName: bom.ProductName, Name: bom.MaterialName, quantity: bom.Quantity, unit: bom.Unit }, gid, undefined, true);
+                lib.addRow(iid, tableRecete, '', { ProductName: bom.ProductName, Name: bom.MaterialName, MalinCinsi: bom.MalinCinsi, quantity: bom.Quantity, unit: bom.Unit }, gid, undefined, true);
+            })
+
+            if (product.BomOptionss)
+                product.BomOptionss.forEach(function (bomOpt) {
+
+                    var gid = guid();
+                    var iid = guid();
+                    bomOpt.iid = iid;
+                    receteOptions.push(bomOpt);
+                    //recete.push({ iid: iid, ProductName: productName, MaterialName: materialName, Quantity: quantity, Unit: unit, StokID: 0, ProductId: productId, SubeId: subeId });
+                    lib.addRow(iid, tableBomOptions, '', { ProductName: bomOpt.ProductName, Name: bomOpt.MaterialName, OptionsName: bomOpt.OptionsName, quantity: bomOpt.Quantity, unit: bomOpt.Unit }, gid, undefined, true);
+                })
+        }
+        lib.copyColumn = function (ths) {//function (bomAndbomOption,id,ths) {
+            //if (bomAndbomOption == 'bom') {
+            //} else if (bomAndbomOption=='bomOption') {
+            //}
+
+            if (lib.kopyaBoms.length > 0 || lib.kopyaBomOptions.length > 0) {
+                if (confirm("Yapıştırılmayı bekleyen liste temizlenecek yeni kopyaladığınız liste geçerli olacaktır. Onaylıyor musunuz?")) {
+                    lib.kopyaBoms = [];
+                    lib.kopyaBomOptions = [];
+                }
+            }
+
+            product.Boms.forEach(function (bom) {
+                if ($('#OptionsNameForRecete').val()) {
+                    $('#OptionsNameForRecete').val().forEach(function (optNameEk) {
+                        if (bom.ProductName == $('#productNameForRecete').val() + optNameEk) {
+                            lib.kopyaBoms.push(bom);
+                        }
+                    })
+                } else {
+                    if (bom.ProductName == $('#productNameForRecete').val()) {
+                        lib.kopyaBoms.push(bom);
+                    }
+                }
+            })
+
+            product.BomOptionss.forEach(function (bomOption) {
+                if ($('#OptionsNameForRecete').val()) {
+                    $('#OptionsNameForRecete').val().forEach(function (optNameEk) {
+                        if (bomOption.ProductName == $('#productNameForRecete').val() + optNameEk) {
+                            lib.kopyaBomOptions.push(bomOption);
+                        }
+                    })
+                } else {
+                    if (bomOption.ProductName == $('#productNameForRecete').val()) {
+                        lib.kopyaBomOptions.push(bomOption);
+                    }
+                }
+            })
+            if (lib.kopyaBoms.length > 0 || lib.kopyaBomOptions.length > 0) {
+                $('#pastediv').removeAttr('hidden')
+            }
+        }
+        lib.paste = function () {
+            lib.kopyaBoms.forEach(function (bom) {
+                if ($('#OptionsNameForRecete').val()) {
+                    $('#OptionsNameForRecete').val().forEach(function (optNameEk) {
+
+                        var gid = guid();
+                        var iid = guid();
+                        bom.iid = iid;
+                        bom.ProductName = $('#productNameForRecete').val() + optNameEk
+                        bom.SubeId = $('#subeIdForRecete').val();
+                        bom.ProductId = $('#productIdForRecete').val();
+                        //bom.YeniUrunMu=
+                        recete.push(bom);
+                        //recete.push({ iid: iid, ProductName: productName, MaterialName: materialName, Quantity: quantity, Unit: unit, StokID: 0, ProductId: productId, SubeId: subeId });
+                        lib.addRow(iid, tableRecete, '', { ProductName: bom.ProductName, Name: bom.MaterialName, quantity: bom.Quantity, unit: bom.Unit }, gid, undefined, true);
+                    })
+                } else {
+
+                    var gid = guid();
+                    var iid = guid();
+                    bom.iid = iid;
+                    bom.ProductName = $('#productNameForRecete').val();
+                    bom.SubeId = $('#subeIdForRecete').val();
+                    bom.ProductId = $('#productIdForRecete').val();
+                    //bom.YeniUrunMu =
+                    recete.push(bom);
+                    //recete.push({ iid: iid, ProductName: productName, MaterialName: materialName, Quantity: quantity, Unit: unit, StokID: 0, ProductId: productId, SubeId: subeId });
+                    lib.addRow(iid, tableRecete, '', { ProductName: bom.ProductName, Name: bom.MaterialName, quantity: bom.Quantity, unit: bom.Unit }, gid, undefined, true);
+                }
+            })
+
+            lib.kopyaBomOptions.forEach(function (bomOption) {
+                if ($('#OptionsNameForRecete').val()) {
+                    $('#OptionsNameForRecete').val().forEach(function (optNameEk) {
+
+                        var gid = guid();
+                        var iid = guid();
+                        bomOption.iid = iid;
+                        bomOption.ProductName = $('#productNameForRecete').val() + optNameEk;
+                        bomOption.SubeId = $('#subeIdForRecete').val();
+                        //bomOption.YeniUrunMu=
+                        receteOptions.push(bomOption);
+                        //recete.push({ iid: iid, ProductName: productName, MaterialName: materialName, Quantity: quantity, Unit: unit, StokID: 0, ProductId: productId, SubeId: subeId });
+                        lib.addRow(iid, tableBomOptions, '', { ProductName: bomOption.ProductName, Name: bomOption.MaterialName, OptionsName: bomOption.OptionsName, quantity: bomOption.Quantity, unit: bomOption.Unit }, gid, undefined, true);
+                    })
+                } else {
+
+                    var gid = guid();
+                    var iid = guid();
+                    bomOption.iid = iid;
+                    bomOption.ProductName = $('#productNameForRecete').val();
+                    bomOption.SubeId = $('#subeIdForRecete').val();
+                    //bomOption.YeniUrunMu =
+                    receteOptions.push(bomOption);
+                    //recete.push({ iid: iid, ProductName: productName, MaterialName: materialName, Quantity: quantity, Unit: unit, StokID: 0, ProductId: productId, SubeId: subeId });
+                    lib.addRow(iid, tableBomOptions, '', { ProductName: bomOption.ProductName, Name: bomOption.MaterialName, OptionsName: bomOption.OptionsName, quantity: bomOption.Quantity, unit: bomOption.Unit }, gid, undefined, true);
+                }
+            })
+        }
+
+
+        lib.duzenleRemoteProduct = function (id, subeId) {
+
+            $.ajax({
+                url: '/SefimPanelUrunEkle/GetProductRemote',
+                type: 'POST',
+                data: { Id: id, SubeId: subeId },
+                beforeSend: function (request) {
+                    //mApp.blockPage();
+                },
+                complete: function () {
+                    window.setTimeout(function () {
+                        //mApp.unblockPage();
+                    }, 100);
+                },
+                dataType: 'json',
+                success: function (data) {
+                    lib.clear();
+                    lib.fill(data);
+
+                    //Yeni eklendi.20062023
+                    $('#VatRate').val(8);
+                    $('#ProductCode').val('00000');
+                    $('#ProductType').val('Normal');
+                    ProductGroupsJsonList();
+                    ProductTypesJsonList();
+                    InvoiceNamesJsonList();
+                    FavoritessJsonList();
+                    //
+                    $('#modalAdd').modal('show');
+                }
+            });
+        }
+
+        SubeList();
+    });
+
+    lib.serialize = function (cls, selector) {
+        var q = 'form';
+        if (cls) {
+            q = q + '.' + cls;
+        }
+        if (selector) {
+            q = selector;
+        }
+        var f = $(q), arr = f.serializeArray(), m, a = ',', n, res = {};
+        m = arr.map(function (i) {
+            n = a.indexOf("," + i.name + ",");
+            a += i.name + ',';
+            //console.log(a);
+            return n > - 1
+                ? i.name
+                : false;
+        }).filter(function (a) { return a; });
+        arr.forEach(function (o) {
+            if (m.indexOf(o.name) === -1) {
+                res[o.name] = o.value;
+            }
+        });
+        m.forEach(function (key) {
+            res[key] = arr.map(function (i) { if (i.name == key) return i.value; }).filter(function (a) { return a; });
+        });
+        return res;
+    };
+
+    $('#btnProductsave').click(function () {
+        if (lib.editChoice2List.length > 0 ||
+            lib.editChoice1Obj ||
+            lib.editChoice2iid ||
+            lib.editOptionsiid ||
+            lib.editReceteiid ||
+            lib.editReceteOptions) {
+            return alert("Lütfen düzenleme yapılan kaydı Ekle butonuyla tekrar ekleyiniz yada Kapat butonuyla çıkış yapınız.")
+        } else {
+            var obj = lib.serialize();
+            if (obj.FreeItem || obj.FreeItem == 'on') {
+                obj.FreeItem = true;
+            } else {
+                obj.FreeItem = false;
+            }
+
+            if ($('#Sube').val()) {
+                obj.Choice1 = product.Choice1;
+                obj.Choice2 = product.Choice2;
+                obj.Options = product.Options;
+                obj.OptionCats = product.OptionCats;
+
+                if (!obj.ProductCode) {
+                    return alert('Lütfen öncelikle Ürün Kodu giriniz.')
+                }
+                if (!obj.ProductName) {
+                    return alert('Lütfen Ürün Adı giriniz.')
+                }
+                if (!obj.Price) {
+                    obj.Price = 0;
+                }
+                if (!obj.VatRate) {
+                    return alert('Lütfen KDV Oranı giriniz.')
+                }
+
+                var ii = 0;
+                document.getElementById("loading").setAttribute("class", "myloading-active");
+                document.getElementById("contbody").setAttribute("style", "position:fixed;");
+
+                $('#Sube').val().forEach(function (sb) {
+                    obj.SubeId = sb;
+                    obj.SubeName = $('#Sube')[0].selectedOptions[ii].innerHTML;
+
+                    lib.saveFunc(obj, ii);
+                    ii++;
+                })
+            } else {
+                return alert('Lütfen öncelikle Geçerli bir Şube seçiniz.')
+            }
+        }
+    })
+
+    lib.basariSay = 0;
+    lib.saveFunc = function (Pr, ii) {
+        $.ajax(
+            {
+                url: '/SefimPanelUrunEkle/ProductInsert',
+                type: 'POST',
+                dataType: 'json',
+                data: Pr,
+                success: function (data) {
+                    if (data != "" && data != null && data.length > 0 && data == '/SefimPanelUrunEkle/ProductList') {
+                        lib.basariSay++;
+                        if (lib.basariSay == $('#Sube').val().length) {
+                            if (location.search) {
+                                window.location.href = data + location.search;
+                            } else {
+                                window.location.href = data;
+                            }
+                        }
+                    }
+                },
+                error: function () {
+                    document.getElementById("loading").setAttribute("class", "");
+                    document.getElementById("contbody").setAttribute("style", "");
+                    alert("error");
+                }
+            });
+    }
+
+    lib.sil = function (Id, subeId) {
+        if (confirm("Ürünü silmek istiyor musunuz?")) {
+            $.ajax(
+                {
+                    url: '/SefimPanelUrunEkle/ProductDelete',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { Id: Id, SubeId: subeId },
+                    success: function (response) {
+                        if (response.IsSuccess) {
+                            $('#row_' + Id).addClass('hidden')
+                        } else {
+                            alert(response.UserMessage)
+                        }
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+
+                });
+        }
+    }
+
+    function SubeList(Product) {
+        var searchArr = [];
+        if (location.search) {
+            searchArr = location.search.replace('?SubeIds=', '').split(',')
+        }
+
+        $.ajax({
+            url: '/SefimPanelUrunEkle/SubeListJson',
+            type: 'POST',
+            beforeSend: function (request) {
+                //mApp.blockPage();
+            },
+            complete: function () {
+                window.setTimeout(function () {
+                    //mApp.unblockPage();
+                }, 100);
+            },
+            dataType: 'json',
+            success: function (data) {
+                var options = $('#Sube');
+                var subeleroptions = $('#Subeler')
+                var SubelerForMainOptions = $('#SubelerForMainList')
+                var SubelerForKopyaReceteOptions = $('#SubelerForKopyaRecete')
+                var SubelerForKopyaProductOptions = $('#SubelerForKopyaProduct')
+
+                $('option', subeleroptions).remove();
+                $('option', options).remove();
+                $('option', SubelerForMainOptions).remove();
+                $('option', SubelerForKopyaReceteOptions).remove();
+                $('option', SubelerForKopyaProductOptions).remove();
+
+                $.each(data, function () {
+                    if (Product && Product.SubeId == this.Value) {
+                        options.append($('<option selected />').val(this.Value).text(this.Text));
+                    } else {
+                        options.append($('<option />').val(this.Value).text(this.Text));
+                    }
+                    lib.SubeList.push({ name: this.Text, id: this.Value });
+                    subeleroptions.append($('<option />').val(this.Value).text(this.Text));
+                    SubelerForKopyaReceteOptions.append($('<option />').val(this.Value).text(this.Text));
+                    SubelerForKopyaProductOptions.append($('<option />').val(this.Value).text(this.Text));
+
+                    if (searchArr.length > 0) {
+                        if (searchArr.indexOf(this.Value) > -1) {
+                            SubelerForMainOptions.append($('<option selected />').val(this.Value).text(this.Text));
+                        } else {
+                            SubelerForMainOptions.append($('<option />').val(this.Value).text(this.Text));
+                        }
+
+                    } else {
+                        SubelerForMainOptions.append($('<option />').val(this.Value).text(this.Text));
+                    }
+
+                });
+
+
+            }
+        });
+    }
+
+    function StokList() {
+        $.ajax({
+            url: '/SefimPanelBelgeIslemleri/StokSelectListJson',
+            type: 'POST',
+            beforeSend: function (request) {
+                //mApp.blockPage();
+            },
+            complete: function () {
+                window.setTimeout(function () {
+                    //mApp.unblockPage();
+                }, 100);
+            },
+            dataType: 'json',
+            success: function (data) {
+
+
+                var options = $('#MaterialName');
+                var matoptions = $('#MaterialNameForBomOptions');
+                $('option', matoptions).remove();
+                matoptions.append($('<option />').val(0).text("Seçiniz"));
+
+                $('option', options).remove();
+                options.append($('<option />').val(0).text("Seçiniz"));
+                $.each(data, function () {
+                    options.append($('<option />').val(this.Value).text(this.Text));
+                    matoptions.append($('<option />').val(this.Value).text(this.Text));
+                });
+
+                //if (user.SubeID) {
+                //    $('#Stok').val(user.SubeID).trigger('change');
+                //}
+            }
+        });
+    }
+
+    var copyProductList = [];
+
+    lib.ProductCheck = function (id) {
+        if ($('#Check_' + id)[0].checked) {
+            copyProductList.push({ id: id, name: $('#row_' + id + ' td')[4].innerHTML, YeniUrunMu: $('#row_' + id + ' td')[5].innerHTML, SubeId: $('#row_' + id + ' td')[1].innerHTML })
+        } else {
+            copyProductList.forEach(function (data, index) {
+                if (data.id == id) {
+                    delete copyProductList[index]
+                }
+            })
+        }
+        //console.log(copyProductList)
+    }
+
+    $('#btnProductCopy').click(function () {
+
+        $('#modalKopyalaProduct').modal('show');
+
+        if ($('#tableSelectedProduct tbody')[0].rows) {
+            var cnt = $('#tableSelectedProduct tbody')[0].rows.length;
+            for (var i = 0; i < cnt; i++) {
+                $('#tableSelectedProduct tbody')[0].deleteRow(0);
+            }
+        }
+        var j = 0;
+        copyProductList.forEach(function (dt) {
+            var row = $('#tableSelectedProduct tbody')[0].insertRow(j);
+            var cell0 = row.insertCell(0);
+            cell0.innerHTML = dt.name;
+            j++;
+        })
+
+    })
+
+    $('#btnKopyalaForKopyaProduct').click(function () {
+        var selList = [];
+        $('#SubelerForKopyaProduct').select2('data').forEach(function (data) {
+            if (data.text && data.id) {
+                selList.push({ Text: data.text, Value: data.id })
+            }
+        })
+
+        var ProductLst = [];
+        copyProductList.forEach(function (item) {
+            ProductLst.push(item)
+        })
+
+        $.ajax(
+            {
+                url: '/SefimPanelUrunEkle/ProductsCopy',
+                type: 'POST',
+                dataType: 'json',
+                data: { ProductList: ProductLst, SubeList: selList },
+                success: function (response) {
+                    if (response.IsSuccess) {
+
+                        location.reload();
+                    } else {
+                        alert(response.UserMessage)
+                        document.getElementById("loading").setAttribute("class", "");
+                        document.getElementById("contbody").setAttribute("style", "");
+                    }
+                },
+                error: function () {
+                    alert("error");
+                }
+
+            });
+    })
+
+    lib.duzenle = function (id) {
+        $.ajax({
+            url: '/SefimPanelUrunEkle/GetProduct',
+            type: 'POST',
+            data: { Id: id },
+            beforeSend: function (request) {
+                //mApp.blockPage();
+            },
+            complete: function () {
+                window.setTimeout(function () {
+                    //mApp.unblockPage();
+                }, 100);
+            },
+            dataType: 'json',
+            success: function (data) {
+                lib.clear();
+                lib.fill(data);
+                $('#modalAdd').modal('show');
+            }
+        });
+    }
+
+
+
+    lib.aktif = function (Id, SubeId, YeniUrunMu) {
+        $.ajax(
+            {
+                url: '/SefimPanelUrunEkle/AktifPasif',
+                type: 'POST',
+                dataType: 'json',
+                data: { Id: Id, SubeId: SubeId, YeniUrunMu: YeniUrunMu, Aktif: true },
+                success: function (response) {
+                    if (response.IsSuccess) {
+
+                        location.reload();
+                    } else {
+                        alert(response.UserMessage)
+                        document.getElementById("loading").setAttribute("class", "");
+                        document.getElementById("contbody").setAttribute("style", "");
+                    }
+                },
+                error: function () {
+                    alert("error");
+                }
+
+            });
+    }
+
+    lib.pasif = function (Id, SubeId, YeniUrunMu) {
+        $.ajax(
+            {
+                url: '/SefimPanelUrunEkle/AktifPasif',
+                type: 'POST',
+                dataType: 'json',
+                data: { Id: Id, SubeId: SubeId, YeniUrunMu: YeniUrunMu, Aktif: false },
+                success: function (response) {
+                    if (response.IsSuccess) {
+
+                        location.reload();
+                    } else {
+                        alert(response.UserMessage)
+                        document.getElementById("loading").setAttribute("class", "");
+                        document.getElementById("contbody").setAttribute("style", "");
+                    }
+                },
+                error: function () {
+                    alert("error");
+                }
+
+            });
+    }
+
+    $('#hepsiniSecProduct').click(function () {
+        console.log("cal")
+        $.each($('#tableUrun tr'), function () {
+            var id = this.id.replace('row_', '');
+            if ($('#hepsiniSecProduct')[0].checked) {
+                if (id) {
+                    $('#Check_' + id)[0].checked = true;
+                    $('#Check_' + id).trigger("change");
+                }
+            } else {
+                if (id) {
+                    $('#Check_' + id)[0].checked = false;
+                    $('#Check_' + id).trigger("change");
+                }
+            }
+        });
+    })
+
+    $('#tableRecete').on('dblclick', 'tr', function (e) {
+        e.stopPropagation()
+    })
+    $('#tableBomOptions').on('dblclick', 'tr', function (e) {
+        e.stopPropagation()
+    })
+    $('#tableSecim1').on('dblclick', 'tr', function (e) {
+        e.stopPropagation()
+    })
+    $('#tableSecim2').on('dblclick', 'tr', function (e) {
+        e.stopPropagation()
+    })
+    $('#tableOptions').on('dblclick', 'tr', function (e) {
+        e.stopPropagation()
+    })
+    $('#tableKategori').on('dblclick', 'tr', function (e) {
+        e.stopPropagation()
+    })
+    $('#tableUrun').on('dblclick', 'tr', function (e) {
+        e.stopPropagation()
+    })
+</script>

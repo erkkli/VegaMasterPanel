@@ -1,0 +1,195 @@
+﻿@model IEnumerable<SefimV2.ViewModels.ReportsDetail.ReportsDetailViewModel>
+
+@{
+    var urlHelper = new UrlHelper(Html.ViewContext.RequestContext);
+    string baseUrl = urlHelper.Content("~");
+}
+
+<script src="@(baseUrl)Scripts/MicrosoftAjax.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<link href="/Assets/css/bootstrap.css" rel="stylesheet" />
+
+<script src="/Assets/js/bootstrap.js"></script>
+<script src="/Assets/plugins/fastclick/lib/fastclick.js"></script>
+<script src="/Assets/plugins/nprogress/nprogress.js"></script>
+<script src="/Assets/plugins/Chart.js/dist/Chart.js"></script>
+<script src="/Assets/plugins/bootstrap-progressbar/bootstrap-progressbar.js"></script>
+<script src="/Assets/plugins/iCheck/icheck.js"></script>
+<script src="/Assets/plugins/skycons/skycons.js"></script>
+<script src="/Assets/plugins/Flot/jquery.flot.js"></script>
+<script src="/Assets/plugins/Flot/jquery.flot.pie.js"></script>
+<script src="/Assets/plugins/Flot/jquery.flot.time.js"></script>
+<script src="/Assets/plugins/Flot/jquery.flot.stack.js"></script>
+<script src="/Assets/plugins/Flot/jquery.flot.resize.js"></script>
+<script src="/Assets/plugins/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+<script src="/Assets/plugins/flot-spline/js/jquery.flot.spline.js"></script>
+<script src="/Assets/plugins/flot.curvedlines/curvedLines.js"></script>
+<script src="/Assets/plugins/DateJS/build/date.js"></script>
+<script src="/Assets/plugins/DateJS/build/date-tr-TR.js"></script>
+<script src="/Assets/plugins/jqvmap/dist/jquery.vmap.js"></script>
+<script src="/Assets/plugins/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+<script src="/Assets/plugins/moment/min/moment.min.js"></script>
+<script type="text/javascript" src="~/Assets/plugins/DataTable/JSZip-2.5.0/jszip.js"></script>
+<script type="text/javascript" src="~/Assets/plugins/DataTable/pdfmake-0.1.36/pdfmake.js"></script>
+<script type="text/javascript" src="~/Assets/plugins/DataTable/pdfmake-0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" src="~/Assets/plugins/DataTable/DataTables-1.10.20/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="~/Assets/plugins/DataTable/AutoFill-2.3.4/js/dataTables.autoFill.js"></script>
+<script type="text/javascript" src="~/Assets/plugins/DataTable/Buttons-1.6.1/js/dataTables.buttons.js"></script>
+<script type="text/javascript" src="~/Assets/plugins/DataTable/Buttons-1.6.1/js/buttons.colVis.js"></script>
+<script type="text/javascript" src="~/Assets/plugins/DataTable/Buttons-1.6.1/js/buttons.flash.js"></script>
+<script type="text/javascript" src="~/Assets/plugins/DataTable/Buttons-1.6.1/js/buttons.html5.js"></script>
+<script type="text/javascript" src="~/Assets/plugins/DataTable/Buttons-1.6.1/js/buttons.print.js"></script>
+<script type="text/javascript" src="~/Assets/plugins/DataTable/ColReorder-1.5.2/js/dataTables.colReorder.js"></script>
+<script type="text/javascript" src="~/Assets/plugins/DataTable/FixedColumns-3.3.0/js/dataTables.fixedColumns.js"></script>
+<script type="text/javascript" src="~/Assets/plugins/DataTable/FixedHeader-3.1.6/js/dataTables.fixedHeader.js"></script>
+<script type="text/javascript" src="~/Assets/plugins/DataTable/KeyTable-2.5.1/js/dataTables.keyTable.js"></script>
+<script type="text/javascript" src="~/Assets/plugins/DataTable/Responsive-2.2.3/js/dataTables.responsive.js"></script>
+<script type="text/javascript" src="~/Assets/plugins/DataTable/RowGroup-1.1.1/js/dataTables.rowGroup.js"></script>
+<script type="text/javascript" src="~/Assets/plugins/DataTable/RowReorder-1.2.6/js/dataTables.rowReorder.js"></script>
+<script type="text/javascript" src="~/Assets/plugins/DataTable/Scroller-2.0.1/js/dataTables.scroller.js"></script>
+<script type="text/javascript" src="~/Assets/plugins/DataTable/Select-1.3.1/js/dataTables.select.js"></script>
+<link href="/Assets/css/custom.css" rel="stylesheet" />
+
+<table id="tableDetayUrun" class="table datatable table-bordered table-condensed">
+    <thead>
+        <tr>
+            <th class="column-title">Şube</th>
+            <th class="column-title" style="text-align:right">Ürün Grubu</th>
+            <th class="column-title" style="text-align:right">Ürün</th>
+            <th class="column-title" style="text-align:right">Miktar</th>
+            <th class="column-title" style="text-align:right">Tutar (₺)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            try
+            {
+                foreach (var item in Model)
+                {
+                    <tr class="link" style="color:#000000;font-weight:bold ">
+                        <td>
+                            @*<img src="~/img/details_open.jpg" rel=@item.ProductGroup alt="expand/collapse" data-url="SaatBazliUrunGrubuVeUrunSatisRaporuDetay?
+                                StartDateTime=@Model.FirstOrDefault().StartDate
+                                &EndDateTime=@Model.FirstOrDefault().StartDate
+                                &SubeId=@Model.FirstOrDefault().SubeID
+                                &Saat=@Model.FirstOrDefault().SaatList
+                                &UrunGrubuAdi=@item.ProductGroup
+                                &UrunAdi=@Model.FirstOrDefault().FilterUrunAdiList
+                                ">  @item.Sube*@
+                            <img src="~/img/details_open.jpg" rel=@item.ProductGroup alt="expand/collapse" data-url="@Url.Action("SaatBazliUrunGrubuVeUrunSatisRaporuDetay","ReportsDetail2",
+                                                                                                                    new {
+                                                                                                                            StartDate=item.StartDate,
+                                                                                                                            EndDate=item.EndDate,
+                                                                                                                            SubeId=item.SubeID,
+                                                                                                                            Saat=item.SaatList,
+                                                                                                                            UrunGrubuAdi=item.ProductGroup,
+                                                                                                                            UrunAdi=item.FilterUrunAdiList
+                                                                                                                      })">
+                            @item.Sube
+                        </td>
+                        <td style="text-align:right"> @item.ProductGroup </td>
+                        <td style="text-align:right"> @item.ProductName  </td>
+                        <td style="text-align:right"> @decimal.Round(item.Miktar, 2, MidpointRounding.AwayFromZero)  </td>
+                        <td style="text-align:right"> @decimal.Round(item.Debit, 2, MidpointRounding.AwayFromZero)  </td>
+                    </tr>
+                }
+            }
+            catch (Exception)
+            { }
+        }
+    </tbody>
+    <tfoot>
+        <tr class="total" style=" background-color:#d9534f;color:#ffffff; font-weight:bold ">
+            <td style="text-align:right">TOPLAM</td>
+            @*<td>-</td>*@
+            <td>  </td>
+            <td> </td>
+            <td style="text-align:right">  @decimal.Round(Model.Sum(x => x.Miktar), 2, MidpointRounding.AwayFromZero)  </td>
+            <td style="text-align:right">  @decimal.Round(Model.Sum(x => x.Debit), 2, MidpointRounding.AwayFromZero)  </td>
+        </tr>
+    </tfoot>
+</table>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var buttonCommon = {
+            exportOptions: {
+                format: {
+                    body: function (data, row, column, node) {
+                        var ank = data.lastIndexOf('>');
+                        return data.replace(/[$,.]/g, '.').substring(data.length - (data.length - parseInt(ank) - 1), data.length)
+                        data;
+                    }
+                }
+            }
+        };
+
+        $('#tableDetayUrun').DataTable({
+            language: {
+                info: "_TOTAL_ kayıttan _START_ - _END_ kayıt gösteriliyor.",
+                infoEmpty: "Gösterilecek hiç kayıt yok.",
+                loadingRecords: "Kayıtlar yükleniyor.",
+                zeroRecords: "Tablo boş",
+                search: "Arama:",
+                infoFiltered: "(toplam _MAX_ kayıttan filtrelenenler)",
+                buttons: {
+                    copyTitle: "Panoya kopyalandı.",
+                    copySuccess: "Panoya %d satır kopyalandı",
+                    copy: "Kopyala",
+                    print: "Yazdır",
+                },
+                paginate: {
+                    first: "İlk",
+                    previous: "Önceki",
+                    next: "Sonraki",
+                    last: "Son"
+                },
+            },
+            dom: 'Bfrtip',
+            "pageLength": 80,
+            "bDestroy": true,
+            //buttons: [
+            //    'copy', 'excel', 'pdf', 'print'
+            //],
+            ////responsive: true
+
+            buttons: [
+                $.extend(true, {}, buttonCommon, {
+                    extend: 'copyHtml5'
+                }),
+                $.extend(true, {}, buttonCommon, {
+                    extend: 'excelHtml5'
+                }),
+                $.extend(true, {}, buttonCommon, {
+                    extend: 'pdfHtml5'
+                }),
+                //$.extend(true, {}, buttonCommon, {
+                //    extend: 'printHtml5'
+                //})
+                'print'
+            ],
+        });
+    });
+
+    $('#tableDetayUrun tbody td img').click(function () {
+    //$(document).on('click', '#tableDetayUrun tbody td img', function () {
+        debugger;
+        var oTable = $('#tableDetayUrun').dataTable();
+        var nTr = event.target.parentNode.parentNode;
+
+        if (event.target.src.match('details_close')) {
+            event.target.src = "/img/details_open.jpg";
+            oTable.fnClose(nTr);
+        }
+        else {
+            debugger;
+            event.target.src = "/img/details_close.jpg";
+            var productgrup = $(event.target).attr("rel").toString();
+            var url = $(event.target).data('url');
+            $.get(url, function (details) {
+                oTable.fnOpen(nTr, details, 'details');
+            });
+        }
+    });
+</script>

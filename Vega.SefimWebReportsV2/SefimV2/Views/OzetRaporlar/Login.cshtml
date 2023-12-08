@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+
+<h1>Formal Parameters</h1>
+<hr />
+<h2>Login</h2>
+@using (Html.BeginForm())
+{
+    <label>User Name</label>
+    <input type="text" class="form-control" id="userid" name="userid" />
+    <label>Password</label>
+    <input type="text" class="form-control" id="pwd" name="pwd" /> <br />
+    <input type="submit" class="btn btn-success" value="Submit" />
+    <input type="search" class="btn btn-success" value="Search" onclick="deneme(1);" />
+}
+<script>
+    function denemev(value) {
+        alert(value);
+        '@Url.Action("deneme","OzetRaporlar")' + '?' + 'userid =' + value;        
+    }
+</script>

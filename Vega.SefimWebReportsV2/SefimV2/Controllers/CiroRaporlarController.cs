@@ -1,0 +1,202 @@
+﻿using iTextSharp.text;
+using System;
+using System.IO;
+using System.Text;
+using System.Data;
+using SefimV2.Helper;
+using SefimV2.Models;
+using System.Web.Mvc;
+using SefimV2.Repository;
+using SefimV2.ViewModels.GetTime;
+using System.Collections.Generic;
+using SefimV2.SendMailGetDataCRUD;
+using SefimV2.ViewModelSendMail.CiroReportSendMail;
+using iTextSharp.text.html.simpleparser;
+using iTextSharp.text.pdf;
+
+namespace SefimV2.Controllers
+{
+    [CheckLoggedIn]
+    public class CiroRaporlarController : Controller
+    {
+        // GET: CiroRaporlar
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        #region LIST       
+        public ActionResult List()
+        {
+            List<SubeCiro> list;
+            string tarihAraligiStartDate = string.Empty;
+            string tarihAraligiEndDate = string.Empty;
+            try
+            {
+                #region YETKİLİ ID (Left Menude filtrele de yapıyorum)    
+                bool cookieExists = HttpContext.Request.Cookies["PRAUT"] != null;
+                if (cookieExists == false)
+                {
+                    return Redirect("/Authentication/Login");
+                }
+                string ID = Request.Cookies["PRAUT"].Value;
+                ViewBag.YetkiliID = ID;
+                #endregion
+
+                #region Secilen Tarih Filterelemesine Göre Yapılan İşlemler           
+
+                string subeid = string.Empty;
+                string durum = string.Empty;
+                string SendEmail = string.Empty;
+
+                try
+                {
+                    if (Request.QueryString["SendEmail"] != null)
+                        SendEmail = Request.QueryString["SendEmail"].ToString();
+
+                    if (Request.QueryString["durum"] != null)
+                        durum = Request.QueryString["durum"].ToString();
+
+                    if (Request.QueryString["tarihBas"] != null && Request.QueryString["tarihBitis"] != null)
+                    {
+                        tarihAraligiStartDate = Request.QueryString["tarihBas"].ToString();
+                        tarihAraligiEndDate = Request.QueryString["tarihBitis"].ToString();
+                    }
+                    if (Request.QueryString["subeid"] != null)
+                    {
+                        subeid = Request.QueryString["subeid"].ToString();
+                    }
+                    if (SendEmail == "Email")
+                    {
+                        //string ePostaAdress = Request.QueryString["ePostaAdress"].ToString();
+                        //TimeViewModel viewModel_ = Singleton.GetTimeViewModel(tarihAraligiStartDate, tarihAraligiEndDate, durum);
+                        //List<KasaCiroReportSendMailViewModel> list_ = SendMailKasaCiroCRUD.List(Convert.ToDateTime(viewModel_.StartDate), Convert.ToDateTime(viewModel_.EndDate));
+                        //Singleton.ListtoDataTableConverter converter = new Singleton.ListtoDataTableConverter();
+                        //DataTable dt = converter.ToDataTable(list_);
+                        //Singleton sq = new Singleton();
+                        ////sq.ExportExcel(dt, ePostaAdress);
+                        ////localStorage.setItem("I001", ePostaAdress); 
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Singleton.WritingLogFile("SubeUrunlerController_Details", ex.Message.ToString());
+                }
+
+                TimeViewModel viewModel = Singleton.GetTimeViewModel(tarihAraligiStartDate, tarihAraligiEndDate, durum);
+
+                ViewBag.StartDateTime = viewModel.StartDate;
+                ViewBag.EndDateTime = viewModel.EndDate;
+                ViewBag.Pages = "Ciro";
+                ViewBag.PageNavi = "Ciro Raporu";
+                #endregion
+
+                list = SubeCiroCRUD.List(Convert.ToDateTime(viewModel.StartDate), Convert.ToDateTime(viewModel.EndDate), ID);
+            }
+            catch (Exception ex)
+            {
+                Singleton.WritingLogFile2("CiroRaporlarController", ex.ToString(), " :BaslangicTar:" + Convert.ToDateTime(tarihAraligiStartDate.ToString()).ToString("dd'/'MM'/'yyyy HH:mm") + " :BitisTar:" + Convert.ToDateTime(tarihAraligiEndDate.ToString()).ToString("dd'/'MM'/'yyyy HH:mm"), ex.StackTrace);
+                return Redirect("/Authentication/Login");
+            }
+            return View(list);
+        }
+        #endregion LIST
+
+
+        #region  SEND MAİL
+        [HttpGet]
+        public JsonResult SendReportMail(string StartDate, string EndDate, string ePostaAdress, string Pages)
+        {
+            string ID = Request.Cookies["PRAUT"].Value;
+
+            ActionResultMessages data = new ActionResultMessages();
+            #region Zorunu alan kontrolleri
+            if (string.IsNullOrEmpty(ePostaAdress))
+            {
+                data.UserMessage = "Alanlar Boş Geçilemez. Lütfen Kontrol Ediniz.";// Singleton.getObject().ActionMessage("inputEmpty");
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+            #endregion            
+
+
+            //TimeViewModel viewModel_ = Singleton.GetTimeViewModel(StartDate, EndDate, durum);
+            List<CiroReportSendMailViewModel> list_ = SendMailCiroCRUD.List(Convert.ToDateTime(StartDate), Convert.ToDateTime(EndDate), ID);
+
+            Singleton.ListtoDataTableConverter converter = new Singleton.ListtoDataTableConverter();
+
+            DataTable dt = converter.ToDataTable(list_);
+
+            Singleton sq = new Singleton();
+            sq.ExportExcel(dt, ePostaAdress, Pages, StartDate, EndDate);
+
+            //ViewBag.Message = String.Format("Hello{0}.\\ncurrent Date and time:{1}"," test", DateTime.Now.ToString());
+            //TempData["message"] = "Your Message";
+
+            return Json(list_, JsonRequestBehavior.AllowGet);
+            //}
+        }
+        #endregion SEND MAİL
+
+
+        #region PDF
+        [HttpPost]
+        [ValidateInput(false)]
+        public FileResult Export(string GridHtml)
+        {
+            //using (MemoryStream stream = new System.IO.MemoryStream())
+            //{
+            //    StringBuilder sb = new StringBuilder();            
+            string banner = " <table width = '100%' cellspacing = '0' cellpadding = '2' ><b> Sipariş Tablosu </b> ";
+            //"<tr><td align='center' style='background-color: #18B5F0' colspan = '2'><b>Sipariş Tablosu</b></td></tr>";
+            string banner2 = " </table> ";
+            string rt = banner + GridHtml + banner2;
+            //    string[] stringSeparators = new string[] { "\r\n" };
+            //    string[] lines = GridHtml.Split(stringSeparators, StringSplitOptions.None);
+            //    string asdf = lines[1].Replace(" ","");
+            //    StringReader sr = new StringReader(rt);                
+            //    Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 100f, 0f);
+            //    PdfWriter writer = PdfWriter.GetInstance(pdfDoc, stream);
+            //    pdfDoc.Open();
+            //    XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, sr);
+            //    pdfDoc.Close();
+            //    return File(stream.ToArray(), "application/pdf", "PDF_.pdf");
+            //}
+            StringBuilder sb = new StringBuilder();
+            sb.Append("<div>");
+            sb.Append("<b align='center' style='background-color:#b22222;margin-bottom:100px '>Sipariş Tablosu </b> <br/>");
+            sb.Append("<table width='100%' cellspacing='5' cellpadding='2'> ");
+            //sb.Append(" <b>Sipariş Tablosu</b> ");
+            //sb.Append("<tr><td align='center' style='background-color: #18B5F0'><b>Sipariş Tablosu</b></td></tr>");
+            //sb.Append("<tr><td colspan = '2'></td></tr>");
+            sb.Append(GridHtml);
+            sb.Append("</table>");
+            sb.Append("</div>");
+            StringReader sr = new StringReader(sb.ToString());
+
+            Document pdfDoc = new Document(PageSize.A3, 5f, 5f, 80f, 0f);
+            var htmlparser = new HTMLWorker(pdfDoc);
+
+            #region Türkçe karakter sorunu için yazılması gereken kod bloğu.
+            FontFactory.Register(Path.Combine("C:\\Windows\\Fonts\\Arial.ttf"), "Garamond"); // kendi türkçe karakter desteği olan fontunuzu da girebilirsiniz.
+            var css = new StyleSheet();
+            css.LoadTagStyle("body", "face", "Garamond");
+            css.LoadTagStyle("body", "encoding", "Identity-H");
+            css.LoadTagStyle("body", "size", "9pt");
+            htmlparser.SetStyleSheet(css);
+            #endregion
+
+
+            using (MemoryStream stream = new System.IO.MemoryStream())
+            {
+                PdfWriter writer = PdfWriter.GetInstance(pdfDoc, stream);
+                pdfDoc.Open();
+                htmlparser.Parse(sr);
+                pdfDoc.Close();
+                byte[] bytes = stream.ToArray();
+                stream.Close();
+                return File(stream.ToArray(), "application/pdf", "TestPDF.pdf");
+            }
+        }
+        #endregion
+    }
+}

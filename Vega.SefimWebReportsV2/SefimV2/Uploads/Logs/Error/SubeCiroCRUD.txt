@@ -1,0 +1,834 @@
+Created on 4.05.2023 08:46:13
+
+-----------------Log Baslangıç
+Hata Zamanı : 4.05.2023 08:46:13
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "bucarepdb" requested by the login. The login failed.
+Login failed for user 'sa'.
+   konum: SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs içinde: satır 49
+   konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 653
+ Tarih Formatları 
+InnerException:    konum: SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs içinde: satır 49
+   konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 4.05.2023 08:46:53
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "bucarepdb" requested by the login. The login failed.
+Login failed for user 'sa'.
+   konum: SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs içinde: satır 49
+   konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 653
+ Tarih Formatları 
+InnerException:    konum: SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs içinde: satır 49
+   konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 4.05.2023 08:47:53
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "bucarepdb" requested by the login. The login failed.
+Login failed for user 'sa'.
+   konum: SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs içinde: satır 49
+   konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 653
+ Tarih Formatları 
+InnerException:    konum: SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs içinde: satır 49
+   konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 4.05.2023 08:48:06
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "bucarepdb" requested by the login. The login failed.
+Login failed for user 'sa'.
+   konum: SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs içinde: satır 49
+   konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 653
+ Tarih Formatları 
+InnerException:    konum: SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs içinde: satır 49
+   konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 9.08.2023 13:31:46
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 9.08.2023 13:31:46
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Login failed for user 'SA'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 9.08.2023 13:31:46
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Login failed for user 'SA'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 9.08.2023 13:32:36
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 9.08.2023 13:32:36
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 10.08.2023 09:33:40
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 10.08.2023 21:36:18
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 10.08.2023 22:27:23
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 11.08.2023 06:08:02
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 11.08.2023 07:42:16
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 11.08.2023 12:39:48
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 11.08.2023 13:06:33
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 11.08.2023 17:16:01
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 12.08.2023 07:06:48
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 12.08.2023 10:03:46
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 12.08.2023 10:14:49
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 12.08.2023 13:10:56
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 12.08.2023 13:16:51
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 13.08.2023 00:42:52
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 13.08.2023 06:51:50
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 13.08.2023 07:31:27
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 13.08.2023 07:49:14
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 13.08.2023 08:32:01
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 13.08.2023 08:41:22
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 13.08.2023 09:06:44
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 13.08.2023 09:09:19
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 15.08.2023 07:11:01
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 15.08.2023 13:14:09
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 16.08.2023 11:53:31
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 16.08.2023 11:54:11
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 16.08.2023 11:54:11
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 16.08.2023 12:07:22
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 16.08.2023 12:08:03
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 16.08.2023 12:08:04
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 16.08.2023 13:27:05
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 16.08.2023 13:45:10
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 16.08.2023 13:45:22
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 18.08.2023 13:45:51
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 19.08.2023 10:11:33
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 19.08.2023 10:52:25
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 19.08.2023 11:04:19
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 19.08.2023 11:13:29
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 19.08.2023 11:13:45
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 19.08.2023 11:21:54
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 19.08.2023 11:25:31
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 19.08.2023 11:37:49
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 21.08.2023 07:04:31
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 21.08.2023 07:09:09
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 21.08.2023 07:10:51
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 786
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 786
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 21.08.2023 07:12:28
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 786
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 786
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 21.08.2023 07:27:05
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 786
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 786
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 21.08.2023 07:27:26
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "SUBE4" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 21.08.2023 07:38:49
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "trabzonstudyrepdb" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 21.08.2023 07:38:49
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "yuzuncuyilrepdb" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 21.08.2023 07:38:49
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "yuzuncuyilrepdb" requested by the login. The login failed.
+Login failed for user 'sa'.
+   konum: SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs içinde: satır 49
+   konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 653
+ Tarih Formatları 
+InnerException:    konum: SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs içinde: satır 49
+   konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 22.08.2023 00:01:22
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "yuzuncuyilrepdb" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 22.08.2023 00:01:22
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Cannot open database "trabzonstudyrepdb" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+ Tarih Formatları 
+InnerException:    at SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs:line 49
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 653
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 2.09.2023 07:24:07
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: buca
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 943
+ Tarih Formatları 
+InnerException:    at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 943
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 2.09.2023 07:24:07
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: yuzuncuyil
+   konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 943
+ Tarih Formatları 
+InnerException:    konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 943
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 28.10.2023 11:00:28
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: yuzuncuyil
+   konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 947
+ Tarih Formatları 
+InnerException:    konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 947
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 28.10.2023 11:00:28
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: YuzuncuYil_Yeni
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 947
+ Tarih Formatları 
+InnerException:    at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 947
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 28.10.2023 11:00:32
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: yuzuncuyil
+   konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 947
+ Tarih Formatları 
+InnerException:    konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 947
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 28.10.2023 11:00:32
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: YuzuncuYil_Yeni
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 947
+ Tarih Formatları 
+InnerException:    at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 947
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 30.10.2023 21:52:35
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: yuzuncuyil
+   konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 53
+ Tarih Formatları 
+InnerException:    konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 947
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 30.10.2023 21:52:35
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: YuzuncuYil_Yeni
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 947
+ Tarih Formatları 
+InnerException:    at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 947
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 30.10.2023 21:55:36
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: YuzuncuYil_Yeni
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 947
+ Tarih Formatları 
+InnerException:    at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 947
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 30.10.2023 21:55:36
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: yuzuncuyil
+   konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 947
+ Tarih Formatları 
+InnerException:    konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 947
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 4.11.2023 10:11:30
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: YuzuncuYil_Yeni
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 947
+ Tarih Formatları 
+InnerException:    at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 947
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 4.11.2023 10:13:46
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: YuzuncuYil_Yeni
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 947
+ Tarih Formatları 
+InnerException:    at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 947
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 4.11.2023 10:13:46
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: yuzuncuyil
+   konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 947
+ Tarih Formatları 
+InnerException:    konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 947
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 4.11.2023 10:31:27
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: YuzuncuYil_Yeni
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 947
+ Tarih Formatları 
+InnerException:    at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 947
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 4.11.2023 10:31:27
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: yuzuncuyil
+   konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 947
+ Tarih Formatları 
+InnerException:    konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 947
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 4.11.2023 10:31:35
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: YuzuncuYil_Yeni
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 947
+ Tarih Formatları 
+InnerException:    at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 947
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 4.11.2023 10:31:35
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: yuzuncuyil
+   konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 947
+ Tarih Formatları 
+InnerException:    konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 947
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 4.11.2023 10:35:28
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: YuzuncuYil_Yeni
+   at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 947
+ Tarih Formatları 
+InnerException:    at SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs:line 947
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 4.11.2023 10:35:32
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: yuzuncuyil
+   konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 947
+ Tarih Formatları 
+InnerException:    konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 947
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 4.11.2023 10:37:44
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: yuzuncuyil
+   konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r)
+ Tarih Formatları 
+InnerException:    konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r)
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 25.11.2023 10:52:27
+Hata Mesajı : SubeCiroCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Data alınamadı. Hata Detayı:Invalid object name 'DBO.TBLFASTERODEMELER'.
+   konum: SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs içinde: satır 49
+   konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 851
+ Tarih Formatları 
+InnerException:    konum: SefimV2.ModelFunctions.GetSubeDataWithQuery(String conStr, String sqlText) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\ModelFunctions\ModelFunctions.cs içinde: satır 49
+   konum: SefimV2.Models.SubeCiroCRUD.<>c__DisplayClass0_2.<List>b__0(DataRow r) C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\SubeCiroCRUD\SubeCiroCRUD.cs içinde: satır 851
+-----------------Log Bıtıs

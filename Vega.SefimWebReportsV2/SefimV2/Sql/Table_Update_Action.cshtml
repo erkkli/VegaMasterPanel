@@ -1,0 +1,358 @@
+﻿@using System.Xml
+@using CMS.App_Code
+@using System.Data.SqlServerCe;
+@using System.Data.OleDb;
+@using System.Data;
+@{
+
+
+    if (ViewBag.islem == "update")
+    {
+
+        string DatabaseTablesUpdateResult = DatabaseTablesUpdate();
+        if (DatabaseTablesUpdateResult == "true")
+        {
+
+            DateTime tarih = DateTime.Now;
+            string DatabaseUpdateTimeResult = DatabaseUpdateTime(tarih);
+            if (DatabaseUpdateTimeResult == "true")
+            {
+                <info class="gizli">
+                    <sonuc>++OK++</sonuc>
+                    <tarih>@tarih.ToString("dd.MM.yyyy HH:MM:ss")</tarih>
+                </info>
+            }
+            else
+            {
+                Response.Write(DatabaseUpdateTimeResult);
+            }
+        }
+        else
+        {
+            Response.Write(DatabaseTablesUpdateResult);
+        }
+
+
+    }
+
+    if (ViewBag.islem == "databaseinfo")
+    {
+        bool islemsonuc = true;
+
+        try
+        {
+            System.Data.OleDb.OleDbConnection DatabaseBaglantisi = new System.Data.OleDb.OleDbConnection("Provider=SQLOLEDB;Server=" + ViewBag.sqlserver + ";User ID=" + ViewBag.sqlusername + ";Password=" + ViewBag.sqlpassword + ";Database=" + ViewBag.sqldatabasename + "");
+            DatabaseBaglantisi.Open();
+            DatabaseBaglantisi.Close();
+        }
+        catch (Exception ex)
+        {
+            islemsonuc = false;
+            <error>Bu bilgilerle veritabanına erişim sağlanamadı. Lütfen girdiğiniz bilgileri kontrol ediniz.</error><errordetail>@ex.Message.ToString()</errordetail>
+        }
+
+
+        if (islemsonuc == true)
+        {
+
+            string tarih = DateTime.Now.ToString("dd.MM.yyyy HH:mm");
+
+            bool ConfigFileSaveCheck = true;
+            //--start config file
+            try
+            {
+                string connectionstring = "Provider=SQLOLEDB;Server=" + ViewBag.sqlserver + ";User ID=" + ViewBag.sqlusername + ";Password=" + ViewBag.sqlpassword + ";Database=" + ViewBag.sqldatabasename + "";
+                string configdocFileUrl = "/Web.config";
+                XmlDocument configdoc = new XmlDocument();
+                configdoc.Load(Server.MapPath(configdocFileUrl));
+                XmlNode configdocMainNode = configdoc.SelectSingleNode("/configuration");
+                XmlNode configdocSubNode = configdoc.SelectSingleNode("/configuration/connectionStrings/add");
+                configdocSubNode.Attributes["connectionString"].Value = connectionstring;
+                XmlAttribute ConnProviderAttr = configdoc.CreateAttribute("providerName"); ConnProviderAttr.Value = "System.Data.SqlServerCe.4.0";
+                if (ViewBag.veritabanitipi == "server") { ConnProviderAttr.Value = "System.Data.SqlClient"; }
+                configdocSubNode.Attributes.Append(ConnProviderAttr);
+                configdoc.Save(Server.MapPath(configdocFileUrl));
+                //--end config file
+            }
+            catch (System.Exception  ex)
+            {
+                ConfigFileSaveCheck = false;
+                <error>Veritabanı bilgilerini doğru girdiniz ancak bu bilgiler kaydedilemediği için işlem başarısız oldu. Uygulamanın ana dizinindeki <strong>"Web.config" dosyasına erişim izni vermeniz gerekmektedir.</strong></error><errordetail>@ex.Message.ToString()</errordetail>
+            }
+            //--end config file
+
+            if (ConfigFileSaveCheck == true) {
+
+            try
+            {
+                //--start-- info file Save
+                string infoname = ViewBag.infoname;
+                string InfoFileUrl = "/Uploads/System/" + infoname + ".config";
+                string Boxes = ViewBag.boxes;
+                string SubNodeName = ViewBag.subnodename;
+                string MainNodeName = "ayarlar";
+                string[] BoxesBol = Boxes.Split(',');
+                bool InfoFileExist = File.Exists(Server.MapPath(InfoFileUrl));
+                Dictionary<string, string> InfoXmlDictionary = new Dictionary<string, string>();
+                XmlDocument doc = new XmlDocument();
+                try
+                {
+                    if (InfoFileExist == true)
+                    {
+                        doc.Load(Server.MapPath(InfoFileUrl));
+                    }
+                    else { XmlNode docNode = doc.CreateXmlDeclaration("1.0", "UTF-8", null); doc.AppendChild(docNode); }
+                }
+                catch (Exception ex) { }
+                XmlNode MainNode = doc.SelectSingleNode("/" + MainNodeName + "");
+                if (MainNode == null) { MainNode = doc.CreateElement(MainNodeName); doc.AppendChild(MainNode); }
+                XmlNode SubNode = doc.SelectSingleNode("/" + MainNodeName + "/" + SubNodeName + "");
+                XmlAttribute productAttribute = doc.CreateAttribute("tarih"); productAttribute.Value = tarih;
+                if (SubNode == null) { SubNode = doc.CreateElement(SubNodeName); MainNode.AppendChild(SubNode); SubNode.Attributes.Append(productAttribute); }
+                else { SubNode.Attributes["tarih"].Value = tarih; }
+                for (var i = 0; i < BoxesBol.Length; i++)
+                {
+                    XmlNode ChildNode = doc.SelectSingleNode("/" + MainNodeName + "/" + SubNodeName + "/" + BoxesBol[i] + "");
+                    if (ChildNode == null)
+                    {
+                        ChildNode = doc.CreateElement(BoxesBol[i]); SubNode.AppendChild(ChildNode);
+                    }
+                    ChildNode.InnerText = ViewData[BoxesBol[i]].ToString();
+                }
+                doc.Save(Server.MapPath(InfoFileUrl));
+                //--end-- info file Save
+            }
+            catch (Exception ex)
+            {
+<error>Veritabanı bilgilerinin kaydedileceği dosyaya yazma işlemi yapılamadı. Ancak bu durum veritabanı bağlantınız için sorun teşkil etmemektedir.<br />Yine de sistemin doğru çalışabilmesi için <strong>@Server.MapPath("/uploads/system")</strong> klasörüne yazma izni vermeniz gerekmektedir.</error><errordetail>@ex.Message.ToString()</errordetail>
+            }
+
+                 }
+
+
+
+            Response.Write("++OK++");
+            Response.Write("<info>" + ViewData["veritabanitipi"] + "</info>");
+
+        }
+        
+
+    }
+}
+
+@functions{
+
+    public string DatabaseUpdateTime(DateTime updatetime)
+    {
+        string finalresult = "true";
+        try
+        {
+            string tarih = updatetime.ToString();
+            //--start-- info file Save
+            string infoname = "sql-info";
+            string InfoFileUrl = "/Uploads/System/" + infoname + ".config";
+            string SubNodeName = "tablo";
+            string MainNodeName = "ayarlar";
+            bool InfoFileExist = File.Exists(Server.MapPath(InfoFileUrl));
+            Dictionary<string, string> InfoXmlDictionary = new Dictionary<string, string>();
+            XmlDocument doc = new XmlDocument();
+            try
+            {
+                if (InfoFileExist == true)
+                {
+                    doc.Load(Server.MapPath(InfoFileUrl));
+                }
+                else { XmlNode docNode = doc.CreateXmlDeclaration("1.0", "UTF-8", null); doc.AppendChild(docNode); }
+            }
+            catch (Exception ex) { }
+            XmlNode MainNode = doc.SelectSingleNode("/" + MainNodeName + "");
+            if (MainNode == null) { MainNode = doc.CreateElement(MainNodeName); doc.AppendChild(MainNode); }
+            XmlNode SubNode = doc.SelectSingleNode("/" + MainNodeName + "/" + SubNodeName + "");
+            SubNode.InnerText = tarih;
+            XmlAttribute productAttribute = doc.CreateAttribute("tarih"); productAttribute.Value = tarih;
+            if (SubNode == null) { SubNode = doc.CreateElement(SubNodeName); MainNode.AppendChild(SubNode); SubNode.Attributes.Append(productAttribute); }
+            else { SubNode.Attributes["tarih"].Value = tarih; }
+
+            XmlNode ChildNode = doc.SelectSingleNode("/" + MainNodeName + "/" + SubNodeName + "/tabloguncellemetarihi");
+            if (ChildNode == null)
+            {
+                ChildNode = doc.CreateElement("tabloguncellemetarihi"); SubNode.AppendChild(ChildNode);
+
+                ChildNode.InnerText = tarih;
+            }
+            doc.Save(Server.MapPath(InfoFileUrl));
+            //--end-- info file Save
+        }
+        catch
+        {
+            finalresult = "Veritabanı tablo yapısı güncellendi ancak güncelleme zamanı kaydedilemedi.";
+        }
+        return finalresult;
+    }
+
+    public string DatabaseTablesUpdate()
+    {
+        string finalresult = "true";
+        bool DatabaseConn = true;
+        Fonksiyonlar f = new Fonksiyonlar();
+
+        //start database bağlantısı
+        string ConnTest = f.SqlConnTestReturnString();
+        if (ConnTest == "true")
+        {
+            f.SqlConnOpen();
+        }
+        else
+        {
+            DatabaseConn = false;
+            finalresult = "<error>Bağlantı bilgileri hatalı. Veritabanına bağlanılamıyor.</error><errordetail><strong>Bağlantı Dizesi : </strong> " + f.SqlConnString + "<br><br>" + ConnTest + "</errordetail>";
+        }
+
+        //end database bağlantısı
+
+        if (DatabaseConn == true)
+        {
+
+            string TableName = "";
+            string ColumnName = "";
+            string DataType = "";
+            string AllowNull = "";
+            string SQLText = "";
+            bool ColumnExist = false;
+            bool TableExist = false;
+            string TagName = "";
+            string collate = " COLLATE Turkish_CI_AS ";
+
+            try
+            {
+                //start tablo ekle veya guncelle
+                XmlTextReader DataXmlOku = new XmlTextReader(Server.MapPath("/views/admin/Sql/database.config"));
+                while (DataXmlOku.Read())
+                {
+                    switch (DataXmlOku.NodeType)
+                    {
+                        case XmlNodeType.Element: // The node is an element.
+                            TagName = DataXmlOku.Name;
+
+                            //start oluşturulmulmuş sql komutunu çalıştır
+                            if (TagName == "columnEnd" && SQLText != "")
+                            {
+                                SQLText = SQLText.Trim();
+                                if (SQLText.IndexOf("create table") > -1) { SQLText = SQLText.Substring(0, SQLText.Length - 2); SQLText = SQLText + " )"; }
+                                try
+                                {
+                                    f.SQLQuery(SQLText);
+                                }
+                                catch (Exception ex)
+                                {
+                                    finalresult = "<error>SQL işlemi sırasında hata oluştu.</error><errordetail>" + ex.Message.ToString() + "</errordetail>";
+                                }
+
+
+                                SQLText = "";
+                            }
+                            //end oluşturulmulmuş sql komutunu çalıştır
+
+
+                            if (TagName == "table")
+                            {
+                                TableName = DataXmlOku.GetAttribute("name");
+                                //start tablo var yok kontrol
+
+
+                                try
+                                {
+                                    DataTable DataTable = f.DataTable("SELECT count(*) as toplam FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME='" + TableName + "' ");
+                                    foreach (DataRow row in DataTable.Rows) { foreach (DataColumn column in DataTable.Columns) { ViewData[column.ColumnName] = row[column].ToString(); } }
+
+                                    if (Convert.ToInt32(ViewData["toplam"].ToString()) > 0)
+                                    {
+                                        TableExist = true;
+                                    }
+                                    else
+                                    {
+                                        TableExist = false;
+                                        SQLText = "create table " + TableName + " ( id BIGINT PRIMARY KEY IDENTITY(1, 1) NOT NULL , ";
+                                    }
+
+                                }
+                                catch (System.Exception ex)
+                                {
+                                    finalresult = "<error>Veritabanın tablo veya sutün bilgisine ulaşılanadı.</error><errordetail>" + ex.Message.ToString() + "</errordetail>";
+                                }
+                                //end tablo var yok kontrol
+                            }
+
+
+                            if (TagName == "column")
+                            {
+                                ColumnName = DataXmlOku.GetAttribute("name");
+                                DataType = DataXmlOku.GetAttribute("datatype");
+                                AllowNull = " NULL "; if (DataXmlOku.GetAttribute("allownull") == "false") { AllowNull = " NOT NULL "; }
+                                string CollateYaz = " "; if (DataType.IndexOf("char") > -1) { CollateYaz = collate; }
+
+                                string ColumnTypeYaz = " " + DataType + CollateYaz + AllowNull;
+
+
+                                //start sutun var yok kontrol
+                                try
+                                {
+                                    DataTable DataTable = f.DataTable("SELECT count(*) as toplam FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='" + TableName + "' AND COLUMN_NAME='" + ColumnName + "'");
+                                    foreach (DataRow row in DataTable.Rows) { foreach (DataColumn column in DataTable.Columns) { ViewData[column.ColumnName] = row[column].ToString(); } }
+
+                                    if (Convert.ToInt32(ViewData["toplam"].ToString()) > 0)
+                                    {
+                                        ColumnExist = true;
+                                        f.SQLQuery("ALTER TABLE " + TableName + " ALTER COLUMN " + ColumnName + ColumnTypeYaz);
+                                    }
+                                    else
+                                    {
+
+                                        if (TableExist == true)
+                                        {
+                                            f.SQLQuery("ALTER TABLE " + TableName + " ADD " + ColumnName + ColumnTypeYaz);
+                                        }
+                                        else
+                                        {
+                                            SQLText = SQLText + "" + ColumnName + ColumnTypeYaz + " , ";
+                                        }
+                                    }
+
+
+                                }
+                                catch (System.Exception ex)
+                                {
+                                    finalresult = "<error>Veritabanın tablo veya sutün bilgisine ulaşılanadı.</error><errordetail>" + ex.Message.ToString() + "</errordetail>";
+                                }
+                                //end sutun var yok kontrol
+                            }
+                            break;
+                    }
+
+                }
+
+                try { f.SqlConnClose(); } catch (System.Exception ex) { }
+                DataXmlOku.Close();
+            }
+            catch (System.Exception ex)
+            {
+                finalresult = "<error>Veritabani tablo dosyasına erişim sağlanamıyor.</error><errordetail>" + ex.Message.ToString() + "</errordetail>";
+            }
+            //end tablo ekle veya guncelle
+
+            try {
+
+
+            } catch { }
+
+        }
+
+        return finalresult;
+
+    }
+
+
+
+}
+
+

@@ -1,0 +1,21 @@
+﻿.btn-login{
+    background-color: #f01616;
+    border-color: #710f0f;
+}
+.btn-login2{
+    background-color: #843434;
+    border-color: #710f0f;
+    color: white !important;
+}
+
+.btn-login:hover{
+    background-color:#ac0d0d;
+    border-color: #710f0f;
+}
+.btn-login2:hover{
+    background-color:#ac0d0d;
+    border-color: #710f0f;
+}
+body{
+    background-color:#313131;
+}

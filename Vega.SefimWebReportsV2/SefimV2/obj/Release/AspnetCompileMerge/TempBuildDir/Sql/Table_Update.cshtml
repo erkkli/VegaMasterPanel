@@ -1,0 +1,228 @@
+﻿@using CMS.App_Code;
+@{ 
+    ViewBag.Title = "Veritabanı Tablo Güncelleme";
+	string EgitimUrl="DatabaseUpdate";
+    Layout = "~/Views/Admin/Master/Master.cshtml";
+
+	string BoxID;
+	string BoxTitle;
+	bool BoxRequired;
+
+
+string infoname="sql-info";
+
+
+string SubNodeName="database";
+string Boxes="veritabanitipi,sqlserver,sqlusername,sqlpassword,sqldatabasename";
+try{
+System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
+doc.Load(Server.MapPath("/Uploads/System/"+infoname+".config"));
+string[] BoxesBol=Boxes.Split(',');
+for(var i=0;i<BoxesBol.Length;i++){
+ViewData[BoxesBol[i].ToString()]=doc.SelectSingleNode("/ayarlar/"+SubNodeName+"/"+BoxesBol[i].ToString()+"").InnerText;
+}
+}catch(System.Exception ex){}
+
+
+
+
+} 
+           
+<div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Veritabanı Yapısını Belirleme <small>Lütfen Formu Doldurunuz.</small></h2>
+
+<!--form butonlar-->
+<ul class="nav navbar-right panel_toolbox">
+                      
+<li class="dropdown">
+<a href="@AdminTanimlar.AdminEgitimPortalFolder/@EgitimUrl" target="_blank"><i class="fa fa-question"></i></a></li>
+<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+<li><a class="close-link"><i class="fa fa-close"></i></a>
+</li>
+</ul>
+<!--/form butonlar-->
+
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <br />
+<form id="form2" class="form-horizontal form-label-left" autocomplete="off">
+<input type="hidden" name="islem" value="databaseinfo" />
+<input type="hidden" name="boxes" value="@Boxes" />
+<input type="hidden" name="infoname" value="@infoname" />
+<input type="hidden" name="subnodename" value="@SubNodeName" />
+
+<div class="kaplama"></div>
+
+
+
+@{
+BoxID="veritabanitipi";
+BoxTitle="Veritabanı Tipi";
+BoxRequired=true;
+}
+<div class="form-group onChangePanels">
+<label class="control-label col-md-3 col-sm-3 col-xs-12" for="@BoxID">@BoxTitle @if (BoxRequired == true){<span class="required">*</span>}</label>
+<div class="col-md-6 col-sm-6 col-xs-12">
+    <select id="@BoxID" name="@BoxID" @if (BoxRequired == true) { <text> required </text> } class="form-control col-md-7 col-xs-12">
+        <!--<option @if(ViewBag.veritabanitipi=="local"){<text> selected </text>} disabled value="local">MS SQL LITE (Local)</option>-->
+        <option @if (ViewBag.veritabanitipi == "server") { <text> selected </text> } value="server">MS SQL (Server)</option>
+    </select>
+</div></div>
+
+
+<div class="onChangePanel veritabanitipi pan-server">
+
+@{
+BoxID="sqlserver";
+BoxTitle="SQL Server";
+BoxRequired=false;
+}
+<div class="form-group">
+<label class="control-label col-md-3 col-sm-3 col-xs-12" for="@BoxID">@BoxTitle @if (BoxRequired == true){<span class="required">*</span>}</label>
+<div class="col-md-6 col-sm-6 col-xs-12">
+<input type="text" value="@ViewData[BoxID]"  id="@BoxID" name="@BoxID" @if(BoxRequired==true){<text> required </text>} class="form-control col-md-7 col-xs-12">
+</div></div>
+
+
+
+@{
+BoxID="sqlusername";
+BoxTitle="SQL Kullanıcı Adı";
+BoxRequired=false;
+}
+<div class="form-group">
+<label class="control-label col-md-3 col-sm-3 col-xs-12" for="@BoxID">@BoxTitle @if (BoxRequired == true){<span class="required">*</span>}</label>
+<div class="col-md-6 col-sm-6 col-xs-12">
+<input type="text" value="@ViewData[BoxID]"  id="@BoxID" name="@BoxID" @if(BoxRequired==true){<text> required </text>} class="form-control col-md-7 col-xs-12">
+</div></div>
+
+@{
+BoxID="sqlpassword";
+BoxTitle="SQL Şifresi";
+BoxRequired=false;
+}
+<div class="form-group">
+<label class="control-label col-md-3 col-sm-3 col-xs-12" for="@BoxID">@BoxTitle @if (BoxRequired == true){<span class="required">*</span>}</label>
+<div class="col-md-6 col-sm-6 col-xs-12">
+<input type="password" value="@ViewData[BoxID]" autocomplete="new-password" id="@BoxID" name="@BoxID" @if(BoxRequired==true){<text> required </text>} class="form-control col-md-7 col-xs-12">
+</div></div>
+
+</div>
+
+@{
+BoxID="sqldatabasename";
+BoxTitle="SQL veritabanı Adı";
+BoxRequired=false;
+}
+<div class="form-group">
+<label class="control-label col-md-3 col-sm-3 col-xs-12" for="@BoxID">@BoxTitle @if (BoxRequired == true){<span class="required">*</span>}</label>
+<div class="col-md-6 col-sm-6 col-xs-12">
+<input type="text" value="@ViewData[BoxID]"  id="@BoxID" name="@BoxID" @if(BoxRequired==true){<text> required </text>} class="form-control col-md-7 col-xs-12">
+</div></div>
+
+
+    
+                  
+                      <div class="ln_solid"></div>
+                      <div class="form-group">
+                        <div class="col-md-12 col-sm-6 col-xs-12 col-md-offset-0">
+                          <button type="submit" name="button" value="update" class="btn btn-primary submitbutton formloading"><i class="fa fa-refresh mr-10"></i><span>Güncelle</span></button>
+                       </div>
+                      </div>
+
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+ 
+@{
+SubNodeName="tablo";
+Boxes="tabloguncellemetarihi";
+try{
+System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
+doc.Load(Server.MapPath("/Uploads/System/"+infoname+".config"));
+string[] BoxesBol=Boxes.Split(',');
+for(var i=0;i<BoxesBol.Length;i++){
+ViewData[BoxesBol[i].ToString()]=doc.SelectSingleNode("/ayarlar/"+SubNodeName+"/"+BoxesBol[i].ToString()+"").InnerText;
+}
+}catch(System.Exception ex){
+ViewBag.tabloguncellemetarihi="Daha Önce Güncelleme Yapılmadı. Veya Sistem Hatası.";
+}
+}
+
+       
+<div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Veritabanı Tablo Güncelleme <small>Lütfen Formu Doldurunuz.</small></h2>
+
+<!--form butonlar-->
+<ul class="nav navbar-right panel_toolbox">
+                      
+<li class="dropdown">
+<a href="@AdminTanimlar.AdminEgitimPortalFolder/@EgitimUrl" target="_blank"><i class="fa fa-question"></i></a></li>
+<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+<li><a class="close-link"><i class="fa fa-close"></i></a>
+</li>
+</ul>
+<!--/form butonlar-->
+
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <br />
+                    <form id="form" class="form-horizontal form-label-left">
+<input type="hidden" name="islem" value="update" />
+<input type="hidden" name="boxes" value="@Boxes" />
+<input type="hidden" name="infoname" value="@infoname" />
+<input type="hidden" name="subnodename" value="@SubNodeName" />
+<div class="kaplama"></div>
+
+@{
+BoxID="tabloguncellemetarihi";
+BoxTitle="Son Güncelleme Tarihi";
+BoxRequired=false;
+}
+<div class="form-group">
+<label class="control-label col-md-3 col-sm-3 col-xs-12" for="@BoxID">@BoxTitle @if (BoxRequired == true){<span class="required">*</span>}</label>
+<div class="col-md-6 col-sm-6 col-xs-12">
+<input readonly="readonly" type="text" value="@ViewBag.tabloguncellemetarihi" id="@BoxID" name="@BoxID" @if(BoxRequired==true){<text> required </text>} class="form-control col-md-7 col-xs-12">
+</div></div>
+    
+                  
+                      <div class="ln_solid"></div>
+                      <div class="form-group">
+                        <div class="col-md-12 col-sm-6 col-xs-12 col-md-offset-0">
+                          <button type="submit" name="button" value="update" class="btn btn-primary submitbutton formloading"><i class="fa fa-refresh mr-10"></i><span>Güncelle</span></button>
+                       </div>
+                      </div>
+
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+@section bodyend{
+<script type="text/javascript">
+$(document).ready(function () {
+FormValidate("form");
+FormValidate("form2");
+});
+function FormAfterEvents(formid, data) {
+if (formid == "form") {
+$("form#" + formid + " input#tabloguncellemetarihi").val(TagBul(data, "tarih"));
+}
+}
+</script>
+@Scripts.Render("~/admin/js/formvalidate")
+
+}

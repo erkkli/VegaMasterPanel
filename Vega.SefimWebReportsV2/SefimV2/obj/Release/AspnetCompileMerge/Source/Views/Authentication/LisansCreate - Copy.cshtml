@@ -1,0 +1,164 @@
+﻿@model SefimV2.Models.License.LisansViewModel
+
+@{
+    #region base URL bilgisi set ediliyor
+    var urlHelper = new UrlHelper(Html.ViewContext.RequestContext);
+    string baseUrl = urlHelper.Content("~");
+    #endregion
+
+    #region View tanımları
+    ViewBag.Title = "";
+    string PagecontentClass = "";
+    string CloseButton = "";
+    string CloseButtonHeader = "";
+    string CancelButton = "";
+
+    string Controller = ViewBag.Controller;
+    Dictionary<string, string> PageNavi = ViewBag.PageNavi;
+
+
+
+    PagecontentClass = "page-content";
+    CancelButton = "<a href='" + Url.Action("Index", "Authentication/Login") + "' class='btn btn-danger'> Vazgeç </a>";
+
+
+    #endregion
+}
+
+
+
+<html lang="en">
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Şefim WebReports V2 - Giriş</title>
+
+    <link href="~/Assets/css/style.css" rel="stylesheet" />
+    <link href="~/Assets/css/bootstrap.min.css" rel="stylesheet" />
+
+
+
+    <script src="~/Scripts/jquery-1.8.0.js"></script>
+
+
+
+</head>
+
+<body>
+    <header>
+        <div class="row-fluid">
+            <div class="col-lg-12">
+                <div style="padding:1px;">
+                    <div class="text-center">
+                        <img src="~/img/SefimLogoKucuk.png" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-panel panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Lisans </h3>
+                    </div>
+                    <div class="panel-body">
+                        <section class="login_content">
+                            @using (Ajax.BeginForm("LisansCreate", "Authentication", FormMethod.Post, new AjaxOptions { OnSuccess = "OnSuccess", OnBegin = "OnBegin", OnComplete = "OnComplete" }, htmlAttributes: new { @class = "m-form", @id = "AuthenticationLisansCreate" }))
+                            {
+                                <div class="col-md-12">
+                                    <div class="form-group m-form__group row">
+                                        <label class="col-form-label col-lg-9 col-sm-12"> Kullanıcı Adı <span class="required"> * </span></label>
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            @Html.TextBoxFor(m => m.username, htmlAttributes: new { @id = "username", @maxlength = "255", @class = "form-control", @placeholder = "Kullanıcı Adı" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group m-form__group row">
+                                        <label class="col-form-label col-lg-9 col-sm-12"> Şifre <span class="required"> * </span></label>
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            @Html.TextBoxFor(m => m.password, htmlAttributes: new { @id = "password", @maxlength = "255", @class = "form-control", @placeholder = "Şifre" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*<div class="col-md-12">
+                                        <div class="form-group m-form__group row">
+                                            <label class="col-form-label col-lg-9 col-sm-12"> Ürün ID <span class="required"> * </span></label>
+                                            <div class="col-lg-12 col-md-12 col-sm-12">
+
+                                                @Html.TextBoxFor(m => m.productID, htmlAttributes: new { @id = "productID", @maxlength = "255", @class = "form-control", @placeholder = "Ürün ID" })
+                                            </div>
+                                        </div>
+                                    </div>*@
+
+                                <div class="col-md-12">
+                                    <div class="form-group m-form__group row">
+                                        <label class="col-form-label col-lg-9 col-sm-12"> Firma Kodu <span class="required"> * </span></label>
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            @Html.TextBoxFor(m => m.companyCode, htmlAttributes: new { @id = "companyCode", @maxlength = "255", @class = "form-control", @placeholder = "Firma Kodu" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group m-form__group row">
+                                        <label class="col-form-label col-lg-9 col-sm-12"> Licence Anahtarı <span class="required"> * </span></label>
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            @Html.TextBoxFor(m => m.licenceKey, htmlAttributes: new { @id = "licenceKey", @maxlength = "255", @class = "form-control", @placeholder = "Lisans Anaktarı" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*   <button type="submit" class="btn btn-lg btn-success btn-block"> Giriş Yap</button>*@
+                                <div class="m-portlet__foot m-portlet__foot--fit">
+                                    <div class="m-form__actions m-form__actions" style="padding-left:15px">
+                                        @*<button type="submit" class="btn btn-primary btn-app"> Kaydet </button>*@
+                                        <button type="submit" class="btn btn-primary"> Kaydet </button>
+                                        @Html.Raw(CancelButton)
+                                        @Html.Raw(CloseButton)
+                                    </div>
+                                </div>
+
+                                <div class="clearfix"></div>
+
+
+                                if (Model.IsSuccess == false)
+                                {
+                                    <div class="col-md-12 text-center" style="padding-top:30px">
+                                        <div class="alert alert-danger form-control" role="alert" style="padding:1px; height:60px">
+                                            @Html.DisplayFor(m => m.UserMessage)
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                }
+                            }
+                        </section>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="row-fluid">
+            <div>
+                <p class="text-center">
+                    <span style="padding-right:15px;">Copyright © @DateTime.Now.Year Vegayazilim.com.tr</span>
+                    <img src="~/img/VegaYazilimKucukLogo.png" style="height:20px; width:20px;" />
+                </p>
+            </div>
+        </div>
+    </footer>
+    <script type="text/javascript">
+
+    </script>
+</body>
+</html>

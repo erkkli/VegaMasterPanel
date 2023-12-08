@@ -1,0 +1,33 @@
+Created on 8.04.2023 10:15:08
+DateTime: 8.04.2023 10:15:08
+ActionName: SefimPanelUrunEkleCRUD_Copy2
+LogText: bomStokId:387 UrunId: 11 SubeId: 1 KullaniciId: 4 QueryBom:select * from bom where ProductId=11
+-----------------
+DateTime: 8.04.2023 10:15:09
+ActionName: SefimPanelUrunEkleCRUD_Copy2
+LogText: bomStokId:487 UrunId: 11 SubeId: 1 KullaniciId: 4 QueryBom:select * from bom where ProductId=11
+-----------------
+DateTime: 8.04.2023 10:15:10
+ActionName: SefimPanelUrunEkleCRUD_Copy2
+LogText: bomStokId:480 UrunId: 11 SubeId: 1 KullaniciId: 4 QueryBom:select * from bom where ProductId=11
+-----------------
+DateTime: 8.04.2023 10:16:10
+ActionName: SefimPanelUrunEkleCRUD_Copy2
+LogText: bomStokId:454 UrunId: 209 SubeId: 1 KullaniciId: 4 QueryBom:select * from bom where ProductId=209
+-----------------
+DateTime: 8.04.2023 10:44:29
+ActionName: SefimPanelUrunEkleCRUD_Copy2
+LogText: bomStokId:513 UrunId: 39 SubeId: 1 KullaniciId: 4 QueryBom:select * from bom where ProductId=39
+-----------------
+DateTime: 8.04.2023 10:44:31
+ActionName: SefimPanelUrunEkleCRUD_Copy2
+LogText: bomStokId:101 UrunId: 39 SubeId: 1 KullaniciId: 4 QueryBom:select * from bom where ProductId=39
+-----------------
+DateTime: 8.04.2023 10:44:47
+ActionName: SefimPanelUrunEkleCRUD_Copy2
+LogText: bomStokId:513 UrunId: 39 SubeId: 1 KullaniciId: 4 QueryBom:select * from bom where ProductId=39
+-----------------
+DateTime: 8.04.2023 10:44:48
+ActionName: SefimPanelUrunEkleCRUD_Copy2
+LogText: bomStokId:101 UrunId: 39 SubeId: 1 KullaniciId: 4 QueryBom:select * from bom where ProductId=39
+-----------------

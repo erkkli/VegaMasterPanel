@@ -1,0 +1,10 @@
+Created on 8.04.2023 14:35:10
+
+-----------------Log Baslangıç
+Hata Zamanı : 8.04.2023 14:35:10
+Hata Mesajı : SubeUrunCRUD1 Hata Oluştu
+Hata Açıklaması : System.NullReferenceException: Nesne başvurusu bir nesnenin örneğine ayarlanmadı.
+   konum: SefimV2.Models.SubeUrunCRUD.<>c__DisplayClass0_1.<List>b__0(DataRow r)
+ Tarih Formatları 
+InnerException:    konum: SefimV2.Models.SubeUrunCRUD.<>c__DisplayClass0_1.<List>b__0(DataRow r)
+-----------------Log Bıtıs

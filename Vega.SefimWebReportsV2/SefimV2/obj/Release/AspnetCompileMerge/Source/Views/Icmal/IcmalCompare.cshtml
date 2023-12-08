@@ -1,0 +1,211 @@
+﻿@{
+    string StartDateTime = ViewBag.StartDateTime;
+    var EndDateTime = ViewBag.EndDateTime;
+    ViewBag.Title = "Icmal Raporları" + " \n\rTarih: " + StartDateTime + " / " + EndDateTime + " ";
+    //Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    Layout = "~/Views/Shared/_LayoutPageSPos.cshtml";
+}
+
+@model SefimV2.ViewModels.Icmal.IcmalViewModel
+
+@*<link href="~/Content/ContentSefPanel/css/fieldset/jquery.coolfieldset.css" rel="stylesheet" />
+    <link href="~/Content/ContentSefPanel/css/eker/eker.css" rel="stylesheet" />*@
+
+<fieldset class="well the-fieldset margin-bottom-5 padding-bottom-10 padding-top-10 table-responsive-lg">
+    <legend class="the-legend">İcmal Karşılaştırma</legend>
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="form-group">
+            <div class="col-md-offset-5 col-md-7">
+
+                @if (Model.IcmalSalesTypesTemp != null && Model.IcmalSalesTypesTemp.FirstOrDefault().OnayDurumu == SefimV2.Enums.General.OnayDurumu.OnayBekliyor)
+                {
+                    <a class='btn  btn-success' href="@Url.Action("IcmalOnayla", "Icmal",
+                                                                            new {
+                                                                                 id=Model.IcmalSalesTypesTemp?.FirstOrDefault().IcmalPaymentId,
+                                                                                 subeId=Model.IcmalSalesTypesTemp?.FirstOrDefault().SubeId,
+                                                                                 onayDurumu=SefimV2.Enums.General.OnayDurumu.Onayli
+                                                                             }) " onclick="return confirm('İcmali Onaylamak İstediğinize Emimnisiniz?')" title="Şubeye girilen satışları onaylar. ">
+                        <span class="glyphicon glyphicon-ok"></span>
+                        Onayla
+                    </a>
+                }
+                else if (Model.UserId == "1" && Model.IcmalSalesTypesTemp.FirstOrDefault().OnayDurumu == SefimV2.Enums.General.OnayDurumu.Onayli)
+                {
+                    <a class='btn  btn-danger' href="@Url.Action("IcmalOnayla", "Icmal",
+                                                                            new {
+                                                                                 id=Model.IcmalSalesTypesTemp?.FirstOrDefault().IcmalPaymentId,
+                                                                                 subeId=Model.IcmalSalesTypesTemp?.FirstOrDefault().SubeId,
+                                                                                 onayDurumu=SefimV2.Enums.General.OnayDurumu.OnayBekliyor
+                                                                             }) " onclick="return confirm('Onaylanmış İcmali Geri Almak İstediğinize Emimnisiniz?')" title="Şubeye girilen onaylı icmali geri alır.">
+
+                        Onayı Geri Al
+                        <i class="fa fa-undo"></i>
+                    </a>
+                }
+
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="table-responsive">
+            <table id="tableRaporIcmalComapare" class="table table-hover table-bordered">
+                <thead id="Pdfid">
+                    <tr style="background-color:#e3e6eb">
+                        <th>İşlem</th>
+                        <th>Şube</th>
+                        <th>Nakit</th>
+                        <th>K.Kartı</th>
+                        <th>Y.Çeki</th>
+                        <th>Online S.</th>
+                        <th>Açık Hesap</th>
+                        <th>Onay Durumu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        try
+                        {
+                            foreach (var item in Model.IcmalSalesTypesBranch)
+                            {
+                                <tr style="color:#000000;font-weight:bold ">
+                                    <td> Şubeden Gelen</td>
+                                    <td> @item.SubeName</td>
+                                    <td> @String.Format("{0:#,###.00;-#,###.00;0}", item.CashAmount) </td>
+                                    <td> @String.Format("{0:#,###.00;-#,###.00;0}", item.KreditAmount) </td>
+                                    <td> @String.Format("{0:#,###.00;-#,###.00;0}", item.TicketAmount) </td>
+                                    <td> @String.Format("{0:#,###.00;-#,###.00;0}", item.OnlineAmount) </td>
+                                    <td> @String.Format("{0:#,###.00;-#,###.00;0}", item.DebitAmount) </td>
+                                    <td>-</td>
+                                </tr>
+                            }
+
+                            foreach (var item in Model.IcmalSalesTypesTemp)
+                            {
+                                <tr style="color:#000000;font-weight:bold;background-color:#ecf8ee ">
+                                    <td> Kasiyer Girişi</td>
+                                    <td> @item.SubeName</td>
+                                    <td> @String.Format("{0:#,###.00;-#,###.00;0}", item.CashAmount) </td>
+                                    <td> @String.Format("{0:#,###.00;-#,###.00;0}", item.KreditAmount) </td>
+                                    <td> @String.Format("{0:#,###.00;-#,###.00;0}", item.TicketAmount) </td>
+                                    <td> @String.Format("{0:#,###.00;-#,###.00;0}", item.OnlineAmount) </td>
+                                    <td> @String.Format("{0:#,###.00;-#,###.00;0}", item.DebitAmount) </td>
+                                    <td> @((SefimV2.Enums.General.OnayDurumu)item.OnayDurumu)</td>
+                                </tr>
+                            }
+                        }
+                        catch (Exception)
+                        { }
+                    }
+                </tbody>
+                <tfoot>
+                    <tr class="total" style=" background-color:#d9534f;color:#ffffff; font-weight:bold ">
+                        <td>-</td>
+                        <td>Fark</td>
+                        <td>@String.Format("{0:#,###.00;-#,###.00;0}", Model.IcmalSalesTypesTemp.FirstOrDefault().CashAmount - Model.IcmalSalesTypesBranch.FirstOrDefault().CashAmount) </td>
+                        <td>@String.Format("{0:#,###.00;-#,###.00;0}", Model.IcmalSalesTypesTemp.FirstOrDefault().KreditAmount - Model.IcmalSalesTypesBranch.FirstOrDefault().KreditAmount) </td>
+                        <td>@String.Format("{0:#,###.00;-#,###.00;0}", Model.IcmalSalesTypesTemp.FirstOrDefault().TicketAmount-Model.IcmalSalesTypesBranch.FirstOrDefault().TicketAmount)</td>
+                        <td>@String.Format("{0:#,###.00;-#,###.00;0}", Model.IcmalSalesTypesTemp.FirstOrDefault().OnlineAmount-Model.IcmalSalesTypesBranch.FirstOrDefault().OnlineAmount) </td>
+                        <td>@String.Format("{0:#,###.00;-#,###.00;0}", Model.IcmalSalesTypesTemp.FirstOrDefault().DebitAmount- Model.IcmalSalesTypesBranch.FirstOrDefault().DebitAmount) </td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</fieldset>
+@*<div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="table-responsive">
+            <table id="tableRaporIcmalComapare2" class="table table-hover table-bordered">
+                <thead id="Pdfid">
+                    <tr>
+                        <th>Nakit</th>
+                        <th>K.Kartı</th>
+                        <th>Y.Çeki</th>
+                        <th>Online S.</th>
+                        <th>Açık Hesap</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        try
+                        {
+                            foreach (var item in Model.IcmalSalesTypesBranch)
+                            {
+                                <tr style="color:#000000;font-weight:bold ">
+                                    <td> Şubeden Gelen</td>
+                                    <td> @String.Format("{0:#,###.00;-#,###.00;0}", item.CashAmount) </td>
+                                    <td> @String.Format("{0:#,###.00;-#,###.00;0}", item.KreditAmount) </td>
+                                    <td> @String.Format("{0:#,###.00;-#,###.00;0}", item.TicketAmount) </td>
+                                    <td>@String.Format("{0:#,###.00;-#,###.00;0}", item.OnlineAmount) </td>
+                                    <td> @String.Format("{0:#,###.00;-#,###.00;0}", item.DebitAmount) </td>
+                                </tr>
+                            }
+                        }
+                        catch (Exception)
+                        { }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>*@
+
+@*<script src="~/Scripts/Scripts/jquery.validate-vsdoc.js"></script>
+    <script src="~/Scripts/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/Scripts/fieldset/jquery.coolfieldset.js"></script>
+    <script src="~/Scripts/Scripts/custom/eker/eker.js"></script>*@
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var buttonCommon = {
+            exportOptions: {
+                format: {
+                    body: function (data, row, column, node) {
+                        console.log(" data_", data);
+                        return data.replace(/[$,.]/g, '.')
+                        data;
+                    }
+                }
+            }
+        };
+
+        $('#tableRaporIcmalComapare').DataTable({
+            language: {
+                info: "_TOTAL_ kayıttan _START_ - _END_ kayıt gösteriliyor.",
+                infoEmpty: "Gösterilecek hiç kayıt yok.",
+                loadingRecords: "Kayıtlar yükleniyor.",
+                zeroRecords: "Tablo boş",
+                search: "Arama:",
+                infoFiltered: "(toplam _MAX_ kayıttan filtrelenenler)",
+                buttons: {
+                    copyTitle: "Panoya kopyalandı.",
+                    copySuccess: "Panoya %d satır kopyalandı",
+                    copy: "Kopyala",
+                    print: "Yazdır",
+                },
+                paginate: {
+                    first: "İlk",
+                    previous: "Önceki",
+                    next: "Sonraki",
+                    last: "Son"
+                },
+            },
+            dom: 'Bfrtip',
+            "pageLength": 80,
+            buttons: [
+                $.extend(true, {}, buttonCommon, {
+                    extend: 'copyHtml5'
+                }),
+                $.extend(true, {}, buttonCommon, {
+                    extend: 'excelHtml5'
+                }),
+                $.extend(true, {}, buttonCommon, {
+                    extend: 'pdfHtml5'
+                }),
+                'print'
+            ],
+        });
+    });
+</script>

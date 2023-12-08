@@ -1,0 +1,100 @@
+﻿@model SefimV2.ViewModels.SPosVeriGonderimi.UrunEditViewModel
+
+<div class="m-content">
+    <div class="row" style="margin:10px">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div id="notification"></div>
+                </div>
+                <div id="vekaletValidationErrors" class="validation-summary-errors" style="display:none">
+                    @*<ul>
+                            @if (Model.ErrorList.Count > 0)
+                            {
+                                foreach (var errors in Model.ErrorList)
+                                {
+                                    <li>@errors</li>
+                                }
+                            }
+                        </ul>*@
+                </div>
+            </div>
+            <div class="m-portlet">
+                <div class="m-subheader margin-bottom-10">
+                    <div class="d-flex align-items-center">
+                        <div class="mr-auto">
+                            <h2 class="m-subheader__title m-subheader__title--separator" style="text-align:center;margin-top:1px;margin-bottom:1px">@ViewBag.SubeName Şubesi Secenekler-1 Listesi</h2>
+                        </div>
+                    </div>
+                </div>
+
+                @using (Html.BeginForm("OptionsEdit", "SefimPanelVeriGonderimi", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary()
+                    @*@Html.AntiForgeryToken()
+                        @Html.ValidationSummary(false, "")*@
+                    @Html.HiddenFor(Model => Model.SubeId)
+                    <div class="m-portlet__body">
+
+                        @if (Model.UrunEditList != null && Model.UrunEditList.Count > 0)
+                        {
+                            <table id="tableFiyatGuncelle" class="table table-hover table-bordered table-condensed">
+                                <thead>
+                                    <tr style="background: #fffaf0; color:black">
+                                        <th>@Html.DisplayNameFor(m => m.UrunEditList.First().ProductName)</th>
+                                        <th>@Html.DisplayNameFor(m => m.UrunEditList.First().ProductGroup)</th>
+                                        <th>@Html.DisplayNameFor(m => m.UrunEditList.First().Price)</th>
+                                        <th>@Html.DisplayNameFor(m => m.UrunEditList.First().OptionsProductName)</th>
+                                        <th>@Html.DisplayNameFor(m => m.UrunEditList.First().OptionsPrice)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (Model.UrunEditList != null && Model.UrunEditList.Count > 0)
+                                        {
+                                            for (int i = 0; i < Model.UrunEditList.ToList().OrderBy(x => x.ProductName).Count(); i++)
+                                            {
+                                                @Html.HiddenFor(m => Model.UrunEditList[i].Id)
+                                                @Html.HiddenFor(m => Model.UrunEditList[i].OptionsId)
+                                                @Html.HiddenFor(m => Model.UrunEditList[i].ProductName)
+                                                @Html.HiddenFor(m => Model.UrunEditList[i].ProductGroup)
+                                                @Html.HiddenFor(m => Model.UrunEditList[i].OptionsProductName)
+                                                <tr>
+                                                    <td> @Model.UrunEditList[i].ProductName  </td>
+                                                    <td> @Model.UrunEditList[i].ProductGroup </td>
+                                                    <td> @Model.UrunEditList[i].Price </td>
+                                                    <td> @Model.UrunEditList[i].OptionsProductName </td>
+                                                    <td> @Html.EditorFor(m => Model.UrunEditList[i].OptionsPrice, new { htmlAttributes = new { @id = Model.UrunEditList[i].OptionsId, @class = "form-control", data_val = "true", data_val_required = "Ürün Fiyatı boş bırakılamaz" } }) </td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <div class="alert alert-warning no-margin">Ürün bulunmamaktadır.</div>
+                        }
+                    </div>
+                    <div class="col-md-offset-5 col-md-7">
+                        <a href="@Url.Action("FiyatGuncelleEdit","SefimPanelVeriGonderimi", new { subeId = Model.SubeId })" class="btn btn-danger btn-lg">
+                            Vazgeç
+                        </a>
+                        <input type="submit" value="Kaydet" class="btn btn-lg btn-success" />
+                        @* <button type="submit" class="btn btn-success"><i class="flaticon-music-2"></i>   Kaydet  </button>*@
+                    </div>
+
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+</script>
+
+

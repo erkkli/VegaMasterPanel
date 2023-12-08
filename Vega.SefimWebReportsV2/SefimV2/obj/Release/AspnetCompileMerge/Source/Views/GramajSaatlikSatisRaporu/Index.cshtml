@@ -1,0 +1,800 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPageReports.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+<style>
+    .dataTables_wrapper, #saateGoreSatislar, #gunlereGoreSatislar {
+        -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.58);
+        -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.58);
+        box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.58);
+        padding: 10px
+    }
+
+    table tbody tr td:nth-child(2), table tbody tr td:nth-child(3), table tbody tr td:nth-child(4) {
+        text-align: right
+    }
+
+    table tbody tr {
+        cursor: pointer
+    }
+
+    table caption b {
+        color: black
+    }
+
+    table caption button {
+        float: right
+    }
+</style>
+<div class="form-group">
+    <div>
+        <button id="btnToday" onclick="dateButtonClick(this)" class="btnToday btn btn-primary pull-left" type="button"><i class="glyphicon"></i>Bugün</button>
+        <button id="btnYesterday" onclick="dateButtonClick(this)" class="btnYesterday btn btn-primary pull-left" type="button"><i class="glyphicon"></i>Dün</button>
+        <button id="btnMonth" onclick="dateButtonClick(this)" class="btnMonth btn btn-primary pull-left" type="button"><i class="glyphicon"></i>Bu Ay</button>
+    </div>
+    <div style="float:left">
+        <div class="controls" style="float:left">
+            <div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                <input type="text" class="form-control has-feedback-left" id="dateGecerlilikTarihi" placeholder="Seçiniz" aria-describedby="inputSuccess2Status4">
+                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                <span id="inputSuccess2Status4" class="sr-only">(success)</span>
+            </div>
+        </div>
+        <div class="controls" style="float:left">
+            <div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                <input type="text" class="form-control has-feedback-left" id="dateBitisTarihi" placeholder="Seçiniz" aria-describedby="inputSuccess2Status5">
+                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                <span id="inputSuccess2Status5" class="sr-only">(success)</span>
+            </div>
+        </div>
+        <a class="btn btn-primary btn-sm text-white" onclick="searchFunc()"><i class="fa fa-search"></i></a>
+
+    </div>
+    <div style="clear:both"></div>
+</div>
+
+<div class="row" id="tableDiv">
+
+</div>
+
+
+
+<script type="text/javascript">
+    var KOD1 = "";
+    var KOD2 = "";
+    var SUBEADI = "";
+    var URUNADI = "";
+    var TEKTRH = "";
+    var GUN = "";
+    var SAAT = "";
+
+    function formatCurrency(currency) {
+        var currency_symbol = "₺"
+        var formattedOutput = new Intl.NumberFormat('tr-TR', {
+            style: 'currency',
+            currency: 'TRY',
+            minimumFractionDigits: 2,
+        });
+
+        return formattedOutput.format(currency).replace(currency_symbol, '')
+    }
+    $(document).ready(function () {
+        $("#loading").attr("style", "position: fixed;top:0");
+        $("#loading").attr("class", "myloading-active");
+        setTimeout(function () {
+            $("#loading").attr("class", "myloading");
+        }, 1500);
+
+
+    });
+    Date.prototype.addHours = function (hour) {
+        var date = new Date(this.valueOf());
+        date.setHours(date.getDate() + hour);
+        return date;
+    }
+    function dateButtonClick(btn) {
+        var theData = {
+            btnID: btn.id
+        }
+        $.ajax({
+            url: '/SatislarAnaliz/dateButtonClick',
+            type: 'GET',
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                var result = JSON.parse(data);
+                $("#dateGecerlilikTarihi").val(result.startDate)
+                $("#dateBitisTarihi").val(result.endDate)
+                searchFunc();
+            }
+        });
+    }
+
+    var index = 0;
+    function isLoading() {
+
+        index++;
+        if (index == 7) {
+            $("#loading").attr("class", "myloading");
+            index = 0;
+        }
+    }
+    function gunlerTurkce(gun) {
+        if (gun.toLocaleLowerCase() == "sunday")
+            return "Pazar";
+        if (gun.toLocaleLowerCase() == "monday")
+            return "Pazartesi";
+        if (gun.toLocaleLowerCase() == "tuesday")
+            return "Salı";
+        if (gun.toLocaleLowerCase() == "wednesday")
+            return "Çarşamba";
+        if (gun.toLocaleLowerCase() == "thursday")
+            return "Perşembe";
+        if (gun.toLocaleLowerCase() == "friday")
+            return "Cuma";
+        if (gun.toLocaleLowerCase() == "saturday")
+            return "Cumartesi";
+
+    }
+
+    function searchFunc() {
+        $("#loading").attr("class", "myloading-active");
+        var html = `
+                    <div class="col-md-6">
+                        <table class="table table-hover table-sm table-striped shadow" id="donerCesitlerineGore">
+                            <caption><b>Döner Çeşitlerine Göre</b>
+
+                                    </caption>
+                            <thead>
+                                <tr>
+                                    <th>Çeşit</th>
+                                    <th>Kilogram</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <br/><br/>
+                        <div class="row">
+                         <div class="col-md-6">
+                                     <table class="table table-hover table-sm table-striped shadow" id="tarihlereGore">
+                                        <caption><b>Tarihlere Göre</b>
+
+                                                </caption>
+                                        <thead>
+                                            <tr>
+                                                <th>Tarih</th>
+                                                <th>Kilogram</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                         </div>
+                         <div class="col-md-6">
+                            <table class="table table-hover table-sm table-striped shadow" id="gunlereGore">
+                                <caption><b>Günlere Göre</b>
+
+                                        </caption>
+                                <thead>
+                                    <tr>
+                                        <th>Gün</th>
+                                        <th>Kilogram</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <br/><br/>
+                            <table class="table table-hover table-sm table-striped shadow" id="saatlereGore">
+                                <caption><b>Saatlere Göre</b>
+
+                                        </caption>
+                                <thead>
+                                    <tr>
+                                        <th>Saat</th>
+                                        <th>Kilogram</th>
+                                        <th>Toplam Satış</th>
+                                        <th>Oran</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+
+                        </div>
+                        </div>
+
+                     
+                    </div>
+                    <div class="col-md-6">
+                         <div id="exTab2" class="container">
+                            <ul class="nav nav-tabs">
+                                <li class="active">
+                                    <a href="#1" data-toggle="tab">Ürünlere Göre</a>
+                                </li>
+                                <li>
+                                    <a href="#2" data-toggle="tab">Şubelere Göre Detaylı<b id="tab2"></b></a>
+                                </li>
+                                <li>
+                                    <a href="#3" data-toggle="tab">Şubelere Göre <b id="tab3"></b></a>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content ">
+                                <div class="tab-pane active" id="1" style="overflow:auto">
+
+                                         <table class="table table-hover table-sm table-striped shadow" id="urunlereGore">
+                                            <caption><b>Ürünlere Göre</b>
+
+                                                    </caption>
+                                            <thead>
+                                                <tr>
+                                                    <th>Ürün Adı</th>
+                                                    <th>Miktar</th>
+                                                    <th>Gramaj</th>
+                                                    <th>Kilogram</th>
+                                                    <th>Tutar</th>
+                                                    <th>Toplam Satış</th>
+                                                    <th>Toplam Tutar</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                         </table>
+                                </div>
+                                <div class="tab-pane" id="2" style="overflow:auto">
+                                      <table class="table table-hover table-sm table-striped shadow" id="subelereGoreDetayli">
+                                            <caption><b>Şubelere Göre Detaylı</b>
+
+                                                    </caption>
+                                            <thead>
+                                                <tr>
+                                                    <th>Şube Adı</th>
+                                                    <th>Miktar</th>
+                                                    <th>Gramaj</th>
+                                                    <th>Kilogram</th>
+                                                    <th>Tutar</th>
+                                                    <th>Toplam Satış</th>
+                                                    <th>Toplam Tutar</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div class="tab-pane" id="3" style="overflow:auto">
+                                      <table class="table table-hover table-sm table-striped shadow" id="subelereGore">
+                                            <caption><b>Şubelere Göre</b>
+
+                                                    </caption>
+                                            <thead>
+                                                <tr>
+                                                    <th>Şube Adı</th>
+                                                    <th>Miktar</th>
+                                                    <th>Kilogram</th>
+                                                    <th>Tutar</th>
+                                                    <th>Toplam Satış</th>
+                                                    <th>Toplam Tutar</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="gunlereGoreBar"></div>
+                        <br/><br/>
+                        <div id="saateGoreBar"></div>
+
+                    </div>
+                `;
+        $("#tableDiv").html(html);
+
+        searchFilterShow();
+
+        donerCesitlerineGore();
+        tarihlereGore();
+        gunlereGore();
+        saatlereGore();
+        urunlereGore();
+        subelereGoreDetayli();
+        subelereGore();
+    }
+
+    function searchFilterShow() {
+        $("#donerCesitlerineGore caption").html("");
+        $("#urunlereGore caption").html("");
+        $("#subelereGoreDetayli caption").html("");
+        $("#tarihlereGore caption").html("");
+        $("#gunlereGore caption").html("");
+        $("#saatlereGore caption").html("");
+        $("#donerCesitlerineGoreSatislar caption").html("");
+
+        if (KOD1 != "") {
+            $("#donerCesitlerineGore caption").append(`
+                        <button type="button" class="btn btn-danger btn-sm" onclick="KOD1=''; searchFilterShow();">
+                         Temizle <span class="badge badge-danger">x</span>
+                         </button>
+                 `);
+            for (var i = 0; i < KOD1.split(',').length - 1; i++) {
+
+                $("#donerCesitlerineGore caption").append(`
+                        <button type="button" class="btn btn-danger btn-sm" onclick="KOD1='`+ KOD1.split(KOD1.split(',')[i] + ",").join("") + `'; searchFilterShow();">
+                         `+ KOD1.split(',')[i] + ` <span class="badge badge-danger">x</span>
+                         </button>
+                 `);
+            }
+        }
+        if (URUNADI != "") {
+            $("#urunlereGore caption").append(`
+                        <button type="button" class="btn btn-danger btn-sm" onclick="URUNADI=''; searchFilterShow();">
+                         Temizle <span class="badge badge-danger">x</span>
+                         </button>
+                 `);
+            for (var i = 0; i < URUNADI.split(',').length - 1; i++) {
+
+                $("#urunlereGore caption").append(`
+                        <button type="button" class="btn btn-danger btn-sm" onclick="URUNADI='`+ URUNADI.split(URUNADI.split(',')[i] + ",").join("") + `'; searchFilterShow();">
+                         `+ URUNADI.split(',')[i] + ` <span class="badge badge-danger">x</span>
+                         </button>
+                 `);
+            }
+         
+        }
+        if (SUBEADI != "") {
+            $("#subelereGoreDetayli caption").append(`
+                        <button type="button" class="btn btn-danger btn-sm" onclick="SUBEADI=''; searchFilterShow();">
+                         Temizle <span class="badge badge-danger">x</span>
+                         </button>
+                 `);
+            for (var i = 0; i < SUBEADI.split(',').length - 1; i++) {
+
+                $("#subelereGoreDetayli caption").append(`
+                        <button type="button" class="btn btn-danger btn-sm" onclick="SUBEADI='`+ SUBEADI.split(SUBEADI.split(',')[i] + ",").join("") + `'; searchFilterShow();">
+                         `+ SUBEADI.split(',')[i] + ` <span class="badge badge-danger">x</span>
+                         </button>
+                 `);
+            }
+
+        }
+        if (TEKTRH != "") {
+            $("#tarihlereGore caption").append(`
+                        <button type="button" class="btn btn-danger btn-sm" onclick="TEKTRH=''; searchFilterShow();">
+                         Temizle <span class="badge badge-danger">x</span>
+                         </button>
+                 `);
+            for (var i = 0; i < TEKTRH.split(',').length - 1; i++) {
+
+                $("#tarihlereGore caption").append(`
+                        <button type="button" class="btn btn-danger btn-sm" onclick="TEKTRH='`+ TEKTRH.split(TEKTRH.split(',')[i] + ",").join("") + `'; searchFilterShow();">
+                         `+ TEKTRH.split(',')[i] + ` <span class="badge badge-danger">x</span>
+                         </button>
+                 `);
+            }
+        }
+        if (GUN != "") {
+            $("#gunlereGore caption").append(`
+                        <button type="button" class="btn btn-danger btn-sm" onclick="GUN=''; searchFilterShow();">
+                         Temizle <span class="badge badge-danger">x</span>
+                         </button>
+                 `);
+            for (var i = 0; i < GUN.split(',').length - 1; i++) {
+
+                $("#gunlereGore caption").append(`
+                        <button type="button" class="btn btn-danger btn-sm" onclick="GUN='`+ GUN.split(GUN.split(',')[i] + ",").join("") + `'; searchFilterShow();">
+                         `+ gunlerTurkce(GUN.split(',')[i]) + ` <span class="badge badge-danger">x</span>
+                         </button>
+                 `);
+            }
+          
+
+        }
+        if (SAAT != "") {
+            $("#saatlereGore caption").append(`
+                        <button type="button" class="btn btn-danger btn-sm" onclick="SAAT=''; searchFilterShow();">
+                         Temizle <span class="badge badge-danger">x</span>
+                         </button>
+                 `);
+            for (var i = 0; i < SAAT.split(',').length - 1; i++) {
+
+                $("#saatlereGore caption").append(`
+                        <button type="button" class="btn btn-danger btn-sm" onclick="SAAT='`+ SAAT.split(SAAT.split(',')[i] + ",").join("") + `'; searchFilterShow();">
+                         `+ (SAAT.split(',')[i]) + ` <span class="badge badge-danger">x</span>
+                         </button>
+                 `);
+            }
+          
+        }
+        if (KOD2 != "") {
+
+
+            $("#donerCesitlerineGoreSatislar caption").append(`
+                        <button type="button" class="btn btn-danger btn-sm" onclick="KOD2=''; searchFilterShow();">
+                         Temizle <span class="badge badge-danger">x</span>
+                         </button>
+                 `);
+            for (var i = 0; i < KOD2.split(',').length - 1; i++) {
+
+                $("#donerCesitlerineGoreSatislar caption").append(`
+                        <button type="button" class="btn btn-danger btn-sm" onclick="KOD2='`+ KOD2.split(KOD2.split(',')[i] + ",").join("") + `'; searchFilterShow();">
+                         `+ (KOD2.split(',')[i]) + ` <span class="badge badge-danger">x</span>
+                         </button>
+                 `);
+            }
+        }
+    }
+
+    function subelereGore() {
+        var theData = {
+            StartDate: $("#dateGecerlilikTarihi").val(),
+            EndDate: $("#dateBitisTarihi").val(),
+            KOD1: KOD1,
+            KOD2: KOD2,
+            URUNADI: URUNADI,
+            TEKTRH: TEKTRH,
+            GUN: GUN,
+            SAAT: SAAT,
+            SUBEADI: SUBEADI
+        }
+        $("#subelereGore tbody").html("");
+        $.ajax({
+            url: '/GramajSaatlikSatisRaporu/SubelereGore',
+            type: 'GET',
+            beforeSend: function (request) {
+
+            },
+            complete: function (data) {
+                isLoading()
+            },
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                var result = JSON.parse(data);
+                for (var i = 0; i < result.length; i++) {
+                    $("#subelereGore tbody").append("<tr><td>" + result[i]["SUBEADI"] + "</td><td>" + formatCurrency(result[i]["Miktar"]) + "</td><td> " + formatCurrency(result[i]["Kg"]) + "</td><td class='text-right'>₺ " + formatCurrency(result[i]["Tutar"]) + "</td><td  class='text-right'>" + formatCurrency(result[i]["ToplamSatıs"]) + "</td><td class='text-right'>₺ " + formatCurrency(result[i]["ToplamTutar"]) + "</td></tr>");
+                }
+                runDatatable("subelereGore");
+
+            }
+        });
+    }
+    function subelereGoreDetayli() {
+        var theData = {
+            StartDate: $("#dateGecerlilikTarihi").val(),
+            EndDate: $("#dateBitisTarihi").val(),
+            KOD1: KOD1,
+            KOD2: KOD2,
+            URUNADI: URUNADI,
+            TEKTRH: TEKTRH,
+            GUN: GUN,
+            SAAT: SAAT,
+            SUBEADI: SUBEADI
+        }
+        $("#subelereGoreDetayli tbody").html("");
+        $.ajax({
+            url: '/GramajSaatlikSatisRaporu/SubelereGoreDetayli',
+            type: 'GET',
+            beforeSend: function (request) {
+
+            },
+            complete: function (data) {
+                isLoading()
+            },
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                var result = JSON.parse(data);
+                for (var i = 0; i < result.length; i++) {
+                    $("#subelereGoreDetayli tbody").append("<tr onclick=' SUBEADI += \"" + result[i]["SUBEADI"] + ",\"; searchFilterShow();'><td>" + result[i]["SUBEADI"] + "</td><td>" + formatCurrency(result[i]["Miktar"]) + "</td><td> " + formatCurrency(result[i]["AGIRLIK"]) + "</td><td> " + formatCurrency(result[i]["Kg"]) + "</td><td class='text-right'>₺ " + formatCurrency(result[i]["Tutar"]) + "</td><td class='text-right'>" + formatCurrency(result[i]["ToplamSatıs"]) + "</td><td class='text-right'>₺ " + formatCurrency(result[i]["ToplamTutar"]) + "</td></tr>");
+                }
+                runDatatable("subelereGoreDetayli");
+
+            }
+        });
+    }
+
+
+
+    function urunlereGore() {
+        var theData = {
+            StartDate: $("#dateGecerlilikTarihi").val(),
+            EndDate: $("#dateBitisTarihi").val(),
+            KOD1: KOD1,
+            KOD2: KOD2,
+            URUNADI: URUNADI,
+            TEKTRH: TEKTRH,
+            GUN: GUN,
+            SAAT: SAAT,
+            SUBEADI: SUBEADI
+        }
+        $("#urunlereGore tbody").html("");
+        $.ajax({
+            url: '/GramajSaatlikSatisRaporu/UrunlereGore',
+            type: 'GET',
+            beforeSend: function (request) {
+
+            },
+            complete: function (data) {
+                isLoading()
+            },
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                var result = JSON.parse(data);
+                for (var i = 0; i < result.length; i++) {
+                    $("#urunlereGore tbody").append("<tr onclick=' URUNADI += \"" + result[i]["productname"] + ",\"; searchFilterShow();'><td>" + result[i]["productname"] + "</td><td>" + formatCurrency(result[i]["Miktar"]) + "</td><td> " + formatCurrency(result[i]["AGIRLIK"]) + "</td><td> " + formatCurrency(result[i]["Kg"]) + "</td><td class='text-right'>₺ " + formatCurrency(result[i]["Tutar"]) + "</td><td class='text-right'>" + formatCurrency(result[i]["ToplamSatıs"]) + "</td><td class='text-right'>₺ " + formatCurrency(result[i]["ToplamTutar"]) + "</td></tr>");
+                }
+                runDatatable("urunlereGore");
+
+            }
+        });
+    }
+    function saatlereGore() {
+        var theData = {
+            StartDate: $("#dateGecerlilikTarihi").val(),
+            EndDate: $("#dateBitisTarihi").val(),
+            KOD1: KOD1,
+            KOD2: KOD2,
+            URUNADI: URUNADI,
+            TEKTRH: TEKTRH,
+            GUN: GUN,
+            SAAT: SAAT,
+            SUBEADI: SUBEADI
+        }
+        $("#saatlereGore tbody").html("");
+        $.ajax({
+            url: '/GramajSaatlikSatisRaporu/SaatlereGore',
+            type: 'GET',
+            beforeSend: function (request) {
+
+            },
+            complete: function (data) {
+                isLoading()
+            },
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                var result = JSON.parse(data);
+                for (var i = 0; i < result.length; i++) {
+                    $("#saatlereGore tbody").append("<tr onclick=' SAAT = \"" + result[i]["Saat"] + ",\"; searchFilterShow();'><td>" + result[i]["Saat"] + "</td><td>" + formatCurrency(result[i]["Miktar"]) + "</td><td> " + formatCurrency(result[i]["ToplamSatıs"]) + "</td><td>%" + formatCurrency(result[i]["Oran"]) + "</td></tr>");
+                }
+                runDatatable("saatlereGore");
+                var options = {
+                    series: [{
+                        name: 'Kg',
+                        data: []
+                    }],
+                    chart: {
+                        type: 'bar',
+                        height: 350
+                    },
+                    plotOptions: {
+                        bar: {
+                            horizontal: false,
+                            columnWidth: '55%',
+                            endingShape: 'rounded'
+                        },
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    stroke: {
+                        show: true,
+                        width: 2,
+                        colors: ['transparent']
+                    },
+                    xaxis: {
+                        categories: [],
+                    },
+                    yaxis: {
+                    },
+                    fill: {
+                        opacity: 1
+                    },
+                    title: {
+                        text: 'Saatlere Göre',
+                        align: 'left'
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function (val) {
+                                return "₺ " + formatCurrency(val)
+                            }
+                        }
+                    }
+                };
+                
+                result.sort((a, b) => a.Saat - b.Saat);
+                for (var i = 0; i < result.length; i++) {
+                    if (options.xaxis.categories.find(x => x == result[i]["Saat"]) == undefined) {
+                        options.xaxis.categories.push(result[i]["Saat"]);
+
+                        options.series[0].data.push(result[i]["Miktar"]);
+                    }
+
+
+                }
+
+                var chart = new ApexCharts(document.querySelector("#saateGoreBar"), options);
+                chart.render();
+            }
+        });
+    }
+    function gunlereGore() {
+        var theData = {
+            StartDate: $("#dateGecerlilikTarihi").val(),
+            EndDate: $("#dateBitisTarihi").val(),
+            KOD1: KOD1,
+            KOD2: KOD2,
+            URUNADI: URUNADI,
+            TEKTRH: TEKTRH,
+            GUN: GUN,
+            SAAT: SAAT,
+            SUBEADI: SUBEADI
+        }
+        $("#gunlereGore tbody").html("");
+        $.ajax({
+            url: '/GramajSaatlikSatisRaporu/GunlereGore',
+            type: 'GET',
+            beforeSend: function (request) {
+
+            },
+            complete: function (data) {
+                isLoading()
+            },
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                var result = JSON.parse(data);
+                for (var i = 0; i < result.length; i++) {
+                    $("#gunlereGore tbody").append("<tr onclick=' GUN += \"" + result[i]["GünAdi"] + ",\"; searchFilterShow();'><td>" + gunlerTurkce( result[i]["GünAdi"]) + "</td><td>" + formatCurrency(result[i]["Miktar"]) + "</td></tr>");
+                }
+                runDatatable("gunlereGore");
+
+                var options = {
+                    series: [{
+                        name: 'Kg',
+                        data: []
+                    }],
+                    chart: {
+                        type: 'bar',
+                        height: 350
+                    },
+                    plotOptions: {
+                        bar: {
+                            horizontal: false,
+                            columnWidth: '55%',
+                            endingShape: 'rounded'
+                        },
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    stroke: {
+                        show: true,
+                        width: 2,
+                        colors: ['transparent']
+                    },
+                    xaxis: {
+                        categories: ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"],
+                    },
+                    yaxis: {
+                    },
+                    fill: {
+                        opacity: 1
+                    },
+                    title: {
+                        text: 'Günlere Göre',
+                        align: 'left'
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function (val) {
+                                return "₺ " + formatCurrency(val)
+                            }
+                        }
+                    }
+                };
+
+                for (var i = 0; i < options.xaxis.categories.length; i++) {
+                    for (var j = 0; j < result.length; j++) {
+                        if (options.xaxis.categories[i].toLocaleLowerCase() == gunlerTurkce(result[j]["GünAdi"]).toLocaleLowerCase()) {
+                            options.series[0].data.push(result[j]["Miktar"]);
+                            break;
+                        }
+                    }
+                }
+
+                //for (var i = 0; i < result.length; i++) {
+                //    if (options.xaxis.categories.find(x => x == result[i]["GünAdi"]) == undefined) {
+                //       // options.xaxis.categories.push(gunlerTurkce(result[i]["GünAdi"]));
+
+                //        options.series[0].data.push(result[i]["Miktar"]);
+                //    }
+
+
+                //}
+
+                var chart = new ApexCharts(document.querySelector("#gunlereGoreBar"), options);
+                chart.render();
+
+            }
+        });
+    }
+    function tarihlereGore() {
+        var theData = {
+            StartDate: $("#dateGecerlilikTarihi").val(),
+            EndDate: $("#dateBitisTarihi").val(),
+            KOD1: KOD1,
+            KOD2: KOD2,
+            URUNADI: URUNADI,
+            TEKTRH: TEKTRH,
+            GUN: GUN,
+            SAAT: SAAT,
+            SUBEADI: SUBEADI
+        }
+        $("#tarihlereGore tbody").html("");
+        $.ajax({
+            url: '/GramajSaatlikSatisRaporu/TarihlereGore',
+            type: 'GET',
+            beforeSend: function (request) {
+
+            },
+            complete: function (data) {
+                isLoading()
+            },
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                var result = JSON.parse(data);
+                for (var i = 0; i < result.length; i++) {
+                    $("#tarihlereGore tbody").append("<tr onclick=' TEKTRH = \"" + result[i]["Tarih"] + ",\"; searchFilterShow();'><td>" + result[i]["Tarih"] + "</td><td>" + formatCurrency(result[i]["Miktar"]) + "</td></tr>");
+                }
+                runDatatable("tarihlereGore");
+
+            }
+        });
+    }
+    function donerCesitlerineGore() {
+        var theData = {
+            StartDate: $("#dateGecerlilikTarihi").val(),
+            EndDate: $("#dateBitisTarihi").val(),
+            KOD1: KOD1,
+            KOD2: KOD2,
+            URUNADI: URUNADI,
+            TEKTRH: TEKTRH,
+            GUN: GUN,
+            SAAT: SAAT,
+            SUBEADI: SUBEADI
+        }
+        $("#donerCesitlerineGore tbody").html("");
+        $.ajax({
+            url: '/GramajSaatlikSatisRaporu/DonerCesitlerineGore',
+            type: 'GET',
+            beforeSend: function (request) {
+
+            },
+            complete: function (data) {
+                isLoading()
+            },
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                var result = JSON.parse(data);
+                for (var i = 0; i < result.length; i++) {
+                    $("#donerCesitlerineGore tbody").append("<tr  onclick=' KOD1 += \"" + result[i]["KOD1"] + ",\"; searchFilterShow();'><td>" + result[i]["KOD1"] + "</td><td>" + formatCurrency(result[i]["Miktar"]) + "</td></tr>");
+                }
+                runDatatable("donerCesitlerineGore");
+
+            }
+        });
+    }
+
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>

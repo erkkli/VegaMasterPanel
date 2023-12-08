@@ -1,0 +1,474 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPageReports.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+<style>
+    .dataTables_wrapper, #saateGoreSatislar, #gunlereGoreSatislar {
+        -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.58);
+        -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.58);
+        box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.58);
+        padding: 10px
+    }
+
+
+    table tbody tr {
+        cursor: pointer
+    }
+
+    table caption b {
+        color: black
+    }
+
+    table caption button {
+        float: right
+    }
+   
+</style>
+<div class="form-group">
+    <div>
+        <button id="btnToday" onclick="dateButtonClick(this)" class="btnToday btn btn-primary pull-left" type="button"><i class="glyphicon"></i>Bugün</button>
+        <button id="btnYesterday" onclick="dateButtonClick(this)" class="btnYesterday btn btn-primary pull-left" type="button"><i class="glyphicon"></i>Dün</button>
+        <button id="btnMonth" onclick="dateButtonClick(this)" class="btnMonth btn btn-primary pull-left" type="button"><i class="glyphicon"></i>Bu Ay</button>
+    </div>
+    <div style="float:left">
+        <div class="controls" style="float:left">
+            <div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                <input type="text" class="form-control has-feedback-left" id="dateGecerlilikTarihi" placeholder="Seçiniz" aria-describedby="inputSuccess2Status4">
+                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                <span id="inputSuccess2Status4" class="sr-only">(success)</span>
+            </div>
+        </div>
+        <div class="controls" style="float:left">
+            <div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                <input type="text" class="form-control has-feedback-left" id="dateBitisTarihi" placeholder="Seçiniz" aria-describedby="inputSuccess2Status5">
+                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                <span id="inputSuccess2Status5" class="sr-only">(success)</span>
+            </div>
+        </div>
+      
+        <a class="btn btn-primary btn-sm text-white" onclick="searchFunc()"><i class="fa fa-search"></i></a>
+
+    </div>
+    <div style="clear:both"></div>
+</div>
+
+<div class="row" id="tableDiv">
+
+</div>
+
+
+
+<script type="text/javascript">
+
+    var SUBEADI = "";
+    var URUNGRUBU = "";
+    var URUNADI = "";
+    var SATISTIPI = "";
+
+
+    function formatCurrency(currency) {
+        var currency_symbol = "₺"
+        var formattedOutput = new Intl.NumberFormat('tr-TR', {
+            style: 'currency',
+            currency: 'TRY',
+            minimumFractionDigits: 2,
+        });
+
+        return formattedOutput.format(currency).replace(currency_symbol, '')
+    }
+    $(document).ready(function () {
+        $("#loading").attr("style", "position: fixed;top:0");
+        $("#loading").attr("class", "myloading-active");
+        setTimeout(function () {
+            $("#loading").attr("class", "myloading");
+        }, 1500);
+
+
+    });
+    Date.prototype.addHours = function (hour) {
+        var date = new Date(this.valueOf());
+        date.setHours(date.getDate() + hour);
+        return date;
+    }
+    function dateButtonClick(btn) {
+        var theData = {
+            btnID: btn.id
+        }
+        $.ajax({
+            url: '/SatislarAnaliz/dateButtonClick',
+            type: 'GET',
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                var result = JSON.parse(data);
+                $("#dateGecerlilikTarihi").val(result.startDate)
+                $("#dateBitisTarihi").val(result.endDate)
+                searchFunc();
+            }
+        });
+    }
+
+    var index = 0;
+    function isLoading() {
+
+        index++;
+        if (index == 5) {
+            $("#loading").attr("class", "myloading");
+            index = 0;
+        }
+    }
+
+    function searchFunc() {
+        $("#loading").attr("class", "myloading-active");
+        var html = `
+
+                    <div class="col-md-6">
+                        <table class="table table-hover table-sm table-striped shadow" id="IcecekGruplarinaGore">
+                            <caption><b>İçecek Gruplarına Gre Satışlar</b>
+
+                                    </caption>
+                            <thead>
+                                <tr>
+                                   <th>Ürün Grubu</th>
+                                   <th>Miktar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table table-hover table-sm table-striped shadow" id="SubelereGore">
+                            <caption><b>Şubelere Göre Satışlar</b>
+
+                                    </caption>
+                            <thead>
+                                <tr>
+                                   <th>Şube Adı</th>
+                                   <th>Miktar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+<div class="col-md-12 p-4" style='height:10px'></div>
+                    <div class="col-md-8" style='overflow:auto'>
+                        <table class="table table-hover table-sm table-striped shadow" id="ToplamIcecekSatislari">
+                            <caption><b>Toplam İçecek Satışları</b>
+
+                                    </caption>
+                            <thead>
+                                <tr>
+                                   <th>Şubeler</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-4">
+                        <table class="table table-hover table-sm table-striped shadow" id="SatisTipineGore">
+                            <caption><b>Satış Tipine Göre Satışlar</b>
+
+                                    </caption>
+                            <thead>
+                                <tr>
+                                   <th>Şube Adı</th>
+                                   <th>Satış Tipi</th>
+                                   <th>Miktar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <br/><br/>
+                        <table class="table table-hover table-sm table-striped shadow" id="UrunlereGore">
+                            <caption><b>Ürünlere Göre Satışlar</b>
+
+                                    </caption>
+                            <thead>
+                                <tr>
+                                   <th>Ürün Adı</th>
+                                   <th>Şube Sayısı</th>
+                                   <th>Miktar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+        $("#tableDiv").html(html);
+
+
+        searchFilterShow();
+        subelereGore();
+        icecekGruplarinaGore();
+        satisTipineGore();
+        urunlereGore();
+        toplamIcecekSatislari();
+    }
+
+    function searchFilterShow() {
+        $("#SubelereGore caption").html("");
+        $("#IcecekGruplarinaGore caption").html("");
+        $("#UrunlereGore caption").html("");
+        $("#SatisTipineGore caption").html("");
+
+
+        if (SUBEADI != "") {
+            $("#SubelereGore caption").append(`
+                        <button type="button" class="btn btn-danger btn-sm" onclick="SUBEADI=''; searchFilterShow();">
+                         Temizle <span class="badge badge-danger">x</span>
+                         </button>
+                 `);
+            for (var i = 0; i < SUBEADI.split(',').length - 1; i++) {
+
+                $("#SubelereGore caption").append(`
+                        <button type="button" class="btn btn-danger btn-sm" onclick="SUBEADI='`+ SUBEADI.split(SUBEADI.split(',')[i] + ",").join("") + `'; searchFilterShow();">
+                         `+ SUBEADI.split(',')[i] + ` <span class="badge badge-danger">x</span>
+                         </button>
+                 `);
+            }
+
+        }
+        if (URUNGRUBU != "") {
+            $("#IcecekGruplarinaGore caption").append(`
+                        <button type="button" class="btn btn-danger btn-sm" onclick="URUNGRUBU=''; searchFilterShow();">
+                         Temizle <span class="badge badge-danger">x</span>
+                         </button>
+                 `);
+            for (var i = 0; i < URUNGRUBU.split(',').length - 1; i++) {
+
+                $("#IcecekGruplarinaGore caption").append(`
+                        <button type="button" class="btn btn-danger btn-sm" onclick="URUNGRUBU='`+ URUNGRUBU.split(URUNGRUBU.split(',')[i] + ",").join("") + `'; searchFilterShow();">
+                         `+ URUNGRUBU.split(',')[i] + ` <span class="badge badge-danger">x</span>
+                         </button>
+                 `);
+            }
+          
+        }
+        if (URUNADI != "") {
+            $("#UrunlereGore caption").append(`
+                        <button type="button" class="btn btn-danger btn-sm" onclick="URUNADI=''; searchFilterShow();">
+                         Temizle <span class="badge badge-danger">x</span>
+                         </button>
+                 `);
+            for (var i = 0; i < URUNADI.split(',').length - 1; i++) {
+
+                $("#UrunlereGore caption").append(`
+                        <button type="button" class="btn btn-danger btn-sm" onclick="URUNADI='`+ URUNADI.split(URUNADI.split(',')[i] + ",").join("") + `'; searchFilterShow();">
+                         `+ URUNADI.split(',')[i] + ` <span class="badge badge-danger">x</span>
+                         </button>
+                 `);
+            }
+
+        }
+        if (SATISTIPI != "") {
+
+            $("#SatisTipineGore caption").append(`
+                        <button type="button" class="btn btn-danger btn-sm" onclick="SATISTIPI=''; searchFilterShow();">
+                         Temizle <span class="badge badge-danger">x</span>
+                         </button>
+                 `);
+            for (var i = 0; i < SATISTIPI.split(',').length - 1; i++) {
+
+                $("#SatisTipineGore caption").append(`
+                        <button type="button" class="btn btn-danger btn-sm" onclick="SATISTIPI='`+ SATISTIPI.split(SATISTIPI.split(',')[i] + ",").join("") + `'; searchFilterShow();">
+                         `+ SATISTIPI.split(',')[i] + ` <span class="badge badge-danger">x</span>
+                         </button>
+                 `);
+            }
+
+
+        }
+
+    }
+
+    function icecekGruplarinaGore() {
+        var theData = {
+            StartDate: $("#dateGecerlilikTarihi").val(),
+            EndDate: $("#dateBitisTarihi").val(),
+            URUNGRUBU: URUNGRUBU,
+            URUNADI: URUNADI,
+            SUBEADI: SUBEADI,
+            SATISTIPI: SATISTIPI
+        }
+        $("#IcecekGruplarinaGore tbody").html("");
+        $.ajax({
+            url: '/IcecekRaporu/IcecekGruplarinaGore',
+            type: 'GET',
+            beforeSend: function (request) {
+
+            },
+            complete: function (data) {
+                isLoading()
+            },
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                var result = JSON.parse(data);
+                for (var i = 0; i < result.length; i++) {
+                    $("#IcecekGruplarinaGore tbody").append("<tr onclick=' URUNGRUBU += \"" + result[i]["ÜrünGrubu"] + ",\"; searchFilterShow();'><td>" + result[i]["ÜrünGrubu"] + "</td><td class='text-right'> " + formatCurrency(result[i]["Miktar"]) + "</td></tr>");
+                }
+                runDatatable("IcecekGruplarinaGore");
+
+            }
+        });
+    }   
+    function subelereGore() {
+        var theData = {
+            StartDate: $("#dateGecerlilikTarihi").val(),
+            EndDate: $("#dateBitisTarihi").val(),
+            URUNGRUBU: URUNGRUBU,
+            URUNADI: URUNADI,
+            SUBEADI: SUBEADI,
+            SATISTIPI: SATISTIPI
+        }
+        $("#SubelereGore tbody").html("");
+        $.ajax({
+            url: '/IcecekRaporu/SubelereGore',
+            type: 'GET',
+            beforeSend: function (request) {
+
+            },
+            complete: function (data) {
+                isLoading()
+            },
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                var result = JSON.parse(data);
+                for (var i = 0; i < result.length; i++) {
+                    $("#SubelereGore tbody").append("<tr onclick=' SUBEADI += \"" + result[i]["SUBEADI"] + ",\"; searchFilterShow();'><td>" + result[i]["SUBEADI"] + "</td><td class='text-right'> " + formatCurrency(result[i]["Miktar"]) + "</td></tr>");
+                }
+                runDatatable("SubelereGore");
+
+            }
+        });
+    }
+    function satisTipineGore() {
+        var theData = {
+            StartDate: $("#dateGecerlilikTarihi").val(),
+            EndDate: $("#dateBitisTarihi").val(),
+            URUNGRUBU: URUNGRUBU,
+            URUNADI: URUNADI,
+            SUBEADI: SUBEADI,
+            SATISTIPI: SATISTIPI
+        }
+        $("#SatisTipineGore tbody").html("");
+        $.ajax({
+            url: '/IcecekRaporu/SatisTipineGore',
+            type: 'GET',
+            beforeSend: function (request) {
+
+            },
+            complete: function (data) {
+                isLoading()
+            },
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                var result = JSON.parse(data);
+                for (var i = 0; i < result.length; i++) {
+                    $("#SatisTipineGore tbody").append("<tr><td>" + result[i]["SUBEADI"] + "</td><td>" + result[i]["SatisTipi"] + "</td><td class='text-right'> " + formatCurrency(result[i]["Miktar"]) + "</td></tr>");
+                }
+                runDatatable("SatisTipineGore");
+
+            }
+        });
+    }
+    function urunlereGore() {
+        var theData = {
+            StartDate: $("#dateGecerlilikTarihi").val(),
+            EndDate: $("#dateBitisTarihi").val(),
+            URUNGRUBU: URUNGRUBU,
+            URUNADI: URUNADI,
+            SUBEADI: SUBEADI,
+            SATISTIPI: SATISTIPI
+        }
+        $("#UrunlereGore tbody").html("");
+        $.ajax({
+            url: '/IcecekRaporu/UrunlereGore',
+            type: 'GET',
+            beforeSend: function (request) {
+
+            },
+            complete: function (data) {
+                isLoading()
+            },
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                var result = JSON.parse(data);
+                for (var i = 0; i < result.length; i++) {
+                    $("#UrunlereGore tbody").append("<tr onclick=' URUNADI += \"" + result[i]["ProductName"] + ",\"; searchFilterShow();'><td>" + result[i]["ProductName"] + "</td><td class='text-right'>" + result[i]["KS"] + "</td><td class='text-right'> " + formatCurrency(result[i]["MIKTAR"]) + "</td></tr>");
+                }
+                runDatatable("UrunlereGore");
+
+            }
+        });
+    }
+    function toplamIcecekSatislari() {
+        var theData = {
+            StartDate: $("#dateGecerlilikTarihi").val(),
+            EndDate: $("#dateBitisTarihi").val(),
+            URUNGRUBU: URUNGRUBU,
+            URUNADI: URUNADI,
+            SUBEADI: SUBEADI,
+            SATISTIPI: SATISTIPI
+        }
+        $("#ToplamIcecekSatislari tbody").html("");
+        $.ajax({
+            url: '/IcecekRaporu/ToplamIcecekSatislari',
+            type: 'GET',
+            beforeSend: function (request) {
+
+            },
+            complete: function (data) {
+                isLoading()
+            },
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                var result = JSON.parse(data);
+                var urunAdlari = [];
+                var subeAdlari = [];
+
+                for (var i = 0; i < result.length; i++) {
+                    if (urunAdlari.find(x => x == result[i].ÜrünAdi) == undefined) {
+                        urunAdlari.push(result[i].ÜrünAdi)
+                    }
+                    if (subeAdlari.find(x => x == result[i].SUBEADI) == undefined) {
+                        subeAdlari.push(result[i].SUBEADI)
+                    }
+                }
+                for (var i = 0; i < urunAdlari.length; i++) {
+                    $("#ToplamIcecekSatislari thead tr").append("<th>" + urunAdlari[i] + "</th>");
+                }
+
+                for (var i = 0; i < subeAdlari.length; i++) {
+                    var temp = "<tr><td>" + subeAdlari[i] + "</td>";
+                    for (var j = 0; j < urunAdlari.length; j++) {
+                        var isValue = (result.find(x => x.SUBEADI == subeAdlari[i] && x.ÜrünAdi == urunAdlari[j]));
+                        temp += "<td class='text-right'>" + (isValue == undefined ? "0" : isValue.Miktar) + "</td>";
+                    }
+                   
+                    temp += "</tr>";
+                    $("#ToplamIcecekSatislari tbody").append(temp);
+
+                }
+
+
+
+                runDatatable("ToplamIcecekSatislari");
+
+            }
+        });
+    }
+
+</script>

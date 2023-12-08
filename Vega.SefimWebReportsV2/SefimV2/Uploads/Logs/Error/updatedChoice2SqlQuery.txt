@@ -1,0 +1,30 @@
+Created on 25.11.2023 14:05:47
+
+-----------------Log Baslangıç
+Hata Zamanı : 25.11.2023 14:05:47
+Hata Mesajı : updatedChoice2SqlQuery Hata Oluştu
+Hata Açıklaması :  Update prdt set prdt.Price=u.pr2, prdt.IsUpdated=1 from buca.dbo.Choice2 prdt  ,(  select k.Price,k.pr1,k.pr2,h.PID,h.C1ID,h.C2ID  from  (  select p.Id PID,p.ProductName+p.ProductGroup pname, c1.Id C1ID,c1.Name name1,c2.Id C2ID,c2.Name name2,P.Price,c1.Price pr1,c2.Price pr2 from  VegaMasterDbYeni.dbo.Product p  left join VegaMasterDbYeni.dbo.Choice1 c1 on p.ProductPkId=c1.ProductId  left join VegaMasterDbYeni.dbo.Choice2 c2 on c1.Choice1PkId=c2.Choice1Id and c1.ProductId=c2.ProductId Where p.SubeId= 2 and c1.SubeId=2  and  c2.SubeId=2 ) k  left join  ( select p.Id PID,p.ProductName+p.ProductGroup pname, c1.Id C1ID,c1.Name name1,c2.Id C2ID,c2.Name name2,P.Price,c1.Price pr1,c2.Price pr2 from  buca.dbo.Product p  left join buca.dbo.Choice1 c1 on p.Id=c1.ProductId  left join buca.dbo.Choice2 c2 on c1.Id=c2.Choice1Id and c1.ProductId=c2.ProductId  ) h  on k.pname=h.pname and k.name1=h.name1  and k.name2=h.name2  ) u where  prdt.Id=u.C2ID 
+ Tarih Formatları 
+InnerException: Kaynak:VegaMasterDbYeniHedef:buca
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 25.11.2023 14:10:21
+Hata Mesajı : updatedChoice2SqlQuery Hata Oluştu
+Hata Açıklaması :  Update prdt set prdt.Price=u.pr2, prdt.IsUpdated=1 from yuzuncuyil.dbo.Choice2 prdt  ,(  select k.Price,k.pr1,k.pr2,h.PID,h.C1ID,h.C2ID  from  (  select p.Id PID,p.ProductName+p.ProductGroup pname, c1.Id C1ID,c1.Name name1,c2.Id C2ID,c2.Name name2,P.Price,c1.Price pr1,c2.Price pr2 from  VegaMasterDbYeni.dbo.Product p  left join VegaMasterDbYeni.dbo.Choice1 c1 on p.ProductPkId=c1.ProductId  left join VegaMasterDbYeni.dbo.Choice2 c2 on c1.Choice1PkId=c2.Choice1Id and c1.ProductId=c2.ProductId Where p.SubeId= 1 and c1.SubeId=1  and  c2.SubeId=1 ) k  left join  ( select p.Id PID,p.ProductName+p.ProductGroup pname, c1.Id C1ID,c1.Name name1,c2.Id C2ID,c2.Name name2,P.Price,c1.Price pr1,c2.Price pr2 from  yuzuncuyil.dbo.Product p  left join yuzuncuyil.dbo.Choice1 c1 on p.Id=c1.ProductId  left join yuzuncuyil.dbo.Choice2 c2 on c1.Id=c2.Choice1Id and c1.ProductId=c2.ProductId  ) h  on k.pname=h.pname and k.name1=h.name1  and k.name2=h.name2  ) u where  prdt.Id=u.C2ID 
+ Tarih Formatları 
+InnerException: Kaynak:VegaMasterDbYeniHedef:yuzuncuyil
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 25.11.2023 14:13:05
+Hata Mesajı : updatedChoice2SqlQuery Hata Oluştu
+Hata Açıklaması :  Update prdt set prdt.Price=u.pr2, prdt.IsUpdated=1 from buca.dbo.Choice2 prdt  ,(  select k.Price,k.pr1,k.pr2,h.PID,h.C1ID,h.C2ID  from  (  select p.Id PID,p.ProductName+p.ProductGroup pname, c1.Id C1ID,c1.Name name1,c2.Id C2ID,c2.Name name2,P.Price,c1.Price pr1,c2.Price pr2 from  VegaMasterDbYeni.dbo.Product p  left join VegaMasterDbYeni.dbo.Choice1 c1 on p.ProductPkId=c1.ProductId  left join VegaMasterDbYeni.dbo.Choice2 c2 on c1.Choice1PkId=c2.Choice1Id and c1.ProductId=c2.ProductId Where p.SubeId= 2 and c1.SubeId=2  and  c2.SubeId=2 ) k  left join  ( select p.Id PID,p.ProductName+p.ProductGroup pname, c1.Id C1ID,c1.Name name1,c2.Id C2ID,c2.Name name2,P.Price,c1.Price pr1,c2.Price pr2 from  buca.dbo.Product p  left join buca.dbo.Choice1 c1 on p.Id=c1.ProductId  left join buca.dbo.Choice2 c2 on c1.Id=c2.Choice1Id and c1.ProductId=c2.ProductId  ) h  on k.pname=h.pname and k.name1=h.name1  and k.name2=h.name2  ) u where  prdt.Id=u.C2ID 
+ Tarih Formatları 
+InnerException: Kaynak:VegaMasterDbYeniHedef:buca
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 25.11.2023 14:29:24
+Hata Mesajı : updatedChoice2SqlQuery Hata Oluştu
+Hata Açıklaması :  Update prdt set prdt.Price=u.pr2, prdt.IsUpdated=1 from yuzuncuyil.dbo.Choice2 prdt  ,(  select k.Price,k.pr1,k.pr2,h.PID,h.C1ID,h.C2ID  from  (  select p.Id PID,p.ProductName+p.ProductGroup pname, c1.Id C1ID,c1.Name name1,c2.Id C2ID,c2.Name name2,P.Price,c1.Price pr1,c2.Price pr2 from  VegaMasterDbYeni.dbo.Product p  left join VegaMasterDbYeni.dbo.Choice1 c1 on p.ProductPkId=c1.ProductId  left join VegaMasterDbYeni.dbo.Choice2 c2 on c1.Choice1PkId=c2.Choice1Id and c1.ProductId=c2.ProductId Where p.SubeId= 1 and c1.SubeId=1  and  c2.SubeId=1 ) k  left join  ( select p.Id PID,p.ProductName+p.ProductGroup pname, c1.Id C1ID,c1.Name name1,c2.Id C2ID,c2.Name name2,P.Price,c1.Price pr1,c2.Price pr2 from  yuzuncuyil.dbo.Product p  left join yuzuncuyil.dbo.Choice1 c1 on p.Id=c1.ProductId  left join yuzuncuyil.dbo.Choice2 c2 on c1.Id=c2.Choice1Id and c1.ProductId=c2.ProductId  ) h  on k.pname=h.pname and k.name1=h.name1  and k.name2=h.name2  ) u where  prdt.Id=u.C2ID 
+ Tarih Formatları 
+InnerException: Kaynak:VegaMasterDbYeniHedef:yuzuncuyil
+-----------------Log Bıtıs

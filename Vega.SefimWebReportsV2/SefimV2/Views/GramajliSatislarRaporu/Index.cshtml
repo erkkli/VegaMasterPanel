@@ -1,0 +1,564 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPageReports.cshtml";
+}
+
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPageReports.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+<style>
+    .dataTables_wrapper, #saateGoreSatislar, #gunlereGoreSatislar {
+        -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.58);
+        -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.58);
+        box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.58);
+        padding: 10px
+    }
+
+
+
+    table tbody tr {
+        cursor: pointer
+    }
+
+    table caption b {
+        color: black
+    }
+
+    table caption button {
+        float: right
+    }
+</style>
+<div class="form-group">
+    <div>
+        <button id="btnToday" onclick="dateButtonClick(this)" class="btnToday btn btn-primary pull-left" type="button"><i class="glyphicon"></i>Bugün</button>
+        <button id="btnYesterday" onclick="dateButtonClick(this)" class="btnYesterday btn btn-primary pull-left" type="button"><i class="glyphicon"></i>Dün</button>
+        <button id="btnMonth" onclick="dateButtonClick(this)" class="btnMonth btn btn-primary pull-left" type="button"><i class="glyphicon"></i>Bu Ay</button>
+    </div>
+    <div style="float:left">
+        <div class="controls" style="float:left">
+            <div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                <input type="text" class="form-control has-feedback-left" id="dateGecerlilikTarihi" placeholder="Seçiniz" aria-describedby="inputSuccess2Status4">
+                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                <span id="inputSuccess2Status4" class="sr-only">(success)</span>
+            </div>
+        </div>
+        <div class="controls" style="float:left">
+            <div class="col-md-12 xdisplay_inputx form-group has-feedback">
+                <input type="text" class="form-control has-feedback-left" id="dateBitisTarihi" placeholder="Seçiniz" aria-describedby="inputSuccess2Status5">
+                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                <span id="inputSuccess2Status5" class="sr-only">(success)</span>
+            </div>
+        </div>
+        <a class="btn btn-primary btn-sm text-white" onclick="searchFunc()"><i class="fa fa-search"></i></a>
+
+    </div>
+    <div style="clear:both"></div>
+</div>
+
+<div class="row" id="tableDiv">
+
+</div>
+
+
+
+<script type="text/javascript">
+
+    var SUBEADI = "";
+
+
+    function formatCurrency(currency) {
+        var currency_symbol = "₺"
+        var formattedOutput = new Intl.NumberFormat('tr-TR', {
+            style: 'currency',
+            currency: 'TRY',
+            minimumFractionDigits: 2,
+        });
+
+        return formattedOutput.format(currency).replace(currency_symbol, '')
+    }
+    $(document).ready(function () {
+        $("#loading").attr("style", "position: fixed;top:0");
+        $("#loading").attr("class", "myloading-active");
+        setTimeout(function () {
+            $("#loading").attr("class", "myloading");
+        }, 1500);
+
+
+    });
+    Date.prototype.addHours = function (hour) {
+        var date = new Date(this.valueOf());
+        date.setHours(date.getDate() + hour);
+        return date;
+    }
+    function dateButtonClick(btn) {
+        var theData = {
+            btnID: btn.id
+        }
+        $.ajax({
+            url: '/SatislarAnaliz/dateButtonClick',
+            type: 'GET',
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                var result = JSON.parse(data);
+                $("#dateGecerlilikTarihi").val(result.startDate)
+                $("#dateBitisTarihi").val(result.endDate)
+                searchFunc();
+            }
+        });
+    }
+
+    var index = 0;
+    function isLoading() {
+
+        index++;
+        if (index == 3) {
+            satislarinDonerCesitPayiTumu();
+            satislarinDonerCesitPayiSubeler();
+
+            $("#loading").attr("class", "myloading");
+            index = 0;
+        }
+    }
+
+    function searchFunc() {
+        $("#loading").attr("class", "myloading-active");
+        var html = `
+                    <div class="col-md-12">
+                       <div id="exTab2" class="container">
+                            <ul class="nav nav-tabs">
+                                <li class="active">
+                                    <a href="#1" data-toggle="tab">Tavuk Döner Gramajları</a>
+                                </li>
+                                <li>
+                                    <a href="#2" data-toggle="tab">Et Döner Gramajları</a>
+                                </li>
+                                <li>
+                                    <a href="#3" data-toggle="tab">Toplam Döner Gramajları</a>
+                                </li>
+                                <li>
+                                    <a href="#4" data-toggle="tab">Grafikler</a>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content ">
+                                <div class="tab-pane active" id="1" style="overflow:auto">
+
+                                         <table class="table table-hover table-sm table-striped shadow" style="width:100%" id="tavukDonerGramajlari">
+                                            <caption><b>Tavuk Döner Gramajları</b>
+
+                                                    </caption>
+                                            <thead>
+                                               <tr><th></th></tr>
+                                               <tr><th>Şubeler</th></tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                         </table>
+                                </div>
+                                <div class="tab-pane" id="2" style="overflow:auto">
+                                      <table class="table table-hover table-sm table-striped shadow"  style="width:100%" id="etDonerGramajlari">
+                                            <caption><b>Et Döner Gramajları</b>
+
+                                                    </caption>
+                                            <thead>
+                                               <tr><th></th></tr>
+                                               <tr><th>Şubeler</th></tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div class="tab-pane" id="3" style="overflow:auto">
+                                      <table class="table table-hover table-sm table-striped shadow"  style="width:100%" id="toplamDonerGramajlari">
+                                            <caption><b>Toplam Döner Gramajları</b>
+
+                                                    </caption>
+                                            <thead>
+                                               <tr><th></th></tr>
+                                               <tr><th>Şubeler</th></tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div class="tab-pane" id="4" style="overflow:auto">
+                                    <div id="satislarinDonerCesitPayiTumu" style="float:left"></div>
+                                    <div id="subeGrafikleri" style="max-height:500px;overflow: auto;"></div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                `;
+        $("#tableDiv").html(html);
+
+
+        searchFilterShow();
+
+        tavukDonerGramajlari();
+        etDonerGramajlari();
+        toplamDonerGramajlari();
+    }
+
+    function searchFilterShow() {
+        $("#tavukDonerGramajlari caption").html("");
+        $("#etDonerGramajlari caption").html("");
+        $("#toplamDonerGramajlari caption").html("");
+
+
+        if (SUBEADI != "") {
+            $("#tavukDonerGramajlari caption").append(`
+                        <button type="button" class="btn btn-danger btn-sm" onclick="SUBEADI=''; searchFilterShow();">
+                         Temizle <span class="badge badge-danger">x</span>
+                         </button>
+                 `);
+            $("#etDonerGramajlari caption").append(`
+                        <button type="button" class="btn btn-danger btn-sm" onclick="SUBEADI=''; searchFilterShow();">
+                         Temizle <span class="badge badge-danger">x</span>
+                         </button>
+                 `);
+            $("#toplamDonerGramajlari caption").append(`
+                        <button type="button" class="btn btn-danger btn-sm" onclick="SUBEADI=''; searchFilterShow();">
+                         Temizle <span class="badge badge-danger">x</span>
+                         </button>
+                 `);
+
+            for (var i = 0; i < SUBEADI.split(',').length - 1; i++) {
+
+                $("#tavukDonerGramajlari caption").append(`
+                        <button type="button" class="btn btn-danger btn-sm" onclick="SUBEADI='`+ SUBEADI.split(SUBEADI.split(',')[i] + ",").join("") + `'; searchFilterShow();">
+                         `+ SUBEADI.split(',')[i] + ` <span class="badge badge-danger">x</span>
+                         </button>
+                 `);
+                $("#etDonerGramajlari caption").append(`
+                        <button type="button" class="btn btn-danger btn-sm" onclick="SUBEADI='`+ SUBEADI.split(SUBEADI.split(',')[i] + ",").join("") + `'; searchFilterShow();">
+                         `+ SUBEADI.split(',')[i] + ` <span class="badge badge-danger">x</span>
+                         </button>
+                 `);
+                $("#toplamDonerGramajlari caption").append(`
+                        <button type="button" class="btn btn-danger btn-sm" onclick="SUBEADI='`+ SUBEADI.split(SUBEADI.split(',')[i] + ",").join("") + `'; searchFilterShow();">
+                         `+ SUBEADI.split(',')[i] + ` <span class="badge badge-danger">x</span>
+                         </button>
+                 `);
+            }
+
+        }
+
+    }
+
+
+    var tavukDonerGramajlariArray;
+    function tavukDonerGramajlari() {
+        var theData = {
+            StartDate: $("#dateGecerlilikTarihi").val(),
+            EndDate: $("#dateBitisTarihi").val(),
+            SUBEADI: SUBEADI
+        }
+        $("#tavukDonerGramajlari tbody").html("");
+        $.ajax({
+            url: '/GramajliSatislarRaporu/TavukDonerGramajlari',
+            type: 'GET',
+            beforeSend: function (request) {
+
+            },
+            complete: function (data) {
+                isLoading()
+            },
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                var result = JSON.parse(data);
+                tavukDonerGramajlariArray = result;
+                var agirlik = [];
+                var subeAdlari = [];
+
+                for (var i = 0; i < result.length; i++) {
+                    if (agirlik.find(x => x == result[i].AGIRLIK) == undefined) {
+                        agirlik.push(result[i].AGIRLIK)
+                    }
+                    if (subeAdlari.find(x => x == result[i].SUBEADI) == undefined) {
+                        subeAdlari.push(result[i].SUBEADI)
+                    }
+                }
+                agirlik.sort();
+                for (var i = 0; i < agirlik.length; i++) {
+                    $("#tavukDonerGramajlari thead tr:nth-child(1)").append("<th style='border-right:1px solid #dedede;border-left:1px solid #dedede;border-top:1px solid #dedede' colspan='2' class='text-center'>" + agirlik[i] + "</th>");
+                    $("#tavukDonerGramajlari thead tr:nth-child(2)").append("<th>Kg</th><th>Adet</th>");
+                }
+
+                $("#tavukDonerGramajlari thead tr:nth-child(1)").append("<th style='border-right:1px solid #dedede;border-left:1px solid #dedede;border-top:1px solid #dedede' colspan='2' class='text-center'>Genel Toplam</th>");
+                $("#tavukDonerGramajlari thead tr:nth-child(2)").append("<th>Kg</th><th>Adet</th>");
+
+
+                for (var i = 0; i < subeAdlari.length; i++) {
+                    var temp = "<tr onclick=' SUBEADI += \"" + subeAdlari[i] + ",\"; searchFilterShow();'><td>" + subeAdlari[i] + "</td>";
+                    var toplamKG = 0;
+                    var toplamAdet = 0;
+                    for (var j = 0; j < agirlik.length; j++) {
+                        var isValue = (result.find(x => x.SUBEADI == subeAdlari[i] && x.AGIRLIK == agirlik[j]));
+                        temp += "<td class='text-right'>" + formatCurrency(isValue == undefined ? "0" : isValue.ToplamKg) + "</td><td class='text-right'>" + formatCurrency(isValue == undefined ? "0" : isValue.Miktar) + "</td>";
+                        toplamKG += (isValue == undefined ? 0 : isValue.ToplamKg);
+                        toplamAdet += (isValue == undefined ? 0 : isValue.Miktar);
+                    }
+                    temp += "<td class='text-right'>" + formatCurrency(toplamKG) + "</td><td class='text-right'>" + formatCurrency(toplamAdet) + "</td>";
+
+                    temp += "</tr>";
+                    $("#tavukDonerGramajlari tbody").append(temp);
+
+                }
+
+
+                runDatatable("tavukDonerGramajlari");
+
+
+            }
+        });
+    }
+
+    var etDonerGramajlariArray;
+    function etDonerGramajlari() {
+        var theData = {
+            StartDate: $("#dateGecerlilikTarihi").val(),
+            EndDate: $("#dateBitisTarihi").val(),
+            SUBEADI: SUBEADI
+        }
+        $("#etDonerGramajlari tbody").html("");
+        $.ajax({
+            url: '/GramajliSatislarRaporu/EtDonerGramajlari',
+            type: 'GET',
+            beforeSend: function (request) {
+
+            },
+            complete: function (data) {
+                isLoading()
+            },
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                var result = JSON.parse(data);
+                etDonerGramajlariArray = result;
+                var agirlik = [];
+                var subeAdlari = [];
+
+                for (var i = 0; i < result.length; i++) {
+                    if (agirlik.find(x => x == result[i].AGIRLIK) == undefined) {
+                        agirlik.push(result[i].AGIRLIK)
+                    }
+                    if (subeAdlari.find(x => x == result[i].SUBEADI) == undefined) {
+                        subeAdlari.push(result[i].SUBEADI)
+                    }
+                }
+                agirlik.sort();
+                for (var i = 0; i < agirlik.length; i++) {
+                    $("#etDonerGramajlari thead tr:nth-child(1)").append("<th style='border-right:1px solid #dedede;border-left:1px solid #dedede;border-top:1px solid #dedede' colspan='2' class='text-center'>" + agirlik[i] + "</th>");
+                    $("#etDonerGramajlari thead tr:nth-child(2)").append("<th>Kg</th><th>Adet</th>");
+                }
+                $("#etDonerGramajlari thead tr:nth-child(1)").append("<th style='border-right:1px solid #dedede;border-left:1px solid #dedede;border-top:1px solid #dedede' colspan='2' class='text-center'>Genel Toplam</th>");
+                $("#etDonerGramajlari thead tr:nth-child(2)").append("<th>Kg</th><th>Adet</th>");
+
+                for (var i = 0; i < subeAdlari.length; i++) {
+                    var temp = "<tr onclick=' SUBEADI += \"" + subeAdlari[i] + ",\"; searchFilterShow();'><td>" + subeAdlari[i] + "</td>";
+                    var toplamKG = 0;
+                    var toplamAdet = 0;
+                    for (var j = 0; j < agirlik.length; j++) {
+                        var isValue = (result.find(x => x.SUBEADI == subeAdlari[i] && x.AGIRLIK == agirlik[j]));
+                        temp += "<td class='text-right'>" + formatCurrency(isValue == undefined ? "0" : isValue.ToplamKg) + "</td><td class='text-right'>" + formatCurrency(isValue == undefined ? "0" : isValue.Miktar) + "</td>";
+                        toplamKG += (isValue == undefined ? 0 : isValue.ToplamKg);
+                        toplamAdet += (isValue == undefined ? 0 : isValue.Miktar);
+                    }
+                    temp += "<td class='text-right'>" + formatCurrency(toplamKG) + "</td><td class='text-right'>" + formatCurrency(toplamAdet) + "</td>";
+
+                    temp += "</tr>";
+                    $("#etDonerGramajlari tbody").append(temp);
+
+                }
+
+                runDatatable("etDonerGramajlari");
+
+
+
+            }
+        });
+    }
+    function toplamDonerGramajlari() {
+        var theData = {
+            StartDate: $("#dateGecerlilikTarihi").val(),
+            EndDate: $("#dateBitisTarihi").val(),
+            SUBEADI: SUBEADI
+        }
+        $("#toplamDonerGramajlari tbody").html("");
+        $.ajax({
+            url: '/GramajliSatislarRaporu/ToplamDonerGramajlari',
+            type: 'GET',
+            beforeSend: function (request) {
+
+            },
+            complete: function (data) {
+                isLoading()
+            },
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                var result = JSON.parse(data);
+                var agirlik = [];
+                var subeAdlari = [];
+
+                for (var i = 0; i < result.length; i++) {
+                    if (agirlik.find(x => x == result[i].AGIRLIK) == undefined) {
+                        agirlik.push(result[i].AGIRLIK)
+                    }
+                    if (subeAdlari.find(x => x == result[i].SUBEADI) == undefined) {
+                        subeAdlari.push(result[i].SUBEADI)
+                    }
+                }
+                agirlik.sort();
+                for (var i = 0; i < agirlik.length; i++) {
+                    $("#toplamDonerGramajlari thead tr:nth-child(1)").append("<th style='border-right:1px solid #dedede;border-left:1px solid #dedede;border-top:1px solid #dedede' colspan='2' class='text-center'>" + agirlik[i] + "</th>");
+                    $("#toplamDonerGramajlari thead tr:nth-child(2)").append("<th>Kg</th><th>Adet</th>");
+                }
+                $("#toplamDonerGramajlari thead tr:nth-child(1)").append("<th style='border-right:1px solid #dedede;border-left:1px solid #dedede;border-top:1px solid #dedede' colspan='2' class='text-center'>Genel Toplam</th>");
+                $("#toplamDonerGramajlari thead tr:nth-child(2)").append("<th>Kg</th><th>Adet</th>");
+
+                for (var i = 0; i < subeAdlari.length; i++) {
+                    var temp = "<tr onclick=' SUBEADI += \"" + subeAdlari[i] + ",\"; searchFilterShow();'><td>" + subeAdlari[i] + "</td>";
+                    var toplamKG = 0;
+                    var toplamAdet = 0;
+                    for (var j = 0; j < agirlik.length; j++) {
+                        var isValue = (result.find(x => x.SUBEADI == subeAdlari[i] && x.AGIRLIK == agirlik[j]));
+                        temp += "<td class='text-right'>" + formatCurrency(isValue == undefined ? "0" : isValue.ToplamKg) + "</td><td class='text-right'>" + formatCurrency(isValue == undefined ? "0" : isValue.Miktar) + "</td>";
+                        toplamKG += (isValue == undefined ? 0 : isValue.ToplamKg);
+                        toplamAdet += (isValue == undefined ? 0 : isValue.Miktar);
+                    }
+                    temp += "<td class='text-right'>" + formatCurrency(toplamKG) + "</td><td class='text-right'>" + formatCurrency(toplamAdet) + "</td>";
+
+                    temp += "</tr>";
+                    $("#toplamDonerGramajlari tbody").append(temp);
+
+                }
+
+
+                runDatatable("toplamDonerGramajlari");
+
+            }
+        });
+    }
+
+
+    function satislarinDonerCesitPayiTumu() {
+        var totalTavukDonerGramajlari = tavukDonerGramajlariArray
+            .map((i) => i.ToplamKg)
+            .reduce((a, b) => a + b);
+
+        var totalEtDonerGramajlariArray = etDonerGramajlariArray
+            .map((i) => i.ToplamKg)
+            .reduce((a, b) => a + b);
+
+        var options = {
+            series: [totalTavukDonerGramajlari, totalEtDonerGramajlariArray],
+            chart: {
+                width: 300,
+                type: 'pie',
+            },
+            title: {
+                text: "Tümü (KG)"
+            },
+            labels: ['Tavuk Döner', 'Et Döner'],
+            dataLabels: {
+                formatter(val, opts) {
+                    const name = opts.w.globals.labels[opts.seriesIndex]
+                    const seri = formatCurrency(opts.w.globals.series[opts.seriesIndex])
+                    return [name, seri, val.toFixed(2) + '%']
+                }
+            },
+            responsive: [{
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: 200
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }]
+        };
+        var chart = new ApexCharts(document.querySelector("#satislarinDonerCesitPayiTumu"), options);
+        chart.render();
+
+
+    }
+
+    function satislarinDonerCesitPayiSubeler() {
+        console.log(tavukDonerGramajlariArray);
+        var subeAdlari = [];
+        for (var i = 0; i < tavukDonerGramajlariArray.length; i++) {
+            if (subeAdlari.find(x => x == tavukDonerGramajlariArray[i].SUBEADI) == undefined) {
+                subeAdlari.push(tavukDonerGramajlariArray[i].SUBEADI)
+            }
+        }
+        for (var i = 0; i < etDonerGramajlariArray.length; i++) {
+            if (subeAdlari.find(x => x == etDonerGramajlariArray[i].SUBEADI) == undefined) {
+                subeAdlari.push(etDonerGramajlariArray[i].SUBEADI)
+            }
+        }
+
+        for (var i = 0; i < subeAdlari.length; i++) {
+
+            var totalTavukDonerGramajlari = 0;
+            totalTavukDonerGramajlari = tavukDonerGramajlariArray.filter(x => x.SUBEADI == subeAdlari[i])
+                .map((i) => i.ToplamKg)
+                .reduce((a, b) => a + b);
+
+            var totalEtDonerGramajlariArray = 0;
+            totalEtDonerGramajlariArray = etDonerGramajlariArray.filter(x => x.SUBEADI == subeAdlari[i])
+                .map((i) => i.ToplamKg)
+                .reduce((a, b) => a + b);
+
+            var options = {
+                series: [totalTavukDonerGramajlari, totalEtDonerGramajlariArray],
+                chart: {
+                    width: 300,
+                    type: 'pie',
+                },
+                title: {
+                    text: subeAdlari[i] + " (KG)"
+                },
+                labels: ['Tavuk Döner', 'Et Döner'],
+                dataLabels: {
+                    formatter(val, opts) {
+                        const name = opts.w.globals.labels[opts.seriesIndex]
+                        const seri = formatCurrency(opts.w.globals.series[opts.seriesIndex])
+                        return [name, seri, val.toFixed(2) + '%']
+                    }
+                },
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        chart: {
+                            width: 200
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }]
+            };
+            $("#subeGrafikleri").append('<div id="sube' + i + '" style="float:left"></div>')
+            var chart = new ApexCharts(document.querySelector("#sube" + i), options);
+            chart.render();
+        }
+
+
+
+
+    }
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>

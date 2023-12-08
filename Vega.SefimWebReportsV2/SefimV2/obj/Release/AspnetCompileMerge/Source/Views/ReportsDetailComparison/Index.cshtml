@@ -1,0 +1,395 @@
+﻿@model IEnumerable<SefimV2.Models.SubeCiro>
+
+@{
+    ViewBag.Title = "Yeni Raporlar";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+<link href="/Assets/css/bootstrap.css" rel="stylesheet" />
+<link href="/Assets/css/custom.css" rel="stylesheet" />
+<link href="/Assets/plugins/fUpload/Uploader-style.css" rel="stylesheet" />
+<link href="~/Content/ContentSefPanel/css/costomfieldset/customfielset.css" rel="stylesheet" />
+
+<div id="content" class="form-horizontal">
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="table table-responsive table-hover table-condensed">
+            <br />
+            <fieldset class="well  the-fieldset">
+                <legend class="the-legend">Şube Karşılaştırma Raporları</legend>
+                <fieldset class="well  the-fieldset">
+                    <legend class="the-legend">Arama Kriterleri </legend>
+                    <div class="form-group m-form__group row">
+                        <div class="col-lg-12 col-sm-12 col-xs-12" style="padding:1px">
+                            <label class="col-form-label col-md-3 col-sm-3 col-xs-12">Şube Seç</label>
+                            <span style="padding-right: 5px">Hepsini Seç / Temizle </span>
+                            <input type="checkbox" id="hepsiniSeccomboSubeListId">
+                            <select name="comboSubeList" class="form-control m-select2" id="comboSubeListId" multiple="multiple" style="min-width:150px; width:100%"> </select>
+                        </div>
+                    </div>
+                    <div class="x_panel color">
+                        <div class="form-group m-form__group row">
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12" style="padding:1px">
+                                <input type="text" class="form-control has-feedback-left" id="dateCustomerStart" placeholder="Seçiniz">
+                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                <span id="inputSuccess2Status4" class="sr-only">(success)</span>
+                            </div>
+                            <div class="col-lg-1col-md-12 col-sm-2 col-xs-12 pull-left" style="padding:1px">
+                                <input type="time" id="baslamaSaat" name="appt" min="9:00" max="18:00" required>
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12" style="padding:1px">
+                                <input type="text" class="form-control has-feedback-left" id="dateCustomerEnd" value="" placeholder="Seçiniz">
+                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                <span id="inputSuccess2Status5" class="sr-only">(success)</span>
+                            </div>
+                            <div class="col-lg-1col-md-2 col-sm-2 col-xs-12" pull-left" style="padding:1px">
+                                <input type="time" id="bitisSaat" name="appt" min="9:00" max="18:00" required>
+                            </div>
+                            <div class="col-lg-1 col-md-2 col-sm-2 col-xs-12 pull-left">
+                                <button id="btnVeriGetirId" class=" btn btn-success pull-left" type="button"><i class="fa fa-search-plus"></i> &nbsp;  Veri Getir   </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="x_panel">
+                        <div class="clearfix">
+                            <div>
+                                <button id="btnToday" class="btnToday btn btn-primary pull-left" type="button"><i class="glyphicon"></i>Bugün</button>
+                                <button id="btnYesterday" class="btnYesterday btn btn-primary pull-left" type="button"><i class="fa fa-mail-reply"></i> Dün</button>
+                                <button id="btnWeek" class="btnWeek btn btn-primary pull-left" type="button"><i class="fa fa-calendar-times-o"></i> &nbsp;Haftalık</button>
+                                <button id="btnMonth" class="btnMonth btn btn-primary pull-left" type="button"><i class="fa fa-calendar-minus-o"></i> &nbsp;Aylık</button>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <fieldset class="well  the-fieldset ">
+                        <legend class="the-legend">Arama Sonuçu</legend>
+                        @*<div class="table-responsive">*@
+                        <div class="tab-content tableFixHead">
+                            <table id="tableKarsilastirmaRapor" class="table table-responsive table-bordered table-condensed " style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <th>Şube</th>
+                                        <th>Ciro</th>
+                                        <th>Nakit</th>
+                                        <th>K.Kartı</th>
+                                        <th>Y.Çeki</th>
+                                        <th>Paket Satış</th>
+                                        @*<th>Online S.</th>*@
+                                        @*<th>Açık Hesap</th>
+                                            <th>Açık Masalar</th>
+                                            <th>Masa Sayısı</th>
+                                            <th>İskonto</th>
+                                            <th>İptal</th>
+                                            <th>İade</th>
+                                            <th>İkram</th>
+                                            <th>Zayi</th>*@
+                                        @*<th>Gelir/Gider</th>*@
+                                        @*<th>Sn</th>*@
+                                    </tr>
+
+                                </thead>
+                                <tbody id="divCustomerState" style="  font-weight:bold">  </tbody>
+                            </table>
+                        </div>
+                    </fieldset>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    jQuery(document).ready(function () {
+
+        $('#comboSubeListId').select2();
+        $('#StartDate').val(outputAylik);
+        $('#EndDate').val(output);
+        //var table = $('#tableRapor').DataTable();
+        var buttonCommon = {
+            exportOptions: {
+                format: {
+                    body: function (data, row, column, node) {
+                        console.log(" data_", data);
+                        return data.replace(/[$,.]/g, '.')
+                        data;
+                    }
+                }
+            }
+        };
+        var table = $('#tableKarsilastirmaRapor').DataTable({
+            language: {
+                info: "_TOTAL_ kayıttan _START_ - _END_ kayıt gösteriliyor.",
+                infoEmpty: "Gösterilecek hiç kayıt yok.",
+                loadingRecords: "Kayıtlar yükleniyor.",
+                zeroRecords: "Tablo boş",
+                search: "Arama:",
+                infoFiltered: "(toplam _MAX_ kayıttan filtrelenenler)",
+                buttons: {
+                    copyTitle: "Panoya kopyalandı.",
+                    copySuccess: "Panoya %d satır kopyalandı",
+                    copy: "Kopyala",
+                    print: "Yazdır",
+                },
+                paginate: {
+                    first: "İlk",
+                    previous: "Önceki",
+                    next: "Sonraki",
+                    last: "Son"
+                },
+            },
+            dom: 'Bfrtip',
+            "pageLength": 80,
+            //buttons: [
+            //    'copy', 'excel', 'pdf', 'print'
+            //],
+            buttons: [
+                $.extend(true, {}, buttonCommon, {
+                    extend: 'copyHtml5'
+                }),
+                $.extend(true, {}, buttonCommon, {
+                    extend: 'excelHtml5'
+                }),
+                $.extend(true, {}, buttonCommon, {
+                    extend: 'pdfHtml5'
+                }),
+                //$.extend(true, {}, buttonCommon, {
+                //    extend: 'printHtml5'
+                //})
+                'print'
+            ],
+        });
+
+        //
+        var days = 31; // Days you want to subtract
+        var date = new Date();
+        var last = new Date(date.getTime() - (days * 24 * 60 * 60 * 1000));
+        var day = last.getDate();
+        var month = last.getMonth() + 1;
+        var year = last.getFullYear();
+        var outputDefault = year + '.' +
+            (('' + month).length < 2 ? '0' : '') + month + '.' +
+            (('' + day).length < 2 ? '0' : '') + day;
+
+        var days = 1; // haftalık
+        var date = new Date();
+        var last = new Date(date.getTime() - (days * 24 * 60 * 60 * 1000));
+        var day = last.getDate();
+        var month = last.getMonth() + 1;
+        var year = last.getFullYear();
+        var outputDun = (('' + day).length < 2 ? '0' : '') + day + '.' +
+            (('' + month).length < 2 ? '0' : '') + month + '.' +
+            year;
+
+        var days = 7; // haftalık
+        var date = new Date();
+        var last = new Date(date.getTime() - (days * 24 * 60 * 60 * 1000));
+        var day = last.getDate();
+        var month = last.getMonth() + 1;
+        var year = last.getFullYear();
+        var outputHaftalik = (('' + day).length < 2 ? '0' : '') + day  + '.' +
+            (('' + month).length < 2 ? '0' : '') + month + '.' +
+            year ;
+
+        var days = 31; // aylık
+        var date = new Date();
+        var last = new Date(date.getTime() - (days * 24 * 60 * 60 * 1000));
+        var day = last.getDate();
+        var month = last.getMonth() + 1;
+        var year = last.getFullYear();
+        var outputAylik = (('' + day).length < 2 ? '0' : '') + day + '.' +
+            (('' + month).length < 2 ? '0' : '') + month + '.' +
+            year;
+
+        var d = new Date(); // endDate
+        var month = d.getMonth() + 1;
+        var day = d.getDate();
+        var hours = d.getHours();
+        var minut = d.getMinutes();
+        var second = d.getSeconds();
+        var output = (('' + day).length < 2 ? '0' : '') + day+ '.' +
+            (('' + month).length < 2 ? '0' : '') + month + '.' +
+            d.getFullYear();
+
+        $('#dateGecerlilikTarihi').val(outputAylik);
+        $('#dateBitisTarihi').val(output);
+
+        @*Sube listesi*@
+        function SubelerListJson() {
+            $.ajax({
+                url: '/ReportsDetail/SubelerListJson',
+                type: 'POST',
+                beforeSend: function (request) {
+                    //mApp.blockPage();
+                },
+                complete: function () {
+                    window.setTimeout(function () {
+                        //mApp.unblockPage();
+                    }, 100);
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    var options = $('#comboSubeListId');
+                    $('option', options).remove();
+                    options.append($('<option />').val(0).text("Tümü"));
+                    $.each(data, function () {
+                        options.append($('<option />').val(this.Value).text(this.Text));
+                    });
+
+                    if ('Model.comboSubeListId'> 0) {
+                        $('#comboSubeListId').val('Model.comboSubeListId').trigger('change');
+                    } else { $('#comboSubeListId').val('0').trigger('change'); }
+
+                    var options = $('#comboSubeListId');
+                    $('option', options).remove();
+                    //options.append($('<option />').val(0).text("Tümü"));
+                    $.each(data, function () {
+                        options.append($('<option />').val(this.Value).text(this.Text));
+                    });
+                    if ('Model.comboSubeListId' > 0) {
+                        $('#comboSubeListId').val('Model.comboSubeListId').trigger('change');
+                    } else { $('#comboSubeListId').val('0').trigger('change'); }
+                }
+            });
+        }
+        SubelerListJson();
+
+
+        //Bugün butonu click durumu
+        $(document).on("click", "#btnToday", function (e) {
+            $('#dateCustomerStart').val(output);
+            $('#dateCustomerEnd').val(output);
+            var baslamaSaati = $("#baslamaSaat").val() ;
+            var bitisSaati = $("#bitisSaat").val();
+            if (baslamaSaati=="") {
+               $('#baslamaSaat').val("00:00:00");
+            }
+            if (bitisSaati=="") {
+                $('#bitisSaat').val("23:59:59")
+            }
+            var startDate = $("#dateCustomerStart").val() +" "+$("#baslamaSaat").val();
+            var endDate = $("#dateCustomerEnd").val()  +" "+ $("#bitisSaat").val();
+            var subeList = $('#comboSubeListId').val();
+
+            $.SubstationComparisonReport(startDate, endDate, 0, subeList, "");
+        });
+
+        //haftalık veri butonu click durumu
+        $(document).on("click", "#btnYesterday", function (e) {
+            $('#dateCustomerStart').val(outputDun);
+            $('#dateCustomerEnd').val(outputDun);
+            var baslamaSaati = $("#baslamaSaat").val();
+            var bitisSaati = $("#bitisSaat").val();
+            if (baslamaSaati == "") {
+                $('#baslamaSaat').val("00:00:00");
+            }
+            if (bitisSaati == "") {
+                $('#bitisSaat').val("23:59:59")
+            }
+            var startDate = $("#dateCustomerStart").val() + " " + $("#baslamaSaat").val();
+            var endDate = $("#dateCustomerEnd").val() + " " + $("#bitisSaat").val();
+            var subeList = $('#comboSubeListId').val();
+
+            $.SubstationComparisonReport(startDate, endDate, 0, subeList, "");
+        });
+
+        //Haftalık Getir butonu click durumu
+        $(document).on("click", "#btnWeek", function (e) {
+            $('#dateCustomerStart').val(outputHaftalik);
+            $('#dateCustomerEnd').val(output);
+            var baslamaSaati = $("#baslamaSaat").val();
+            var bitisSaati = $("#bitisSaat").val();
+            if (baslamaSaati == "") {
+                $('#baslamaSaat').val("00:00:00");
+            }
+            if (bitisSaati == "") {
+                $('#bitisSaat').val("23:59:59")
+            }
+            var startDate = $("#dateCustomerStart").val() + " " + $("#baslamaSaat").val();
+            var endDate = $("#dateCustomerEnd").val() + " " + $("#bitisSaat").val();
+            var subeList = $('#comboSubeListId').val();
+
+            $.SubstationComparisonReport(startDate, endDate, 0, subeList, "");
+        });
+
+
+        //Aylık Getir butonu click
+        $(document).on("click", "#btnMonth", function (e) {
+            $('#dateCustomerStart').val(outputAylik);
+            $('#dateCustomerEnd').val(output);
+            var baslamaSaati = $("#baslamaSaat").val();
+            var bitisSaati = $("#bitisSaat").val();
+            if (baslamaSaati == "") {
+                $('#baslamaSaat').val("00:00:00");
+            }
+            if (bitisSaati == "") {
+                $('#bitisSaat').val("23:59:59")
+            }
+            var startDate = $("#dateCustomerStart").val() + " " + $("#baslamaSaat").val();
+            var endDate = $("#dateCustomerEnd").val() + " " + $("#bitisSaat").val();
+            var subeList = $('#comboSubeListId').val();
+
+            $.SubstationComparisonReport(startDate, endDate, 0, subeList, "");
+        });
+
+
+        //Veri Getir butonu click
+        $(document).on("click", "#btnVeriGetirId", function (e) {
+            var baslamaSaati = $("#baslamaSaat").val();
+            var bitisSaati = $("#bitisSaat").val();
+            if (baslamaSaati == "") {
+                $('#baslamaSaat').val("00:00:00");
+            }
+            if (bitisSaati == "") {
+                $('#bitisSaat').val("23:59:59")
+            }
+            var startDate = $("#dateCustomerStart").val() + " " + $("#baslamaSaat").val();
+            var endDate = $("#dateCustomerEnd").val() + " " + $("#bitisSaat").val();
+            var subeList = $('#comboSubeListId').val();
+
+            $.SubstationComparisonReport(startDate, endDate, 0, subeList, "");
+        });
+
+        $.SubstationComparisonReport = function (startDate, endDate, FilterDataSubeUrun, subeList, urunAdi) {
+            $.ajax({
+                url: '/ReportsDetailComparison/SubstationComparisonReport?StartDateTime=' + startDate + '&EndDateTime=' + endDate + '&FilterData=' + FilterDataSubeUrun + '&SubeId=' + subeList + '&UrunAdi=' + urunAdi + '',
+                type: 'GET',
+                dataType: 'json',
+                success: function (result) {
+                    var addRow = '';
+                    table.clear().draw();
+                    $.each(result.Data, function (index, value)
+                    {
+                   addRow =
+                      '<tr>'
+                        + '<td>' + value.Sube + '</td>'
+                        + '<td>' + value.Ciro + '</td>'
+                        + '<td>' + value.Cash + '</td>'
+                        + '<td >' + value.Credit + '</td>'
+                        + '<td >' + value.Ticket + '</td>'
+                        + '<td >' + value.PaketSatis + '</td>'
+                        + '</tr>';
+                        table.row.add($(addRow)).draw();
+                    });
+
+                    //$("#divCustomerState").html('');
+                    // $("#divCustomerState").append(addRow);
+                    //window.setTimeout(function () { $("#divCustomerState").append(addRow); }, 1000);
+                }
+            });
+        }
+        //$.SubstationComparisonReport(startDate, endDate, FilterDataSubeUrun, subeList, urunAdi);
+    });
+
+
+    //hepsiniSec Şubedeki Ürünleri Şubelere Kopyala
+    $("#hepsiniSeccomboSubeListId").on("click", function () {
+        if ($(this).is(':checked')) {
+            $("#comboSubeListId > option").prop("selected", "selected");
+            $("#comboSubeListId").trigger("change");
+        } else {
+            $("#comboSubeListId > option").removeAttr("selected");
+            $("#comboSubeListId").trigger("change");
+        }
+    });
+</script>

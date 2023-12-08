@@ -1,0 +1,12 @@
+C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\FormWebConfig\bin\Debug\Vega Master Web Config.exe.config
+C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\FormWebConfig\bin\Debug\Vega Master Web Config.exe
+C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\FormWebConfig\bin\Debug\Vega Master Web Config.pdb
+C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\FormWebConfig\bin\Debug\System.Web.dll
+C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\FormWebConfig\obj\Debug\FormWebConfig.csproj.AssemblyReference.cache
+C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\FormWebConfig\obj\Debug\FormWebConfig.Form1.resources
+C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\FormWebConfig\obj\Debug\FormWebConfig.Properties.Resources.resources
+C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\FormWebConfig\obj\Debug\FormWebConfig.csproj.GenerateResource.cache
+C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\FormWebConfig\obj\Debug\FormWebConfig.csproj.CoreCompileInputs.cache
+C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\FormWebConfig\obj\Debug\FormWebConfig.csproj.CopyComplete
+C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\FormWebConfig\obj\Debug\Vega Master Web Config.exe
+C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\FormWebConfig\obj\Debug\Vega Master Web Config.pdb

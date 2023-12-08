@@ -1,0 +1,22 @@
+table.fixedHeader-floating {
+    background-color: white;
+    left: 265px;
+}
+
+    table.fixedHeader-floating.no-footer {
+        border-bottom-width: 0;
+        left: 265px;
+    }
+
+table.fixedHeader-locked {
+    position: absolute !important;
+    background-color: white;
+    left: 265px;
+}
+
+@media print {
+    table.fixedHeader-floating {
+        display: none;
+        left: 265px;
+    }
+}

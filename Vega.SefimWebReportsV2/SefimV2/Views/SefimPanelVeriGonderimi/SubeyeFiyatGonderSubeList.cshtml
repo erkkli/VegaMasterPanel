@@ -1,0 +1,260 @@
+﻿@model  SefimV2.ViewModels.SPosVeriGonderimi.SubelereVeriGonderViewModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutPageSPos.cshtml";
+}
+
+<div class="m-content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="notification"></div>
+        </div>
+    </div>
+    <div class="m-subheader ">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto">
+                <h2 class="m-subheader__title m-subheader__title--separator" style="text-align:center;margin-top:1px;margin-bottom:1px">Şube Listesi</h2>
+            </div>
+        </div>
+    </div>
+    <br />
+
+    @using (Html.BeginForm("SubeyeFiyatGonderSubeList", "SefimPanelVeriGonderimi", FormMethod.Post, new { id = "frmCreateRiskliYapiSatisSureciHisse" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary()
+
+        <div class="col-lg-6">
+            <fieldset class="well the-fieldset margin-bottom-5 padding-bottom-10 padding-top-10">
+                <legend class="the-legend">Kaynak Şube</legend>
+                @*<div class="table-responsive">
+                    <div class="table-container">
+                        <div class="x_content">*@
+                @*<a class="btn btn-success" href="@Url.Action("FiyatGuncellemeSubeAktarimEdit", "SefimPanelVeriGonderimi", new { SubeId = Model.IsSelectedSubeList[i].ID})" title="Şubedeki ürün bilgilerini güncelle">
+                        Güncelle
+                    </a>*@
+                @*<input type="submit" name="answer" value="Defer" class="btn btn-warning" />
+                    <input type="submit" name="response" value="Decline" formaction=@Url.Action("FiyatGuncellemeSubeAktarimEdit") formmethod="post" class="btn btn-default" />*@
+
+                <table id="tableKaynakSube" class="table table-hover table-condensed  table-bordered">
+                    <thead>
+                        <tr style="background: #fffaf0">
+                            <th hideExcel="true"> Seç </th>
+                            <th>İşlemler</th>
+                            <th>Şube Adı</th>
+                            <th>Database Adı</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            for (int i = 0; i < Model.IsSelectedSubeList.Count; i++)
+                            {
+                                @Html.HiddenFor(m => Model.IsSelectedSubeList[i].ID)
+                                @Html.HiddenFor(m => Model.IsSelectedSubeList[i].SubeName)
+                                @Html.HiddenFor(m => Model.IsSelectedSubeList[i].DBName)
+                                <tr>
+                                    <td hideExcel="true">
+                                        @Html.CheckBoxFor(x => Model.IsSelectedSubeList[i].IsSelectedKaynakSube)
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-success" href="@Url.Action("FiyatGuncelleEdit", "SefimPanelVeriGonderimi", new { SubeId = Model.IsSelectedSubeList[i].ID})" title="Şubedeki ürün bilgilerini güncelle">
+                                            Güncelle
+                                        </a>
+                                    </td>
+                                    <td> @Model.IsSelectedSubeList[i].SubeName  </td>
+                                    <td> @Model.IsSelectedSubeList[i].DBName </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+                @*</div>
+                        </div>
+                    </div>*@
+                @*<div class="col-md-offset-5 col-md-7">
+                        <a href="@Url.Action("FiyatGuncelleEdit", "SefimPanelVeriGonderimi", new { subeId = Model.IsSelectedSubeList.FirstOrDefault().ID })" class="btn btn-danger btn-lg">
+                            Vazgeç
+                        </a>
+                        <input type="submit" id="btnCreateRiskliYapiSatisSureciHisse" value="Kaydet" class="btn btn-m btn-success" />
+                    </div>*@
+            </fieldset>
+        </div>
+        <div class="col-lg-6">
+            <fieldset class="well the-fieldset margin-bottom-5 padding-bottom-10 padding-top-10">
+                <legend class="the-legend">Hedef Şube</legend>
+                @*<div class="table-responsive">
+                    <div class="table-container">
+                        <div class="x_content">*@
+                <table id="tableHedefSube" class="table table-hover table-condensed  table-bordered">
+                    <thead>
+                        <tr style="background: #fffaf0">
+                            <th hideExcel="true"><a> <input type="checkbox" id="tumunuSec" /> </a></th>
+                            @* <th>İşlemler</th>*@
+                            <th>Şube Adı</th>
+                            <th>Database Adı</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            for (int i = 0; i < Model.IsSelectedSubeList.Count; i++)
+                            {
+                                @Html.HiddenFor(m => Model.IsSelectedSubeList[i].ID)
+                                @Html.HiddenFor(m => Model.IsSelectedSubeList[i].SubeName)
+                                @Html.HiddenFor(m => Model.IsSelectedSubeList[i].DBName)
+                                <tr>
+                                    <td hideExcel="true">
+                                        @Html.CheckBoxFor(x => Model.IsSelectedSubeList[i].IsSelectedHedefSube)
+                                    </td>
+                                    @*<td>
+                                            <a class="btn btn-success" href="@Url.Action("FiyatGuncelleEdit", "SefimPanelVeriGonderimi", new { SubeId = item.ID})" title="Şubedeki ürün bilgilerini güncelle">
+                                                 Güncelle
+                                            </a>
+                                        </td>*@
+                                    <td> @Model.IsSelectedSubeList[i].SubeName  </td>
+                                    <td> @Model.IsSelectedSubeList[i].DBName </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+                @*</div>
+                        </div>
+                    </div>*@
+            </fieldset>
+        </div>
+        <div class="col-md-offset-5 col-md-7 center">
+            <a href="@Url.Action("FiyatGuncelleEdit", "SubeyeFiyatGonderSubeList", new { subeId = Model.IsSelectedSubeList.FirstOrDefault().ID })" class="btn btn-lg btn-danger"> Vazgeç </a>
+            <input type="submit" id="btnCreateRiskliYapiSatisSureciHisse" value="Kaydet" class="btn btn-lg btn-success" />
+        </div>
+    }
+</div>
+
+@*<script>
+
+    $('#tableHedefSube').DataTable({
+            "pageLength": 999,
+            "bDestroy": true,
+        });
+    </script>*@
+<script type="text/javascript">
+
+    $(document).on("change", '#tumunuSec', function () {
+        var seciliMi = $(this).is(":checked");
+        $('#tableHedefSube tbody').find('[type="checkbox"]').prop("checked", seciliMi);
+    })
+
+    $(document).ready(function () {
+
+        //$('#tableKaynakSube').DataTable({
+        //    "pageLength": 100,
+        //    "bDestroy": false,
+        //});
+
+
+        //$('#tableHedefSube').DataTable({
+        //    "pageLength": 100,
+        //    "bDestroy": false,
+        //});
+
+
+        //$('#tableKaynakSube').DataTable({
+        //    language: {
+        //        info: "_TOTAL_ kayıttan _START_ - _END_ kayıt gösteriliyor.",
+        //        infoEmpty: "Gösterilecek hiç kayıt yok.",
+        //        loadingRecords: "Kayıtlar yükleniyor.",
+        //        zeroRecords: "Tablo boş",
+        //        search: "Arama:",
+        //        infoFiltered: "(toplam _MAX_ kayıttan filtrelenenler)",
+        //        buttons: {
+        //            copyTitle: "Panoya kopyalandı.",
+        //            copySuccess: "Panoya %d satır kopyalandı",
+        //            copy: "Kopyala",
+        //            print: "Yazdır",
+        //        },
+        //        paginate: {
+        //            first: "İlk",
+        //            previous: "Önceki",
+        //            next: "Sonraki",
+        //            last: "Son"
+        //        },
+        //    },
+        //    dom: 'Bfrtip',
+        //    "pageLength": 20,
+        //    "bDestroy": true,
+        //    //buttons: [
+        //    //    'copy', 'excel', 'pdf', 'print'
+        //    //],
+
+        //    //buttons: [
+        //    //    $.extend(true, {}, buttonCommon, {
+        //    //        extend: 'copyHtml5'
+        //    //    }),
+        //    //    $.extend(true, {}, buttonCommon, {
+        //    //        extend: 'excelHtml5'
+        //    //    }),
+        //    //    $.extend(true, {}, buttonCommon, {
+        //    //        extend: 'pdfHtml5'
+        //    //    }),
+        //    //    //$.extend(true, {}, buttonCommon, {
+        //    //    //    extend: 'printHtml5'
+        //    //    //})
+        //    //    'print'
+        //    //],
+        //    ////responsive: true
+        //});
+
+        //$('#tableHedefSube').DataTable({
+        //    "pageLength": 999,
+        //    "bDestroy": true,
+        //});
+
+
+        //$('#tableHedefSube').DataTable({
+        //    language: {
+        //        info: "_TOTAL_ kayıttan _START_ - _END_ kayıt gösteriliyor.",
+        //        infoEmpty: "Gösterilecek hiç kayıt yok.",
+        //        loadingRecords: "Kayıtlar yükleniyor.",
+        //        zeroRecords: "Tablo boş",
+        //        search: "Arama:",
+        //        infoFiltered: "(toplam _MAX_ kayıttan filtrelenenler)",
+        //        buttons: {
+        //            copyTitle: "Panoya kopyalandı.",
+        //            copySuccess: "Panoya %d satır kopyalandı",
+        //            copy: "Kopyala",
+        //            print: "Yazdır",
+        //        },
+        //        paginate: {
+        //            first: "İlk",
+        //            previous: "Önceki",
+        //            next: "Sonraki",
+        //            last: "Son"
+        //        },
+        //    },
+        //    dom: 'Bfrtip',
+        //    "pageLength": 27,
+        //    "bDestroy": true,
+        //    //buttons: [
+        //    //    'copy', 'excel', 'pdf', 'print'
+        //    //],
+
+        //    //buttons: [
+        //    //    $.extend(true, {}, buttonCommon, {
+        //    //        extend: 'copyHtml5'
+        //    //    }),
+        //    //    $.extend(true, {}, buttonCommon, {
+        //    //        extend: 'excelHtml5'
+        //    //    }),
+        //    //    $.extend(true, {}, buttonCommon, {
+        //    //        extend: 'pdfHtml5'
+        //    //    }),
+        //    //    //$.extend(true, {}, buttonCommon, {
+        //    //    //    extend: 'printHtml5'
+        //    //    //})
+        //    //    'print'
+        //    //],
+        //    ////responsive: true
+        //});
+    });
+</script>
+
+

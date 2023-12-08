@@ -1,0 +1,204 @@
+﻿/*.left_menu_span:after{
+   text-align: center;
+    font-weight: 500;
+    color: #bfbed6;
+    width: 100%;
+    font-size: 14px;
+    content: "Dashboard";
+    display: -webkit-inline-box;
+    text-align: center;
+    text-align: -webkit-center;
+    font-style: normal;
+}
+.left_menu_span_active:after{
+   text-align: center;
+    font-weight: 500;
+    color: #22b9ff;
+    width: 100%;
+    font-size: 14px;
+    content: "Dashboard";
+    display: -webkit-inline-box;
+    text-align: center;
+    text-align: -webkit-center;
+    font-style: normal;
+}*/
+
+@media (min-width: 993px){
+  .m-brand {
+    background:#e21411;
+    
+    }
+
+}
+
+[data-field="Sıra"] {
+    text-align:center;
+}
+.mybigmodal{
+    max-width:calc( 100% - 100px ) !important;
+   
+}
+.mybigmodalcontainer{
+     /*height:calc( 100vh - 100px ) !important;*/
+}
+
+.p-l-0{
+    padding-left:0px !important;
+}
+.p-r-0{
+    padding-right:0px !important;
+}
+
+.p-l-r-0{
+    padding-left:0px !important;
+    padding-right: 0px !important;
+}
+
+.btn_active_false_danger:active{
+    background-color:#f4516c !important;
+}
+.btn_active_false_danger:focus{
+    background-color:#f4516c !important;
+}
+.btn_active_false_accent:active{
+    background-color:#00c5dc !important;
+}
+.btn_active_false_accent:focus{
+    background-color:#00c5dc !important;
+}
+.btn_active_false_success:active{
+    background-color:#34bfa3 !important;
+}
+.btn_active_false_success:focus{
+    background-color:#34bfa3 !important;
+}
+.btn_active_false_brand:active{
+    background-color:#22b9ff !important;
+}
+.btn_active_false_brand:focus{
+    background-color:#22b9ff !important;
+}
+.btn_active_false_primary:active{
+    background-color:#384ad7 !important;
+}
+.btn_active_false_primary:focus{
+    background-color:#384ad7 !important;
+}
+
+.notificstionwrapper{
+    margin-left:-310px !important;
+}
+
+.arrownotif{
+    margin-left:100px !important;
+}
+
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 140px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -75px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+.note-editable {
+    margin-top:80px !important;
+}
+.m-body .m-wrapper { overflow: inherit !important;}
+
+.modal-dialog {
+    width: 90%;
+    max-width : 1200px;
+}
+
+.modal-content {
+    padding-top: 15px;
+    padding-left: 15px;
+}
+
+.modal-body {
+    padding-top: 0px;
+    padding-right: 10px !important;
+    padding-left: 15px;
+}
+
+.modal-page-margintop {
+    margin-top: -60px;
+}
+
+.modal-header {
+    position: absolute;
+    width: 40px;
+    height: 36px;
+    right: 0px;
+    margin-top: 0px !important;
+    border-left: solid 0px #efefef;
+    right: -40px;
+    background: #ffffff;
+    top: 0px;
+    border-bottom-right-radius: 0.3rem;
+    border-bottom : solid 0px #efefef;
+}
+
+.modal-header .close { margin-top : 2px !important; margin-left:-8px !important; padding : 0px !important; }
+
+.modal-static {
+    outline: 0 none;
+    overflow-y: auto !important;
+    z-index: 10050;
+}
+
+.modal-static {
+    display: none;
+    outline: 0 none;
+    position: fixed;
+    z-index: 10050;
+}
+
+.modal-static, .modal-backdrop {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+
+.fontsize16 {
+    font-size: 16px;
+}
+
+.modal-sm {
+    width: 500px !important;
+}
+
+/* tüm table  satırları için font color veriyoruz*/
+.m-datatable.m-datatable--default > .m-datatable__table > .m-datatable__body .m-datatable__row > .m-datatable__cell > span { color: #000000 !important;}

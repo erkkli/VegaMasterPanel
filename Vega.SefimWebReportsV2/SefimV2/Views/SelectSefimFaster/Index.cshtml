@@ -1,0 +1,280 @@
+﻿@{
+    Layout = null;
+}
+@model SefimV2.Models.License.LisansViewModel
+
+@{
+    #region base URL bilgisi set ediliyor
+    var urlHelper = new UrlHelper(Html.ViewContext.RequestContext);
+    string baseUrl = urlHelper.Content("~");
+    #endregion
+
+    #region View tanımları
+    ViewBag.Title = "";
+    string PagecontentClass = "";
+    string CloseButton = "";
+    string CloseButtonHeader = "";
+    string CancelButton = "";
+
+    string Controller = ViewBag.Controller;
+    Dictionary<string, string> PageNavi = ViewBag.PageNavi;
+
+
+
+    PagecontentClass = "page-content";
+    CancelButton = "<a href='" + Url.Action("Index", "Authentication/Login") + "' class='btn btn-danger'> Vazgeç </a>";
+
+
+    #endregion
+}
+
+
+<!DOCTYPE html>
+<html lang="tr">
+<!-- begin::Head -->
+<head>
+    <meta charset="utf-8" />
+    <title>Vega Master Lisans</title>
+    <meta name="description" content="Latest updates and statistic charts">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!--begin::Web font -->
+    @*https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js*@
+    <script src="@(baseUrl)Scripts/webfont.js"></script>
+    <script>
+        WebFont.load({
+            google: { "families": ["Poppins:300,400,500,600,700", "Roboto:300,400,500,600,700"] },
+            active: function () {
+                sessionStorage.fonts = true;
+            }
+        });
+    </script>
+
+    <!--begin::Base Scripts -->
+    <script src="@(baseUrl)Content/assets/vendors/base/vendors.bundle.js" type="text/javascript"></script>
+    <script src="@(baseUrl)Content/assets/demo/demo6/base/scripts.bundle.js" type="text/javascript"></script>
+    <!--end::Base Scripts -->
+    <!--begin::Page Vendors -->
+    <script src="@(baseUrl)Content/assets/vendors/custom/fullcalendar/fullcalendar.bundle.js" type="text/javascript"></script>
+    <!--end::Page Vendors -->
+    <!--begin::Page Snippets -->
+    <script src="@(baseUrl)Content/assets/app/js/dashboard.js" type="text/javascript"></script>
+    <!--end::Page Snippets -->
+
+    <script src="@(baseUrl)Content/ajax/alerts.js" type="text/javascript"></script>
+    <script src="@(baseUrl)Content/assets/demo/default/custom/components/base/toastr.js" type="text/javascript"></script>
+    <script src="@(baseUrl)scripts/MicrosoftAjax.js"></script>
+    <script src="@(baseUrl)scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="@(baseUrl)Content/assets/demo/default/custom/components/forms/widgets/select2.js" type="text/javascript"></script>
+    <script src="@(baseUrl)Content/assets/demo/default/custom/components/forms/widgets/bootstrap-datepicker.js" type="text/javascript"></script>
+    <!--end::Web font -->
+    <!--begin::Base Styles -->
+    <!--begin::Page Vendors -->
+    <link href="@(baseUrl)Content/assets/vendors/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css" />
+    <!--end::Page Vendors -->
+    <link href="@(baseUrl)Content/assets/vendors/base/vendors.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="@(baseUrl)Content/assets/demo/demo6/base/style.bundle.css" rel="stylesheet" type="text/css" />
+    <!--end::Base Styles -->
+    <link rel="shortcut icon" href="@(baseUrl)img/VegaYazilimKucukLogo.png" />
+    <link href="/Content/myassets/css/login.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        .m-login.m-login--2 .m-login__wrapper .m-login__container .m-login__form .m-form__group .form-control {
+            border-radius: 0px;
+            padding: 1.2rem 1.2rem;
+        }
+    </style>
+</head>
+<!-- end::Head -->
+<body class="m--skin- m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
+    <!-- begin:: Page -->
+    <div class="m-grid m-grid--hor m-grid--root m-page">
+        <div class="m-grid__item m-grid__item--fluid m-grid m-grid--hor m-login m-login--signin m-login--2 m-login-2--skin-2" id="m_login" style="background-color:#3a5454">
+            <div class="m-grid__item m-grid__item--fluid	m-login__wrapper">
+                <div class="m-login__container" style="padding-top:50px; padding-bottom:10px; padding-left:30px; padding-right:30px; background: #193333; border-radius: 20px;">
+                    <div class="m-login__logo">
+                        <a href="/">
+                            <img src="~/img/SefimLogoKucuk.png" style="width:100%">
+
+                        </a>
+                    </div>
+                    <div class="m-login__signin">
+                        <div class="m-login__head">
+                            <h2 class="m-login__title" style="color: #d5e0e0;"> Lisans </h2>
+                        </div>
+                        <div id="notification" class="m--margin-top-20"></div>
+                        @using (Ajax.BeginForm("LisansCreate", "Authentication", FormMethod.Post, new AjaxOptions { OnSuccess = "OnSuccess", OnBegin = "OnBegin", OnComplete = "OnComplete" }, htmlAttributes: new { @class = "m-form", @id = "AuthenticationLisansCreate" }))
+                        {
+                            <div class="col-md-12">
+                                <div class="form-group m-form__group row">
+                                    <label class="col-form-label col-lg-9 col-sm-12"> Kullanıcı Adı <span class="required"> * </span></label>
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        @Html.TextBoxFor(m => m.username, htmlAttributes: new { @id = "username", @maxlength = "255", @class = "form-control", @placeholder = "Kullanıcı Adı" })
+                                    </div>
+                                </div>
+                            </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group m-form__group row">
+                                        <label class="col-form-label col-lg-9 col-sm-12"> Şifre <span class="required"> * </span></label>
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            @Html.TextBoxFor(m => m.password, htmlAttributes: new { @id = "password", @maxlength = "255", @class = "form-control", @placeholder = "Şifre" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*<div class="col-md-12">
+                    <div class="form-group m-form__group row">
+                        <label class="col-form-label col-lg-9 col-sm-12"> Ürün ID <span class="required"> * </span></label>
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+
+                            @Html.TextBoxFor(m => m.productID, htmlAttributes: new { @id = "productID", @maxlength = "255", @class = "form-control", @placeholder = "Ürün ID" })
+                        </div>
+                    </div>
+                </div>*@
+
+                                <div class="col-md-12">
+                                    <div class="form-group m-form__group row">
+                                        <label class="col-form-label col-lg-9 col-sm-12"> Firma Kodu <span class="required"> * </span></label>
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            @Html.TextBoxFor(m => m.companyCode, htmlAttributes: new { @id = "companyCode", @maxlength = "255", @class = "form-control", @placeholder = "Firma Kodu" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group m-form__group row">
+                                        <label class="col-form-label col-lg-9 col-sm-12" style="color:white"> Licence Anahtarı <span class="required"> * </span></label>
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            @Html.TextBoxFor(m => m.licenceKey, htmlAttributes: new { @id = "licenceKey", @maxlength = "255", @class = "form-control", @placeholder = "Lisans Anaktarı" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*   <button type="submit" class="btn btn-lg btn-success btn-block"> Giriş Yap</button>*@
+                                <div class="m-portlet__foot m-portlet__foot--fit">
+                                    <div class="m-form__actions m-form__actions" style="padding-left:15px">
+                                        @*<button type="submit" class="btn btn-primary btn-app"> Kaydet </button>*@
+                                        <button type="submit" class="btn btn-primary"> Kaydet </button>
+                                        @Html.Raw(CancelButton)
+                                        @Html.Raw(CloseButton)
+                                    </div>
+                                </div>
+
+                                <div class="clearfix"></div>
+
+
+                            @*if (Model.IsSuccess == false)
+                            {
+                                <div class="col-md-12 text-center" style="padding-top:30px">
+                                    <div class="alert alert-danger form-control" role="alert" style="padding:1px; height:60px">
+                                        @Html.DisplayFor(m => m.UserMessage)
+                                    </div>
+                                </div>
+                                    <div class="clearfix"></div>
+                            }*@
+                        }
+                    </div>
+
+                    <div class="m-login__forget-password">
+                        <div class="m-login__head">
+                            <h3 class="m-login__title">
+                                Şifrenimi unuttun ?
+                            </h3>
+                            <div class="m-login__desc">
+                                Kullanıcı ismini gir
+                            </div>
+                        </div>
+                        <form class="m-login__form m-form" action="">
+                            <div class="form-group m-form__group">
+                                <input class="form-control m-input" type="text" placeholder="Kullanıcı İsmi" name="email" id="m_email" autocomplete="off">
+                            </div>
+                            <div class="m-login__form-action">
+                                <button id="m_login_forget_password_submit" class="btn btn-focus m-btn m-btn--pill m-btn--custom m-btn--air  m-login__btn m-login__btn--primaryr btn-login">
+                                    Tamam
+                                </button>
+                                &nbsp;&nbsp;
+                                <button id="m_login_forget_password_cancel" class="btn btn-outline-focus m-btn m-btn--pill m-btn--custom m-login__btn btn-login2">
+                                    İptal
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--detay modal----------------------------------------------------------------------------------------------------->
+    <!--end::Modal-->
+    <!--begin::Modal-->
+    <div class="modal fade" id="m_modal_1_2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detay_modal_message_title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">
+                            &times;
+                        </span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="m-scrollable" data-scrollbar-shown="true" data-scrollable="true" data-max-height="200">
+                        <p id="detay_modal_message"></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tamam</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button style="display:none;" data-toggle="modal" data-target="#m_modal_1_2" id="manualModalMessage"></button>
+    <!--end::Modal-->
+    <!--begin::Modal-->
+    <!--detay modal----------------------------------------------------------------------------------------------------->
+
+    <script>
+    function OnSuccess(result) {
+
+        if (result.IsSuccess == true && result.Param1 == 0) {
+            SuccessAlert(result.UserMessage);
+            window.location = "@Url.Action("Login", "Authentication")";
+        } else if (result.IsSuccess == true && result.Param1 == 2) {
+            WarningAlert(result.UserMessage);
+        } else {
+            DangerAlert(result.UserMessage);
+            if (result.ParamStr=="true") {
+                window.setTimeout(function () { window.location.reload(); mApp.blockPage(); }, 5000);
+            }
+        }
+        $('html, body').animate({ scrollTop: 0 }, 'slow');
+    }
+
+    function OnBegin() { mApp.blockPage(); }
+
+    function OnComplete() { window.setTimeout(function () { mApp.unblockPage(); }, 100); }
+    </script>
+
+    @*
+        <script src="/Content/myassets/js/login.js"></script>
+        <script src="/Content/myassets/js/dialogpostresults.js"></script>
+
+        <script>
+            receivedPostMessage('@Html.Raw(TempData["loginmessage"])');
+            receivedPostMessage('@Html.Raw(TempData["datatemp"])');
+
+            @(TempData["datatemp"]="")
+            @(TempData["loginmessage"] = "")
+        </script>
+    *@
+
+    <script src="@(baseUrl)Content/assets/demo/default/custom/components/base/toastr.js" type="text/javascript"></script>
+    <script src="@(baseUrl)Scripts/MicrosoftAjax.js"></script>
+    <script src="@(baseUrl)Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="@(baseUrl)Content/ajax/alerts.js" type="text/javascript"></script>
+</body>
+<!-- end::Body -->
+</html>

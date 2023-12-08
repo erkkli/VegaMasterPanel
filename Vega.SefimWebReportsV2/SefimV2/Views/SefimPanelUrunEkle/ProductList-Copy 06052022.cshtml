@@ -1,0 +1,1187 @@
+﻿@{
+
+    ViewBag.Title = "Ürün Listesi";
+    Layout = "~/Views/Shared/_LayoutPageSPos.cshtml";
+}
+
+@model IEnumerable<SefimV2.Models.SefimPanelUrunEkleViewModel>
+<link href="/Assets/css/bootstrap.css" rel="stylesheet" />
+<link href="/Assets/css/custom.css" rel="stylesheet" />
+<link href="/Assets/plugins/fUpload/Uploader-style.css" rel="stylesheet" />
+<link href="~/Content/ContentSefPanel/css/costomfieldset/customfielset.css" rel="stylesheet" />
+
+<style>
+    .LimitButtonBack {
+        background: #3bab10; /* #28bf3a;*/
+        color: #ffffff !important;
+    }
+</style>
+
+
+<div class="col-md-12 col-sm-12 col-xs-12">
+
+    <fieldset class="well  the-fieldset">
+        <legend class="the-legend">Ürün Listesi</legend>
+        <!-- BEGIN: Subheader -->
+        <!--<div class="m-subheader ">
+            <div class="d-flex align-items-center">
+                <div class="mr-auto">
+                    <h4 class="m-subheader__title m-subheader__title--separator" style="text-align:center;margin-top:1px;margin-bottom:1px">@ViewBag.PageNavi</h4>
+                </div>
+            </div>
+        </div>-->
+        <!-- END: Subheader -->
+        @*<div class="x_panel">*@
+        <div class="x_title">
+            <div class="clearfix">
+
+                <button id="btnAdd" class="btn btn-success pull-right" type="button">Yeni Ürün</button>
+                <button id="btnSendSube" class="btn btn-success pull-right" type="button">Şubelere Gönder</button>
+
+            </div>
+        </div>
+        <div class="table-responsive table-responsive-lg">
+            @*<div class="table-container">
+                <div class="x_content">*@
+            @*<p class="text-muted font-13 m-b-30"></p>*@
+            <table id="tableUrun" class="table table-hover table-bordered table-responsive table-condensed">
+                <thead>
+                    <tr>
+                        <th width="15%">İşlemler</th>
+                        <th>Şube Adı</th>
+                        <th>Ürün Kodu</th>
+                        <th>Ürün Adı</th>
+                        <th>Ürün Grubu</th>
+                        <th>Fiyat</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+
+                        foreach (var row in Model)
+                        {
+
+                            <tr id="row_@row.Id">
+                                <td>
+                                    @if (row.YeniUrunMu)
+                                    {<span class="pull-left">
+                                            <a class="btn btn-xs btn-danger" onclick="lib.sil(@row.Id)" title="Sil">
+                                                Sil
+                                            </a>
+
+                                            <a class="btn btn-xs btn-warning" onclick="lib.duzenle(@row.Id)" title="Şubedeki ürün bilgilerini güncelle">
+                                                Düzenle
+                                            </a>
+                                            <a class="btn btn-xs btn-primary" onclick="lib.kopyala(@row.Id,@row.SubeId,@row.YeniUrunMu.ToString().ToLower(),'@row.ProductName')" title="Şubedeki ürün bilgilerini diğer şubelere kopyala">
+                                                Şubelere Kopyala
+                                            </a>
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-xs btn-primary pull-left" onclick="lib.kopyala(@row.Id,@row.SubeId,@row.YeniUrunMu.ToString().ToLower(),'@row.ProductName')" title="Şubedeki ürün bilgilerini diğer şubelere kopyala">
+                                            Şubelere Kopyala
+                                        </a>
+                                    }
+                                </td>
+                                <td style="color:#000000;font-weight:bold ">@row.SubeName</td>
+                                <td style="color:#000000;font-weight:bold ">@row.ProductCode</td>
+                                <td style="color:#000000;font-weight:bold ">@row.ProductName</td>
+                                <td style="color:#000000;font-weight:bold ">@row.ProductGroup</td>
+                                <td style="color:#000000;font-weight:bold ">@row.Price</td>
+                            </tr>
+                        }
+
+                    }
+
+                </tbody>
+
+            </table>
+
+            @*</div>
+                </div>*@
+        </div>
+        @*</div>*@
+    </fieldset>
+</div>
+
+
+<div class="modal fade" id="modalAdd" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <span class="modal-title">Ürün Ekle</span>
+                <a class="pull-right txt-color-white" data-dismiss="modal" aria-label="Close" title="Kapat">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </a>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" style="margin-top:10px !important;">
+                    <div class="col-xs-12">
+                        <div class="controls">
+                            <div class="form-group m-form__group row  has-feedback ">
+
+                                <fieldset class="well  the-fieldset">
+                                    <legend class="the-legend">Ürün</legend>
+                                    <form>
+                                        <input id="Id" name="Id" hidden />
+                                        <div class="form-group m-form__group row">
+                                            <div class="col-sm-12">
+                                                <div class="col-sm-2" style="padding:0">
+                                                    <label>Şube :</label>
+                                                </div>
+                                                <div class="col-sm-10" style="padding:0">
+                                                    <select name="Sube" class="form-control m-select2" id="Sube" multiple="multiple"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                            <div class="col-sm-8">
+                                                <input type="text" id="ProductName" name="ProductName" class="form-control" aria-describedby="ProductName" placeholder="Ürün Adı Giriniz">
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="text" id="ProductCode" name="ProductCode" class="form-control" aria-describedby="ProductCode" placeholder="Ürün Kodu Giriniz">
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                            <div class="col-sm-4">
+                                                <input type="text" id="ProductGroup" name="ProductGroup" class="form-control" aria-describedby="ProductGroup" placeholder="Ürün Grubu Giriniz">
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="text" id="InvoiceName" name="InvoiceName" class="form-control" aria-describedby="InvoiceName" placeholder="Fatura Grubu Giriniz">
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="text" id="Favorites" name="Favorites" class="form-control" aria-describedby="Favorites" placeholder="Favoriler">
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12" style="padding:0">
+                                                <div class="col-sm-2">
+                                                    <div class="col-sm-5">
+                                                        <label>KDV:</label>
+                                                    </div>
+                                                    <div class="col-sm-7">
+                                                        <input type="number" id="VatRate" style="padding:0;margin:0" name="VatRate" class="form-control" aria-describedby="VatRate" placeholder="KDV Oranı Giriniz">
+                                                    </div>
+                                                </div>
+                                                @*<div class="form-group m-form__group row">
+                                                        <label class="col-form-label col-md-3 col-sm-3 col-xs-12">Kullanıcı Adı<span class="required"> * </span></label>
+                                                        <div class="col-lg-9 col-md-12 col-sm-12">
+                                                            <div class="col-sm-7">
+                                                                <input type="number" id="VatRate" style="padding:0;margin:0" name="VatRate" class="form-control" aria-describedby="VatRate" placeholder="KDV Oranı Giriniz">
+                                                            </div>
+                                                        </div>
+                                                    </div>*@
+                                                <div class="col-sm-2">
+                                                    <input type="number" id="Price" name="Price" class="form-control" aria-describedby="Price" placeholder="KDV Dahil Fiyat">
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <input type="text" id="ProductType" name="ProductType" class="form-control" aria-describedby="ProductType" placeholder="Ürün Tipi">
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <div class="col-sm-10 col-md-10 col-lg-10 col-xs-10"><label>İkram</label></div>
+                                                    <div class="col-sm-2 col-md-2 col-lg-2 col-xs-2">
+                                                        <input type="checkbox" id="FreeItem" name="FreeItem" class="form-check-input" aria-describedby="FreeItem" placeholder="İkram">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <input type="text" id="Order" name="Order" class="form-control" aria-describedby="Order" placeholder="Sıra Giriniz">
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <input type="text" id="Plu" name="Plu" class="form-control" aria-describedby="Plu" placeholder="PLU">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </fieldset>
+
+                                <div role="tabpanel">
+                                    <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6" style="padding:0">
+                                            <fieldset class="well  the-fieldset">
+                                                <legend class="the-legend">1. Seviye</legend>
+                                                <div class="form-group m-form__group row">
+                                                    <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                        <input type="text" id="seviye1Secim" class="form-control" aria-describedby="seviye1Secim" placeholder="Seçim">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group m-form__group row">
+                                                    <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                        <input type="number" id="seviye1Fiyat" class="form-control" aria-describedby="seviye1Fiyat" placeholder="Fiyat">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group m-form__group row">
+                                                    <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                        <button id="btnSecimAdd" class="btn btn-xs btn-primary pull-right" type="button">Ekle</button>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                    <table id="tableSecim1" class="table table-hover table-bordered table-responsive">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>İşlem</th>
+                                                                <th>Seçim</th>
+                                                                <th>Fiyat</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>
+
+                                                    </table>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6" style="padding:0">
+                                            <fieldset class="well  the-fieldset">
+                                                <legend class="the-legend">  2. Seviye</legend>
+                                                <div class="form-group m-form__group row">
+                                                    <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                        <input type="text" id="seviye2Secim" class="form-control" aria-describedby="seviye2Secim" placeholder="Seçim">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group m-form__group row">
+                                                    <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                        <input type="number" id="seviye2Fiyat" class="form-control" aria-describedby="seviye2Fiyat" placeholder="Fiyat">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group m-form__group row">
+                                                    <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                        <button id="btnSecim2Add" class="btn btn-xs btn-primary pull-right" type="button">Ekle</button>
+                                                    </div>
+                                                </div>
+                                                <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                    <table id="tableSecim2" class="table table-hover table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>İşlem</th>
+                                                                <th>Seçim</th>
+                                                                <th>Fiyat</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>
+
+                                                    </table>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 " style="padding:0">
+                                            <fieldset class="well  the-fieldset">
+                                                <legend class="the-legend">Seçenekler</legend>
+                                                <div class="form-group m-form__group row">
+                                                    <div class="row col-sm-6 col-md-6 col-lg-6 col-xs-6">
+                                                        <input type="text" id="optionsSecenek" class="form-control" aria-describedby="optionsSecenek" placeholder="Seçenek">
+                                                    </div>
+                                                    <div class="row col-sm-6 col-md-6 col-lg-6 col-xs-6">
+                                                        <select name="optionsKategori" class="form-control m-select2" id="optionsKategori" placeholder="Kategori"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group m-form__group row">
+                                                    <div class="row col-sm-10 col-md-10 col-lg-10 col-xs-10">
+                                                        <input type="number" id="optionsFiyat" class="form-control" aria-describedby="optionsFiyat" placeholder="Fiyat">
+                                                    </div>
+                                                    <div class="col-sm-2 col-md-2 col-lg-2 col-xs-2" style="padding:0">
+                                                        <div class="col-sm-10 col-md-10 col-lg-10 col-xs-10">   <label>Miktarlı</label></div>
+                                                        <div class="col-sm-2 col-md-2 col-lg-2 col-xs-2"><input type="checkbox" id="miktarli" name="miktarli" class="form-check-input" aria-describedby="miktarli" placeholder="Miktarlı"> </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group m-form__group row">
+                                                    <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                        <button id="btnOptionsAdd" class="btn btn-xs btn-primary pull-right" type="button">Ekle</button>
+                                                    </div>
+                                                </div>
+                                                <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                    <table id="tableOptions" class="table table-hover table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>İşlem</th>
+                                                                <th>Seçenek</th>
+                                                                <th>Kategori</th>
+                                                                <th>Fiyat</th>
+                                                                <th>Miktarlı</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>
+
+                                                    </table>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12"  style="padding:0">
+                                            <fieldset class="well  the-fieldset">
+                                                <legend class="the-legend">Kategori</legend>
+                                                <div class="form-group m-form__group row">
+                                                    <div class="row col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                                        <input type="text" id="Kategori" class="form-control" aria-describedby="Kategori" placeholder="Kategori">
+                                                    </div>
+                                                    <div class="row col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                                        <input type="number" id="EnAz" class="form-control" aria-describedby="EnAz" placeholder="En Az">
+                                                    </div>
+                                                    <div class="row col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                                        <input type="number" id="EnCok" class="form-control" aria-describedby="EnCok" placeholder="En Çok">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group m-form__group row">
+                                                    <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                        <button id="btnKategoriAdd" class="btn btn-xs btn-primary pull-right" type="button">Ekle</button>
+                                                    </div>
+                                                </div>
+                                                <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                    <table id="tableKategori" class="table table-hover table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>İşlem</th>
+                                                                <th>Kategori</th>
+                                                                <th>En Az</th>
+                                                                <th>En Çok</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>
+
+                                                    </table>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
+                    <button id="btnProductsave" type="button" class="btnProductsave btn btn-success" data-id="0">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalKopyala" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <span class="modal-title">Ürünü Şubelere Kopyala</span>
+                <a class="pull-right txt-color-white" data-dismiss="modal" aria-label="Close" title="Kapat">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </a>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" style="margin-top:10px !important;">
+                    <div class="col-xs-12">
+                        <div class="controls">
+                            <div class="form-group m-form__group row  has-feedback ">
+                                <form>
+                                    <input id="copyId" hidden />
+                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                        <label>Kopyalanacak Ürün:</label> <label id="productNameForModal"></label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                        <label>Şubeler</label>
+                                        <select name="Subeler" class="form-control m-select2" id="Subeler" multiple="multiple"></select>
+                                        <input id="yeniUrunMuforModal" hidden />
+                                        <input id="SubeIdforModal" hidden />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
+                    <button id="btnKopyala" type="button" class="btnProductsave btn btn-success" data-id="0">Kaydet</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<script src="/Assets/js/jquery.js"></script>
+<script src="/Assets/plugins/fUpload/jquery.blockUI.js"></script>
+<script src="/Assets/js/bootstrap.js"></script>
+
+@*<script type="text/javascript">
+        $(document).ready(function () {
+            $('#tableRapor').DataTable({
+                dom: 'Bfrtip',
+               "bDestroy": true,
+                buttons: [
+                    'copy', 'excel', 'pdf', 'print'
+                ]
+            });
+        });
+    </script>*@
+
+
+<script type="text/javascript">
+    var lib = {};
+    var product = {};
+    product.Choice1 = [];
+    product.Choice2 = [];
+    product.Options = [];
+    product.OptionCats = [];
+    $(document).ready(function () {
+
+        function ProductGroupsJsonList() {
+            $.ajax({
+                url: '/SefimPanelUrunEkle/ProductGroupsJson',
+                type: 'POST',
+                beforeSend: function (request) {
+                    //mApp.blockPage();
+                },
+                complete: function () {
+                    window.setTimeout(function () {
+                        //mApp.unblockPage();
+                    }, 100);
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    // var countries = ['test', 'deneme', 'deneme', 'test', 'deneme', 'deneme test sdadjalksdj ırewrfsadhfukafhdusf sdkfhsksudkhaudasd', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme']
+                    autocomplete(document.getElementById("ProductGroup"), data);
+
+                }
+            });
+        }
+
+        function ProductTypesJsonList() {
+            $.ajax({
+                url: '/SefimPanelUrunEkle/ProductTypesJson',
+                type: 'POST',
+                beforeSend: function (request) {
+                    //mApp.blockPage();
+                },
+                complete: function () {
+                    window.setTimeout(function () {
+                        //mApp.unblockPage();
+                    }, 100);
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    // var countries = ['test', 'deneme', 'deneme', 'test', 'deneme', 'deneme test sdadjalksdj ırewrfsadhfukafhdusf sdkfhsksudkhaudasd', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme']
+                    autocomplete(document.getElementById("ProductType"), data);
+
+                }
+            });
+        }
+
+
+        function InvoiceNamesJsonList() {
+            $.ajax({
+                url: '/SefimPanelUrunEkle/InvoiceNamesJson',
+                type: 'POST',
+                beforeSend: function (request) {
+                    //mApp.blockPage();
+                },
+                complete: function () {
+                    window.setTimeout(function () {
+                        //mApp.unblockPage();
+                    }, 100);
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    // var countries = ['test', 'deneme', 'deneme', 'test', 'deneme', 'deneme test sdadjalksdj ırewrfsadhfukafhdusf sdkfhsksudkhaudasd', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme']
+                    autocomplete(document.getElementById("InvoiceName"), data);
+
+                }
+            });
+        }
+
+
+        function FavoritessJsonList() {
+            $.ajax({
+                url: '/SefimPanelUrunEkle/FavoritessJson',
+                type: 'POST',
+                beforeSend: function (request) {
+                    //mApp.blockPage();
+                },
+                complete: function () {
+                    window.setTimeout(function () {
+                        //mApp.unblockPage();
+                    }, 100);
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    // var countries = ['test', 'deneme', 'deneme', 'test', 'deneme', 'deneme test sdadjalksdj ırewrfsadhfukafhdusf sdkfhsksudkhaudasd', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme', 'test', 'deneme', 'deneme']
+                    autocomplete(document.getElementById("Favorites"), data);
+
+                }
+            });
+        }
+
+
+
+
+        $('#Subeler').select2({ width: "100%" });
+        $('#Sube').select2({ width: "100%" });
+        $('#tableUrun').DataTable({
+            language: {
+                info: "_TOTAL_ kayıttan _START_ - _END_ kayıt gösteriliyor.",
+                infoEmpty: "Gösterilecek hiç kayıt yok.",
+                loadingRecords: "Kayıtlar yükleniyor.",
+                zeroRecords: "Tablo boş",
+                search: "Arama:",
+                infoFiltered: "(toplam _MAX_ kayıttan filtrelenenler)",
+                buttons: {
+                    copyTitle: "Panoya kopyalandı.",
+                    copySuccess: "Panoya %d satır kopyalandı",
+                    copy: "Kopyala",
+                    print: "Yazdır",
+                },
+                paginate: {
+                    first: "İlk",
+                    previous: "Önceki",
+                    next: "Sonraki",
+                    last: "Son"
+                },
+            },
+            dom: 'Bfrtip',
+            "pageLength": 80,
+            "bDestroy": true,
+            buttons: [
+                'copy', 'excel', 'pdf', 'print'
+            ],
+            //responsive: true
+        });
+
+        var table1 = $('#tableSecim1').DataTable({
+            searching: false,
+            "bLengthChange": false, //thought this line could hide the LengthMenu
+            "bInfo": false
+        });
+        var table2 = $('#tableSecim2').DataTable({
+            searching: false,
+            "bLengthChange": false, //thought this line could hide the LengthMenu
+            "bInfo": false
+        });
+        var tableOptions = $('#tableOptions').DataTable({
+            searching: false,
+            "bLengthChange": false, //thought this line could hide the LengthMenu
+            "bInfo": false
+        });
+        var tableKategori = $('#tableKategori').DataTable({
+            searching: false,
+            "bLengthChange": false, //thought this line could hide the LengthMenu
+            "bInfo": false
+        });
+
+        $('#tableSecim1 tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                $('#tableSecim1 tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                var id = $(this).data('id');
+
+                $('#tableSecim2 tbody tr').each(function (index) {
+                    if ($(this).data('meta') == id) {
+                        $(this).removeClass('hidden');
+                    } else {
+                        $(this).addClass('hidden');
+                    }
+                    $(this).removeClass('selected');
+                })
+            }
+        });
+
+
+
+        $('#tableSecim2 tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                $('#tableSecim2 tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                /*                console.log($(this).data('id'));*/
+            }
+        });
+
+        $('#tableSecim1_paginate')[0].classList.add('hide');
+        $('#tableSecim2_paginate')[0].classList.add('hide');
+        $('#tableOptions_paginate')[0].classList.add('hide');
+        $('#tableKategori_paginate')[0].classList.add('hide');
+
+        $('#btnAdd').click(function () {
+            lib.clear();
+            $('#VatRate').val(8);
+            $('#ProductCode').val('00000');
+            $('#ProductType').val('Normal');
+            ProductGroupsJsonList();
+            ProductTypesJsonList();
+            InvoiceNamesJsonList();
+            FavoritessJsonList();
+            $('#modalAdd').modal('show');
+        })
+
+        $('#btnSecimAdd').click(function () {
+            var secim1 = $('#seviye1Secim').val();
+            var secim1Fiyat = $('#seviye1Fiyat').val();
+
+            if (!secim1) {
+                return alert('Lütfen öncelikle Seçenek giriniz.')
+            }
+
+            if (!secim1Fiyat) {
+                return alert('Lütfen Fiyat giriniz.')
+            }
+
+            $('#seviye1Secim').val('');
+            $('#seviye1Fiyat').val('');
+
+            var gid = guid();
+            var iid = guid();
+            product.Choice1.push({ iid: iid, secimId: gid, Name: secim1, Price: secim1Fiyat });
+            lib.addRow(iid, table1, '', { secim: secim1, fiyat: secim1Fiyat }, gid);
+            //table1.row.add([
+            //    secim1, secim1Fiyat
+            //]).draw(false);
+        })
+
+        $('#btnSecim2Add').click(function () {
+            var id = $('#tableSecim1 tr.selected').data('id');
+            if ($('#tableSecim1 tr.selected').length && id) {
+
+                var secim2 = $('#seviye2Secim').val();
+                var secim2Fiyat = $('#seviye2Fiyat').val();
+
+                if (!secim2) {
+                    return alert('Lütfen öncelikle Seçenek giriniz.')
+                }
+
+                if (!secim2Fiyat) {
+                    return alert('Lütfen Fiyat giriniz.')
+                }
+
+                $('#seviye2Secim').val('');
+                $('#seviye2Fiyat').val('');
+
+                var gid = guid();
+                var iid = guid();
+                product.Choice2.push({ iid: iid, secim1id: id, Name: secim2, Price: secim2Fiyat });
+                lib.addRow(iid, table2, id, { secim: secim2, fiyat: secim2Fiyat }, gid);
+            } else {
+                alert('Öncelikle geçerli bir Seçim 1 seçiniz.')
+            }
+            //table1.row.add([
+            //    secim1, secim1Fiyat
+            //]).draw(false);
+        })
+        $('#btnOptionsAdd').click(function () {
+            var secenek = $('#optionsSecenek').val();
+            var kategori = $('#optionsKategori').val();
+            var fiyat = $('#optionsFiyat').val();
+            var miktarli = $('#miktarli:checked').val();
+            var opCatsId = $('#optionsKategori').val();
+
+            if (!secenek) {
+                return alert('Lütfen öncelikle Seçenek giriniz.')
+            }
+
+            if (!fiyat) {
+                return alert('Lütfen Fiyat giriniz.')
+            }
+
+            var kategoriName = "";
+            if ($('#optionsKategori')[0].selectedOptions && $('#optionsKategori')[0].selectedOptions.length > 0)
+                kategoriName = $('#optionsKategori')[0].selectedOptions[0].innerHTML;
+
+            $('#optionsSecenek').val('');
+            $('#optionsKategori').val('');
+            $('#optionsFiyat').val('');
+
+
+            var gid = guid();
+            var iid = guid();
+
+            if (miktarli || miktarli == 'on' || miktarli == '')
+                miktarli = true;
+            else
+                miktarli = false;
+
+            product.Options.push({ iid: iid, OptionCatsId: opCatsId, Name: secenek, Category: kategori, Price: fiyat, Quantitative: miktarli });
+            lib.addRow(iid, tableOptions, '', { secenek: secenek, kategori: kategoriName, fiyat: fiyat, miktarli: miktarli }, gid);
+        })
+
+        $('#btnKategoriAdd').click(function () {
+            var kategori = $('#Kategori').val();
+            var enAz = $('#EnAz').val();
+            var enCok = $('#EnCok').val();
+
+            if (!kategori) {
+                return alert('Lütfen öncelikle Kategori giriniz.')
+            }
+            if (!enAz) {
+                return alert('Lütfen En Az miktarını giriniz.')
+            }
+            if (!enCok) {
+                return alert('Lütfen En Çok miktarını giriniz.')
+            }
+            $('#Kategori').val('');
+            $('#EnAz').val('');
+            $('#EnCok').val('');
+
+
+            var gid = guid();
+            var iid = guid();
+            product.OptionCats.push({ iid: iid, optionCatsId: gid, Name: kategori, MinSelections: enAz, MaxSelections: enCok });
+            lib.addRow(iid, tableKategori, '', { Name: kategori, MinSelections: enAz, MaxSelections: enCok }, gid);
+
+            var optionsKategori = $('#optionsKategori');
+
+            $('option', optionsKategori).remove();
+            optionsKategori.append($('<option />').val('').text(''));
+            /* options.append($('<option />').val(0).text("Seçiniz"));*/
+            $.each(product.OptionCats, function () {
+                optionsKategori.append($('<option />').val(gid).text(this.Name));
+
+            });
+        })
+        function guid() {
+            function _p8(s) {
+                var p = (Math.random().toString(16) + "000000000").substr(2, 8);
+                return s ? "-" + p.substr(0, 4) + "-" + p.substr(4, 4) : p;
+            }
+            return _p8() + _p8(true) + _p8(true) + _p8();
+        }
+
+        lib.addRow = function (iid, table, rowid, row, gid) {
+            var tr = $("<tr calss='odd' id='" + iid + "'data-id='" + gid + "' data-meta='" + rowid + "' role='row'>");
+            var removeColum = $('<td><button class="btn btn-danger" onClick="lib.delColumn(\'' + iid + '\')">Sil</button></td>')
+            tr.append(removeColum);
+            Object.keys(row).forEach(function (column) {
+                var td = $('<td>' + row[column] + '</td>')
+                tr.append(td)
+            })
+            table.row.add(tr).draw();
+        }
+
+        lib.delColumn = function (iid) {
+            product.Options.forEach(function (opt, index) {
+                if (opt.iid == iid) {
+                    product.Options.splice(index, 1)
+                    tableOptions.row('#' + iid).remove().draw();
+                }
+            })
+
+            product.Choice1.forEach(function (ch1, index) {
+                if (ch1.iid == iid) {
+                    product.Choice1.splice(index, 1)
+                    table1.row('#' + iid).remove().draw();
+                }
+            })
+            product.Choice2.forEach(function (ch2, index) {
+                if (ch2.iid == iid) {
+                    product.Choice2.splice(index, 1)
+                    table2.row('#' + iid).remove().draw();
+                }
+            })
+
+            product.OptionCats.forEach(function (optCat, index) {
+                if (optCat.iid == iid) {
+                    product.OptionCats.splice(index, 1)
+                    tableKategori.row('#' + iid).remove().draw();
+                }
+            })
+
+        }
+
+        lib.clear = function () {
+            product = {};
+            product.Choice1 = [];
+            product.Choice2 = [];
+            product.Options = [];
+            product.OptionCats = [];
+            $('#ProductCode').val('');
+            $('#ProductName').val('');
+            $('#Order').val('');
+            $('#ProductType').val('');
+            $('#Price').val('');
+            $('#Plu').val('');
+            $('#VatRate').val('');
+            $('#ProductGroup').val('');
+            $('#InvoiceName').val('');
+            $('#Favorites').val('');
+
+            $('#seviye1Secim').val('');
+            $('#seviye1Fiyat').val('');
+
+            $('#seviye2Secim').val('');
+            $('#seviye2Fiyat').val('');
+
+            $('#optionsSecenek').val('');
+            $('#optionsKategori').val('');
+            $('#optionsFiyat').val('');
+            $('#miktarli').val('');
+
+            $('#Kategori').val('');
+            $('#EnAz').val('');
+            $('#EnCok').val('');
+            $('#Id').val('');
+            table1.clear().draw();
+            table2.clear().draw();
+            tableOptions.clear().draw();
+            tableKategori.clear().draw();
+
+            var optionsKategori = $('#optionsKategori');
+            $('option', optionsKategori).remove();
+            optionsKategori.append($('<option />').val('').text(''));
+            SubeList();
+        }
+
+        lib.kopyala = function (id, subeId, yeniUrunMu, productName) {
+
+            $('#copyId').val(id);
+            $('#yeniUrunMuforModal').val(yeniUrunMu);
+            $('#SubeIdforModal').val(subeId);
+            $('#productNameForModal')[0].innerHTML = "";
+            $('#productNameForModal')[0].innerHTML = productName;
+
+            $('#modalKopyala').modal('show');
+        }
+
+        $('#btnKopyala').click(function () {
+
+            var selList = [];
+            var i = 0;
+            $('.select2-selection__rendered li').each(function () {
+                var title = $(this)[0].title;
+                if (title) {
+                    selList.push({ Text: title, Value: $('#Subeler').val()[i] })
+                    i++;
+                }
+
+            })
+            if (selList.length > 0) {
+
+                var yeniUrunMuforModal = $('#yeniUrunMuforModal').val();
+
+                $.ajax(
+                    {
+                        url: '/SefimPanelUrunEkle/ProductCopy',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: { Id: $('#copyId').val(), SubeList: selList, SubeId: $('#SubeIdforModal').val(), YeniUrunMu: yeniUrunMuforModal },
+                        success: function (response) {
+                            if (response.IsSuccess) {
+                                location.reload();
+                            } else {
+                                alert(response.UserMessage)
+                            }
+                        },
+                        error: function () {
+                            alert("error");
+                        }
+
+                    });
+            } else {
+                alert('Lütfen öncelikle kopyalanmasını istediğiniz şubeleri seçin.')
+            }
+        })
+
+        $('#btnSendSube').click(function () {
+            if (confirm("Ürünleri göndermek istiyor musunuz?")) {
+                $.ajax(
+                    {
+                        url: '/SefimPanelUrunEkle/SendProductSube',
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data != "" && data != null && data.length > 0 && data == '/SefimPanelUrunEkle/ProductList') {
+                                window.location.href = data;
+
+                            }
+                        },
+                        error: function () {
+                            alert("error");
+                        }
+
+
+
+                    });
+            }
+        })
+
+        lib.fill = function (Product) {
+            $('#ProductCode').val(Product.ProductCode);
+            $('#ProductName').val(Product.ProductName);
+            $('#Order').val(Product.Order);
+            $('#ProductType').val(Product.ProductType);
+            $('#Price').val(Product.Price.replace(',', '.'));
+            $('#Plu').val(Product.Plu);
+            $('#VatRate').val(Product.VatRate.replace(',', '.'));
+            $('#ProductGroup').val(Product.ProductGroup);
+            $('#InvoiceName').val(Product.InvoiceName);
+            $('#Favorites').val(Product.Favorites);
+            $('#Sube').val(Product.SubeId);
+            SubeList(Product);
+            $('#Id').val(Product.Id);
+
+            product = Product;
+            product.Choice1.forEach(function (ch1) {
+                var gid = guid();
+                var iid = guid();
+                ch1.iid = iid;
+                lib.addRow(iid, table1, '', { secim: ch1.Name, fiyat: ch1.Price }, gid);
+                product.Choice2.forEach(function (ch2) {
+                    var ch2gid = guid();
+                    var ch2iid = guid();
+                    if (ch1.Id == ch2.Choice1Id) {
+                        ch2.iid = ch2iid;
+                        lib.addRow(ch2iid, table2, gid, { secim: ch2.Name, fiyat: ch2.Price }, ch2gid);
+                    }
+                })
+            })
+
+
+            var optionsKategori = $('#optionsKategori');
+            $('option', optionsKategori).remove();
+            optionsKategori.append($('<option />').val('').text(''));
+            product.OptionCats.forEach(function (optCat) {
+                var optCatgid = guid();
+                var iid = guid();
+                optCat.optionCatsId = optCatgid;
+                optCat.iid = iid;
+                lib.addRow(iid, tableKategori, '', { Name: optCat.Name, MinSelections: optCat.MinSelections, MaxSelections: optCat.MaxSelections }, optCatgid);
+                optionsKategori.append($('<option />').val(optCatgid).text(optCat.Name));
+
+                //category dolu olanlar
+                product.Options.forEach(function (opt) {
+                    var optgid = guid();
+                    var optiid = guid();
+                    var name = "";
+                    if (opt.Category == optCat.Id) {
+                        name = optCat.Name;
+                        lib.addRow(optiid, tableOptions, '', { secenek: opt.Name, kategori: name || opt.Category, fiyat: opt.Price, miktarli: opt.Quantitative }, optgid);
+                        opt.OptionCatsId = optCatgid;
+                        opt.iid = optiid;
+                    }
+                })
+
+            })
+
+
+            //category boş olanlar
+            product.Options.forEach(function (opt) {
+                var optgid = guid();
+                var iid = guid();
+                var name = "";
+                if (!opt.Category) {
+                    product.OptionCats.forEach(function (cat) {
+                        if (cat.Id == opt.Category) {
+                            name = cat.Name;
+                        }
+                    })
+                    opt.iid = iid;
+                    lib.addRow(iid, tableOptions, '', { secenek: opt.Name, kategori: name || opt.Category, fiyat: opt.Price, miktarli: opt.Quantitative }, optgid);
+                }
+            })
+
+
+
+        }
+
+        SubeList();
+    });
+
+    lib.serialize = function (cls, selector) {
+        var q = 'form';
+        if (cls) {
+            q = q + '.' + cls;
+        }
+        if (selector) {
+            q = selector;
+        }
+        var f = $(q), arr = f.serializeArray(), m, a = ',', n, res = {};
+        m = arr.map(function (i) {
+            n = a.indexOf("," + i.name + ",");
+            a += i.name + ',';
+            //console.log(a);
+            return n > - 1
+                ? i.name
+                : false;
+        }).filter(function (a) { return a; });
+        arr.forEach(function (o) {
+            if (m.indexOf(o.name) === -1) {
+                res[o.name] = o.value;
+            }
+        });
+        m.forEach(function (key) {
+            res[key] = arr.map(function (i) { if (i.name == key) return i.value; }).filter(function (a) { return a; });
+        });
+        return res;
+    };
+
+    $('#btnProductsave').click(function () {
+        var obj = lib.serialize();
+        if (obj.FreeItem || obj.FreeItem == 'on') {
+            obj.FreeItem = true;
+        } else {
+            obj.FreeItem = false;
+        }
+
+        if ($('#Sube').val()) {
+
+
+            obj.Choice1 = product.Choice1;
+            obj.Choice2 = product.Choice2;
+            obj.Options = product.Options;
+            obj.OptionCats = product.OptionCats;
+
+            if (!obj.ProductCode) {
+                return alert('Lütfen öncelikle Ürün Kodu giriniz.')
+            }
+            if (!obj.ProductName) {
+                return alert('Lütfen Ürün Adı giriniz.')
+            }
+            if (!obj.Price) {
+                return alert('Lütfen KDV Dahil Fiyat giriniz.')
+            }
+            if (!obj.VatRate) {
+                return alert('Lütfen KDV Oranı giriniz.')
+            }
+
+            var ii = 0;
+            $('#Sube').val().forEach(function (sb) {
+                obj.SubeId = sb;
+                obj.SubeName = $('#Sube')[0].selectedOptions[ii].innerHTML;
+
+                lib.saveFunc(obj, ii);
+                ii++;
+            })
+
+
+        } else {
+            return alert('Lütfen öncelikle Geçerli bir Şube seçiniz.')
+        }
+
+    })
+
+    lib.basariSay = 0;
+    lib.saveFunc = function (Pr, ii) {
+        $.ajax(
+            {
+                url: '/SefimPanelUrunEkle/ProductInsert',
+                type: 'POST',
+
+                dataType: 'json',
+                data: Pr,
+                success: function (data) {
+                    if (data != "" && data != null && data.length > 0 && data == '/SefimPanelUrunEkle/ProductList') {
+                        lib.basariSay++;
+                        if (lib.basariSay == $('#Sube').val().length)
+                            window.location.href = data;
+
+                    }
+                },
+                error: function () {
+                    alert("error");
+                }
+
+            });
+    }
+
+    lib.sil = function (Id) {
+        if (confirm("Ürünü silmek istiyor musunuz?")) {
+            $.ajax(
+                {
+                    url: '/SefimPanelUrunEkle/ProductDelete',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { Id: Id },
+                    success: function (response) {
+                        if (response.IsSuccess) {
+                            $('#row_' + Id).addClass('hidden')
+                        } else {
+                            alert(response.UserMessage)
+                        }
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+
+                });
+        }
+    }
+
+    function SubeList(Product) {
+        $.ajax({
+            url: '/SefimPanelUrunEkle/SubeListJson',
+            type: 'POST',
+            beforeSend: function (request) {
+                //mApp.blockPage();
+            },
+            complete: function () {
+                window.setTimeout(function () {
+                    //mApp.unblockPage();
+                }, 100);
+            },
+            dataType: 'json',
+            success: function (data) {
+                var options = $('#Sube');
+                var subeleroptions = $('#Subeler')
+                $('option', subeleroptions).remove();
+                $('option', options).remove();
+
+                $.each(data, function () {
+                    if (Product && Product.SubeId == this.Value) {
+                        options.append($('<option selected />').val(this.Value).text(this.Text));
+                    } else {
+                        options.append($('<option />').val(this.Value).text(this.Text));
+                    }
+
+                    subeleroptions.append($('<option />').val(this.Value).text(this.Text));
+                });
+
+
+            }
+        });
+    }
+
+
+
+
+
+    lib.duzenle = function (id) {
+        $.ajax({
+            url: '/SefimPanelUrunEkle/GetProduct',
+            type: 'POST',
+            data: { Id: id },
+            beforeSend: function (request) {
+                //mApp.blockPage();
+            },
+            complete: function () {
+                window.setTimeout(function () {
+                    //mApp.unblockPage();
+                }, 100);
+            },
+            dataType: 'json',
+            success: function (data) {
+                lib.clear();
+                lib.fill(data);
+                $('#modalAdd').modal('show');
+            }
+        });
+    }
+
+
+
+
+
+
+
+</script>

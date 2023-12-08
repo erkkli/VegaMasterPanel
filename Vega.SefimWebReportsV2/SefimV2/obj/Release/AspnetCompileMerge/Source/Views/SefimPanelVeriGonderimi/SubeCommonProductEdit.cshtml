@@ -1,0 +1,129 @@
+﻿@model SefimV2.ViewModels.SPosVeriGonderimi.UrunEditViewModel
+
+<div id="content" class="form-horizontal">
+    @using (Html.BeginForm("SubeCommonProductEdit", "SefimPanelVeriGonderimi", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary()
+        @Html.HiddenFor(Model => Model.SubeId)
+        @Html.HiddenFor(Model => Model.SubeIdGrupList)
+
+        <div class="col-lg-12 col-sm-12 col-xs-12">
+            <div class="table table-responsive table-hover">
+                <table id="productTable" class="table table-bordered table-condensed " style="width:100%;">
+                    @*<table id="tableFiyatGuncelle" class="table table-striped table table-hover table-bordered table-condensed"> width: 100%;table-layout: fixed;top: 0px;/* left: 0px; */width: 1605px !important;*@
+                    <thead>
+                        <tr style="background: #fffaf0">
+                            @*<th width="2%"> İşlem </th>*@
+                            <th width="15%"> Ürün Grubu </th>
+                            <th width="15%"> Ürün </th>
+                            @for (int i = 0; i < Model.SubeList.Count; i++)
+                            {
+                                <th width="15%">
+                                    @Model.SubeList[i].SubeAdi
+                                    @Html.HiddenFor(m => Model.SubeList[i].SubeId)
+                                    @Html.HiddenFor(m => Model.SubeList[i].SubeAdi)
+                                </th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            if (Model.productCompairsList != null && Model.productCompairsList.Count > 0)
+                            {
+                                for (int i = 0; i < Model.productCompairsList.ToList().Count(); i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Model.productCompairsList[i].ProductGroup
+                                            @Html.HiddenFor(m => Model.productCompairsList[i].ProductGroup)
+                                        </td>
+                                        <td>
+                                            @Model.productCompairsList[i].ProductName
+                                            @Html.HiddenFor(m => Model.productCompairsList[i].ProductName)
+                                            @Html.HiddenFor(m => Model.productCompairsList[i].ProductId)
+                                        </td>
+
+                                        @{
+                                            for (int a = 0; a < Model.SubeList.Count; a++)
+                                            {
+                                                var price = Model.productCompairsList[i].SubeList.Where(y => y.SubeId == Model.SubeList[a].SubeId).FirstOrDefault();
+                                                var priceIndex = Model.productCompairsList[i].SubeList.IndexOf(price);
+
+                                                @Html.HiddenFor(m => Model.productCompairsList[i].SubeList[priceIndex].PkId)
+                                                @Html.HiddenFor(m => Model.productCompairsList[i].SubeList[priceIndex].SubeId)
+                                                @Html.HiddenFor(m => Model.productCompairsList[i].SubeList[priceIndex].SubeName)
+
+                                                if (Model.productCompairsList[i].SubeList[priceIndex].SubePriceValue == null /*|| Model.productCompairsList[i].SubeList[priceIndex].SubePriceValue == 0*/)
+                                                {
+                                                    <td align="center"><img src="~/img/noentry.png" /></td>
+                                                }
+                                                else
+                                                {
+                                                    <td class="yatay_@i dikey_@a">
+                                                        @Html.EditorFor(m => Model.productCompairsList[i].SubeList[priceIndex].SubePriceValue, new { htmlAttributes = new { @data = a, @class = "form-control decimal_input" } })
+
+                                                        @*<script type="text/javascript">
+                                                              var dta = 'productCompairsList_@i' + '__SubeList_@priceIndex' + '__SubePriceValue';
+                                                              $('#'+dta)[0].addEventListener('change', (event) => {console.log('degisti', $(event.target)[0].id, $(event.target)[0].data())})
+                                                            </script>*@
+
+                                                        <a class="fa fa fa-arrows-h  btn btn-xs btn-primary btnyaycommon" yatay="@i" dikey="@a" title="Girilen değeri yatay sütundaki tüm şubelerin fiyatına eşitler."> Yay </a>
+                                                        <a class="fa fa fa-arrows-v  btn btn-xs btn-primary btndikeyyaycommon" yatay="@i" dikey="@a" title="Girilen değeri dikey sütundaki tüm şubelerin fiyatına eşitler."> Yay </a>
+                                                    </td>
+
+                                                    @Html.HiddenFor(m => Model.productCompairsList[i].SubeList[priceIndex].SubePriceValue)
+                                                }
+                                            }
+                                        }
+                                    </tr>
+                                }
+                            }
+                        }
+                    </tbody>
+                </table>
+                <div class="col-md-offset-5 col-md-7">
+                    <a class="btn btn-md btn-warning" data-dismiss="modal" aria-label="Close" title="Kapat">
+                        Vazgeç
+                    </a>
+                    <input type="submit" value="Kaydet" class="btn btn-md btn-success" />
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@*<script type="text/javascript" src="~/Assets/plugins/DataTable/DataTables-1.10.20/js/jquery.dataTables.js"></script>
+    <script src="~/Assets/plugins/DataTable/FixedHeader-3.1.6/js/dataTables.fixedHeaderyeni.js"></script>*@
+
+<script type="text/javascript">
+
+    var lib = {};
+    $('.btnyaycommon').on('click', (ev) => {
+
+        var self = $(ev.target);
+        var yatay = self.attr("yatay");
+        var dikey = self.attr("dikey");
+        var editadi = `#productCompairsList_${dikey}__SubeList_${yatay}__SubePriceValue`;
+        var value = self.parent().find('input').val();//$(editadi).val();
+        console.log(value);
+        $('.yatay_' + yatay).find('input').val(value);
+    });
+
+    $('.btndikeyyaycommon').on('click', (ev) => {
+
+        var self = $(ev.target);
+        var yatay = self.attr("yatay");
+        var dikey = self.attr("dikey");
+        var editadi = `#productCompairsList_${dikey}__SubeList_${yatay}__SubePriceValue`;
+        var value = self.parent().find('input').val();// $(editadi).val();
+
+        console.log(value);
+        $('.dikey_' + dikey).find('input').val(value);
+    });
+
+    jQuery(document).ready(function () {
+        $('#productTable_length').remove();
+    });
+
+</script>

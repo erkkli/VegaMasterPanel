@@ -1,0 +1,6 @@
+Created on 19.08.2023 11:37:13
+
+Hata Zamanı: 19.08.2023 11:37:13
+Hata Mesajı: GetByUserInfoForId <_HATA_>
+Hata Detay Açıklaması: Login failed for user 'sa'.
+------
