@@ -334,6 +334,7 @@ namespace SefimV2.Models.ProductSefimCRUD
             DataTable choice1Data = new DataTable();
             DataTable choice2Data = new DataTable();
             DataTable optionsData = new DataTable();
+            DataTable optionsCatsData = new DataTable();
 
             //Aynı Ürün varmı kontrolü.
             ////if (Product.Id == 0)
@@ -356,6 +357,7 @@ namespace SefimV2.Models.ProductSefimCRUD
                 choice1Data = mF.GetSubeDataWithQuery(mF.NewConnectionString(insertSubeIp, insertDbName, insertSqlKullaniciName, insertSqlKullaniciPassword), "Select * from Choice1 where ProductId = " + Product.Id + " ");
                 choice2Data = mF.GetSubeDataWithQuery(mF.NewConnectionString(insertSubeIp, insertDbName, insertSqlKullaniciName, insertSqlKullaniciPassword), "Select * from Choice2 where ProductId = " + Product.Id + " ");
                 optionsData = mF.GetSubeDataWithQuery(mF.NewConnectionString(insertSubeIp, insertDbName, insertSqlKullaniciName, insertSqlKullaniciPassword), "Select * from Options where ProductId = " + Product.Id + " ");
+                optionsCatsData = mF.GetSubeDataWithQuery(mF.NewConnectionString(insertSubeIp, insertDbName, insertSqlKullaniciName, insertSqlKullaniciPassword), "Select * from OptionCats where ProductId = " + Product.Id + " ");
 
                 ////if (urunVarMi != null)
                 ////{
@@ -549,6 +551,11 @@ namespace SefimV2.Models.ProductSefimCRUD
                                                                                                          ch1Id,//ch1item.Id,
                                                                                                          ch2item.Name,
                                                                                                         ch2item.Price  });
+                                                                    ch2item.Id = choice2Id;
+                                                                    ch2item.Choice1Id = (int)ch1Id;
+                                                                    ch2item.ProductId = (int)Product.Id;
+
+                                                                    //ch2item.secim1Id = ch1Id;
                                                                     //}
                                                                 }
                                                                 else
@@ -566,6 +573,29 @@ namespace SefimV2.Models.ProductSefimCRUD
                                                                 }
                                                             }
                                                         }
+
+                                                        var ddd = choice2Data.AsEnumerable().ToList();
+                                                        if (choice2Data.AsEnumerable().ToList() == null || choice2Data.AsEnumerable().ToList().Count() == 0)
+                                                        {
+                                                            if (ch2item.Id == 0 && ch2item.secim1Id == ch1item.secimId)
+                                                            {
+                                                                //var ayniUrunVarMi = Product.Choice2.Where(x => x.Name == urunNameCh2 && x.Price == urunPrice).FirstOrDefault();
+                                                                //if (ayniUrunVarMi == null)
+                                                                //{
+                                                                //ch2 insert
+                                                                string sqlCh2 = " INSERT INTO [dbo].[Choice2]([ProductId],[Choice1Id],[Name],[Price]) values " +
+                                                                                " (@par1, @par2, @par3, @par4)" +
+                                                                                " select CAST(scope_identity() AS int);";
+                                                                int choice2Id = sqlData.ExecuteScalarTransactionSql(sqlCh2, transaction, new object[] {
+                                                                                                         Product.Id,
+                                                                                                         ch1Id,//ch1item.Id,
+                                                                                                         ch2item.Name,
+                                                                                                        ch2item.Price  });
+                                                                //}
+                                                            }
+                                                        }
+
+
                                                     }
                                                 }
                                             }
@@ -588,29 +618,50 @@ namespace SefimV2.Models.ProductSefimCRUD
                                         {
                                             foreach (var ch2item in Product.Choice2)
                                             {
-                                                foreach (DataRow itemSubeCh2 in choice2Data.Rows)
+                                                if (choice2Data.AsEnumerable().ToList().Count() > 0)
                                                 {
-                                                    var ch2Id = mF.RTD(itemSubeCh2, "Id");
-                                                    var urunNameCh2 = mF.RTS(itemSubeCh2, "Name");
-                                                    var ch1IdproductsIdCh2 = mF.RTD(itemSubeCh2, "ProductId");
-                                                    var ch1IdCh2 = mF.RTD(itemSubeCh2, "Choice1Id");
 
-                                                    //if (ch2item.Id == ch2Id)
-                                                    //{
-                                                    //    //ch2 update
-                                                    //    string sqlCh2 = " BEGIN TRAN UPDATE  [dbo].[Choice2] SET" +
-                                                    //                  " [ProductId]=@par1,[Choice1Id]=@par2, [Name]=@par3,[Price]=@par4 where Id=@par5  " +
-                                                    //                  "SELECT @@TRANCOUNT AS OpenTransactions COMMIT TRAN SELECT @@TRANCOUNT AS OpenTransactions";
+                                                    foreach (DataRow itemSubeCh2 in choice2Data.Rows)
+                                                    {
+                                                        var ch2Id = mF.RTD(itemSubeCh2, "Id");
+                                                        var urunNameCh2 = mF.RTS(itemSubeCh2, "Name");
+                                                        var ch1IdproductsIdCh2 = mF.RTD(itemSubeCh2, "ProductId");
+                                                        var ch1IdCh2 = mF.RTD(itemSubeCh2, "Choice1Id");
 
-                                                    //    int choice2Id = sqlData.ExecuteScalarTransactionSql(sqlCh2, transaction, new object[] {
-                                                    //                                             Product.Id,
-                                                    //                                             choice1InsertId,//ch1item.Id,
-                                                    //                                             ch2item.Name,
-                                                    //                                             ch2item.Price,
-                                                    //                                                 ch2Id    });
-                                                    //}
-                                                    //else
-                                                    //{
+                                                        //if (ch2item.Id == ch2Id)
+                                                        //{
+                                                        //    //ch2 update
+                                                        //    string sqlCh2 = " BEGIN TRAN UPDATE  [dbo].[Choice2] SET" +
+                                                        //                  " [ProductId]=@par1,[Choice1Id]=@par2, [Name]=@par3,[Price]=@par4 where Id=@par5  " +
+                                                        //                  "SELECT @@TRANCOUNT AS OpenTransactions COMMIT TRAN SELECT @@TRANCOUNT AS OpenTransactions";
+
+                                                        //    int choice2Id = sqlData.ExecuteScalarTransactionSql(sqlCh2, transaction, new object[] {
+                                                        //                                             Product.Id,
+                                                        //                                             choice1InsertId,//ch1item.Id,
+                                                        //                                             ch2item.Name,
+                                                        //                                             ch2item.Price,
+                                                        //                                                 ch2Id    });
+                                                        //}
+                                                        //else
+                                                        //{
+                                                        if (ch2item.Id == 0 && ch2item.secim1Id == ch1item.secimId)
+                                                        {
+                                                            //ch2 insert
+                                                            string sqlCh2 = " INSERT INTO [dbo].[Choice2]([ProductId],[Choice1Id],[Name],[Price]) values " +
+                                                                            " (@par1, @par2, @par3, @par4)" +
+                                                                            " select CAST(scope_identity() AS int);";
+                                                            int choice2Id = sqlData.ExecuteScalarTransactionSql(sqlCh2, transaction, new object[] {
+                                                                            Product.Id,
+                                                                            choice1InsertId,//ch1item.Id,
+                                                                            ch2item.Name,
+                                                                            ch2item.Price  });
+                                                        }
+                                                        //}
+                                                    }
+
+                                                }
+                                                else
+                                                {
                                                     if (ch2item.Id == 0 && ch2item.secim1Id == ch1item.secimId)
                                                     {
                                                         //ch2 insert
@@ -623,7 +674,6 @@ namespace SefimV2.Models.ProductSefimCRUD
                                                                             ch2item.Name,
                                                                             ch2item.Price  });
                                                     }
-                                                    //}
                                                 }
                                             }
                                         }
@@ -664,6 +714,17 @@ namespace SefimV2.Models.ProductSefimCRUD
 
                                         if (options.Id == optId)
                                         {
+                                            var categori = string.Empty;
+                                            if (options.ProductId==0)
+                                            {
+                                                 categori = options.OptionCatsName == null ? "" : options.OptionCatsName;
+                                            }
+                                            else
+                                            {
+                                                 categori = options.Category == null ? "" : options.Category;
+                                            }
+
+                                            
                                             string cmdStringOptions = " BEGIN TRAN UPDATE [dbo].[Options] " +
                                                                       " Set [Name]=@par1,[Price]=@par2, [Quantitative]=@par3, [ProductId]=@par4, [Category]=@par5 where ProductId=@par6 and Id=@par7  " +
                                                                       " SELECT @@TRANCOUNT AS OpenTransactions COMMIT TRAN SELECT @@TRANCOUNT AS OpenTransactions";
@@ -673,7 +734,7 @@ namespace SefimV2.Models.ProductSefimCRUD
                                                         options.Price,
                                                         options.Quantitative,
                                                         Product.Id,
-                                                        options.Category,
+                                                        categori,
                                                         Product.Id,
                                                         optId  });
                                         }
@@ -681,6 +742,7 @@ namespace SefimV2.Models.ProductSefimCRUD
                                         {
                                             if (options.Id == 0)
                                             {
+                                                var categori = options.OptionCatsName == null ? "" : options.OptionCatsName;
                                                 string CmdStringOptions = " INSERT INTO [dbo].[Options]([Name],[Price],[Quantitative],[ProductId],[Category]) values " +
                                                                           " (@par1, @par2, @par3, @par4, @par5 ) " +
                                                                           " select CAST(scope_identity() AS int); ";
@@ -690,7 +752,7 @@ namespace SefimV2.Models.ProductSefimCRUD
                                                     options.Price,
                                                     options.Quantitative,
                                                     Product.Id,
-                                                    options.OptionCatsName
+                                                    categori
                                                   });
 
                                                 options.Id = choice2Id;
@@ -701,16 +763,20 @@ namespace SefimV2.Models.ProductSefimCRUD
                                 }
                                 else
                                 {
-                                    string CmdStringOptions = " INSERT INTO [dbo].[Options]([Name],[Price],[Quantitative],[ProductId],[Category]) values " +
-                                                              " (@par1, @par2, @par3, @par4, @par5 ) " +
-                                                              " select CAST(scope_identity() AS int); ";
-                                    int choice2Id = sqlData.ExecuteScalarTransactionSql(CmdStringOptions, transaction, new object[] {
+                                    if (options.Id == 0)
+                                    {
+                                        var categori = options.OptionCatsName == null ? "" : options.OptionCatsName;
+                                        string CmdStringOptions = " INSERT INTO [dbo].[Options]([Name],[Price],[Quantitative],[ProductId],[Category]) values " +
+                                                                  " (@par1, @par2, @par3, @par4, @par5 ) " +
+                                                                  " select CAST(scope_identity() AS int); ";
+                                        int choice2Id = sqlData.ExecuteScalarTransactionSql(CmdStringOptions, transaction, new object[] {
                                                     options.Name,
                                                     options.Price,
                                                     options.Quantitative,
                                                     Product.Id,
-                                                    ""    });
+                                                    categori });
 
+                                    }
                                 }
                             }
                         }
@@ -718,6 +784,105 @@ namespace SefimV2.Models.ProductSefimCRUD
                         {
                             sqlData.ExecuteScalarTransactionSql("delete from Options where ProductId=" + Product.Id + " select count(*) from Options where Id=" + Product.Id, transaction);
                         }
+
+
+                        #region OptionCats
+
+                        //OptionCats 
+                        if (Product.OptionCats != null && Product.OptionCats.Count > 0)
+                        {
+                            foreach (var optionsCatsItem in Product.OptionCats)
+                            {
+                                if (optionsCatsData.Rows.Count > 0)
+                                {
+                                    foreach (DataRow itemSubeCh2 in optionsCatsData.Rows)
+                                    {
+                                        var optId = mF.RTD(itemSubeCh2, "Id");
+                                        var urunNameCh2 = mF.RTS(itemSubeCh2, "Name");
+                                        var optProductId = mF.RTD(itemSubeCh2, "ProductId");
+                                        var ccc = optionsCatsData.AsEnumerable().ToList().Count();
+
+                                        //Delete Options
+                                        if (optionsCatsData.AsEnumerable().ToList().Count() > Product.OptionCats.Count)
+                                        {
+                                            var deleteItem = Product.OptionCats.Where(x => x.Id == optId).FirstOrDefault();
+                                            if (deleteItem == null)
+                                            {
+                                                sqlData.ExecuteScalarTransactionSql("delete from OptionCats where ProductId=" + Product.Id + " and Id=" + optId + " select count(*) from OptionCats where Id=" + Product.Id, transaction);
+                                            }
+                                        }
+
+                                        if (optionsCatsItem.Id == optId)
+                                        {
+                                            //string cmdStringOptions = " BEGIN TRAN UPDATE [dbo].[Options] " +
+                                            //                          " Set [Name]=@par1,[Price]=@par2, [Quantitative]=@par3, [ProductId]=@par4, [Category]=@par5 where ProductId=@par6 and Id=@par7  " +
+                                            //                          " SELECT @@TRANCOUNT AS OpenTransactions COMMIT TRAN SELECT @@TRANCOUNT AS OpenTransactions";
+                                            ////+ " SELECT @@TRANCOUNT AS OpenTransactions COMMIT TRAN SELECT @@TRANCOUNT AS OpenTransactions";
+                                            //int choice2Id = sqlData.ExecuteScalarTransactionSql(cmdStringOptions, transaction, new object[] {
+                                            //            optionsCatsItem.Name,
+                                            //            optionsCatsItem.Price,
+                                            //            optionsCatsItem.Quantitative,
+                                            //            Product.Id,
+                                            //            optionsCatsItem.Category,
+                                            //            Product.Id,
+                                            //            optId  });
+                                        }
+                                        else
+                                        {
+                                            if (optionsCatsItem.Id == 0)
+                                            {
+                                                string CmdStringOptionCats = " INSERT INTO [dbo].[OptionCats]([Name],[ProductId],[MaxSelections],[MinSelections]) values " +
+                                                                 " (@par1, @par2, @par3, @par4)" +
+                                                                 " select CAST(scope_identity() AS int);";
+                                                int optionCatsId = sqlData.ExecuteScalarTransactionSql(CmdStringOptionCats, transaction, new object[]
+                                                {
+                                                    optionsCatsItem.Name,
+                                                    Product.Id,
+                                                    optionsCatsItem.MaxSelections,
+                                                    optionsCatsItem.MinSelections,
+
+                                                });
+
+                                                optionsCatsItem.Id = optionCatsId;
+                                                optionsCatsItem.ProductId = (int)Product.Id;
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    string CmdStringOptionCats = " INSERT INTO [dbo].[OptionCats]([Name],[ProductId],[MaxSelections],[MinSelections]) values " +
+                                                                 " (@par1, @par2, @par3, @par4)" +
+                                                                 " select CAST(scope_identity() AS int);";
+                                    int optionCatsId = sqlData.ExecuteScalarTransactionSql(CmdStringOptionCats, transaction, new object[]
+                                    {
+                                                    optionsCatsItem.Name,
+                                                    Product.Id,
+                                                    optionsCatsItem.MaxSelections,
+                                                    optionsCatsItem.MinSelections,
+                                    });
+
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (optionsCatsData.Rows.Count > 0)
+                            {
+                                foreach (DataRow itemSubeCh2 in optionsCatsData.Rows)
+                                {
+                                    var optId = mF.RTD(itemSubeCh2, "Id");
+                                    var urunNameCh2 = mF.RTS(itemSubeCh2, "Name");
+                                    var optProductId = mF.RTD(itemSubeCh2, "ProductId");
+
+                                    //sqlData.ExecuteScalarTransactionSql("delete from OptionCats where ProductId=" + Product.Id + " select count(*) from OptionCats where Id=" + Product.Id, transaction);
+                                    sqlData.ExecuteScalarTransactionSql("delete from OptionCats where ProductId=" + Product.Id + " and Id=" + optId + " select count(*) from OptionCats where Id=" + Product.Id, transaction);
+
+                                }
+                            }
+                        }
+
+                        #endregion OptionCats
                     }
 
                     #region MyRegion
@@ -1829,10 +1994,11 @@ namespace SefimV2.Models.ProductSefimCRUD
                     string QueryBomOptions = "select * from BomOptions where ProductName=";
 
                     product.BomOptionss = new List<BomOptions>();
-                    foreach (var ch1 in product.Choice1)
+
+                    if (product.Choice1 != null && product.Choice1.Count() == 0)
                     {
-                        string productEk = "." + ch1.Name;
-                        DataTable dtBomOptionss = mF.GetSubeDataWithQuery((mF.NewConnectionString(SubeIP, DBName, SqlName, SqlPassword)), QueryBomOptions.ToString() + "'" + product.ProductName + productEk + "'");
+
+                        DataTable dtBomOptionss = mF.GetSubeDataWithQuery(mF.NewConnectionString(SubeIP, DBName, SqlName, SqlPassword), QueryBomOptions.ToString() + "'" + product.ProductName + "'");
 
                         foreach (DataRow bmOp in dtBomOptionss.Rows)
                         {
@@ -1850,34 +2016,58 @@ namespace SefimV2.Models.ProductSefimCRUD
                             };
                             product.BomOptionss.Add(bomOps);
                         }
-                        foreach (var ch2 in product.Choice2)
+                    }
+                    else
+                    {
+                        foreach (var ch1 in product.Choice1)
                         {
-                            if (ch1.Id == ch2.Choice1Id)
-                            {
-                                var productEk2 = "." + ch2.Name;
+                            string productEk = "." + ch1.Name;
+                            DataTable dtBomOptionss = mF.GetSubeDataWithQuery((mF.NewConnectionString(SubeIP, DBName, SqlName, SqlPassword)), QueryBomOptions.ToString() + "'" + product.ProductName + productEk + "'");
 
-                                DataTable dtBomOptions = mF.GetSubeDataWithQuery((mF.NewConnectionString(SubeIP, DBName, SqlName, SqlPassword)), QueryBomOptions.ToString() + "'" + product.ProductName + productEk + productEk2 + "'");
-                                product.BomOptionss = new List<BomOptions>();
-                                foreach (DataRow bmOp in dtBomOptions.Rows)
+                            foreach (DataRow bmOp in dtBomOptionss.Rows)
+                            {
+                                BomOptions bomOps = new BomOptions
                                 {
-                                    BomOptions bomOps = new BomOptions
+                                    Id = mF.RTI(bmOp, "Id"),
+                                    ProductName = mF.RTS(bmOp, "ProductName"),
+                                    MaterialName = mF.RTS(bmOp, "MaterialName"),
+                                    Quantity = mF.RTS(bmOp, "Quantity").Replace(",", "."),
+                                    Unit = mF.RTS(bmOp, "Unit"),
+                                    StokID = mF.RTI(bmOp, "StokID"),
+                                    OptionsId = mF.RTI(bmOp, "OptionsId"),
+                                    OptionsName = mF.RTS(bmOp, "OptionsName"),
+                                    SubeId = Convert.ToInt32(subeId)
+                                };
+                                product.BomOptionss.Add(bomOps);
+                            }
+                            foreach (var ch2 in product.Choice2)
+                            {
+                                if (ch1.Id == ch2.Choice1Id)
+                                {
+                                    var productEk2 = "." + ch2.Name;
+
+                                    DataTable dtBomOptions = mF.GetSubeDataWithQuery((mF.NewConnectionString(SubeIP, DBName, SqlName, SqlPassword)), QueryBomOptions.ToString() + "'" + product.ProductName + productEk + productEk2 + "'");
+                                    //product.BomOptionss = new List<BomOptions>();
+                                    foreach (DataRow bmOp in dtBomOptions.Rows)
                                     {
-                                        Id = mF.RTI(bmOp, "Id"),
-                                        ProductName = mF.RTS(bmOp, "ProductName"),
-                                        MaterialName = mF.RTS(bmOp, "MaterialName"),
-                                        Quantity = mF.RTS(bmOp, "Quantity").Replace(",", "."),
-                                        Unit = mF.RTS(bmOp, "Unit"),
-                                        StokID = mF.RTI(bmOp, "StokID"),
-                                        OptionsId = mF.RTI(bmOp, "OptionsId"),
-                                        OptionsName = mF.RTS(bmOp, "OptionsName"),
-                                        SubeId = Convert.ToInt32(subeId)
-                                    };
-                                    product.BomOptionss.Add(bomOps);
+                                        BomOptions bomOps = new BomOptions
+                                        {
+                                            Id = mF.RTI(bmOp, "Id"),
+                                            ProductName = mF.RTS(bmOp, "ProductName"),
+                                            MaterialName = mF.RTS(bmOp, "MaterialName"),
+                                            Quantity = mF.RTS(bmOp, "Quantity").Replace(",", "."),
+                                            Unit = mF.RTS(bmOp, "Unit"),
+                                            StokID = mF.RTI(bmOp, "StokID"),
+                                            OptionsId = mF.RTI(bmOp, "OptionsId"),
+                                            OptionsName = mF.RTS(bmOp, "OptionsName"),
+                                            SubeId = Convert.ToInt32(subeId)
+                                        };
+                                        product.BomOptionss.Add(bomOps);
+                                    }
                                 }
                             }
                         }
                     }
-
 
                     if (product.Boms == null)
                     {

@@ -62,6 +62,7 @@ namespace SefimV2.Models
     }
     public class Options
     {
+        public int OptionsId { get; set; }
         public int Id { get; set; }
         public int ProductId { get; set; }
         public string Name { get; set; }

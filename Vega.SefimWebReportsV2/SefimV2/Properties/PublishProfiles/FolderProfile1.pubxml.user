@@ -5,7 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>C:\Program Files (x86)\Vega\WEB_REPORT_PUBLISH</_PublishTargetUrl>
-    <History>True|2023-12-08T20:26:15.2458873Z;True|2023-12-08T23:25:34.1253032+03:00;</History>
+    <History>True|2023-12-11T22:55:53.7185927Z;True|2023-12-11T22:48:27.3085538+03:00;True|2023-12-09T02:46:32.1784435+03:00;True|2023-12-08T23:26:15.2458873+03:00;True|2023-12-08T23:25:34.1253032+03:00;</History>
     <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
@@ -7336,13 +7336,13 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>02/15/2022 05:38:42</publishTime>
     </File>
     <File Include="bin/SefimV2.dll">
-      <publishTime>12/08/2023 23:25:19</publishTime>
+      <publishTime>12/12/2023 02:57:19</publishTime>
     </File>
     <File Include="bin/SefimV2.dll.config">
-      <publishTime>12/08/2023 23:25:17</publishTime>
+      <publishTime>12/12/2023 02:57:16</publishTime>
     </File>
     <File Include="bin/SefimV2.pdb">
-      <publishTime>12/08/2023 23:25:19</publishTime>
+      <publishTime>12/12/2023 02:57:19</publishTime>
     </File>
     <File Include="bin/SharpCompress.dll">
       <publishTime>07/29/2022 09:47:32</publishTime>
@@ -10780,7 +10780,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>02/15/2022 10:12:57</publishTime>
     </File>
     <File Include="Views/SefimPanelUrunEkle/ProductList.cshtml">
-      <publishTime>12/08/2023 22:31:04</publishTime>
+      <publishTime>12/12/2023 02:45:23</publishTime>
     </File>
     <File Include="Views/SefimPanelUrunEkle/UpdatedProductList.cshtml">
       <publishTime>08/09/2023 00:58:13</publishTime>

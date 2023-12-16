@@ -371,6 +371,7 @@
                                                     </div>
                                                     <div class="row col-sm-6 col-md-6 col-lg-6 col-xs-6">
                                                         <select name="optionsKategori" class="form-control m-select2" id="optionsKategori" placeholder="Kategori"></select>
+                                                        <input type="hidden" id="OptionCatsName" class="form-control" aria-describedby="OptionCatsName">
                                                     </div>
                                                 </div>
                                                 <div class="form-group m-form__group row">
@@ -1253,6 +1254,10 @@
             var miktarli = $('#miktarli:checked').val();
             var opCatsId = $('#optionsKategori').val();
             var optionsId = $('#optionsId').val();
+            var id = $('#Id').val();
+
+            var opId = $('#OptionsId').val();
+            //var productId = $('#ProductId').val();
 
             debugger;
             if (!secenek) {
@@ -1281,7 +1286,7 @@
                 miktarli = false;
             debugger;
 
-            product.Options.push({ iid: iid, OptionCatsId: opCatsId, Name: secenek, Category: kategori, OptionCatsName: kategoriName, Price: fiyat, Quantitative: miktarli, Id: optionsId });
+            product.Options.push({ iid: iid, OptionCatsId: opCatsId, Name: secenek, Category: kategori, OptionCatsName: kategoriName, Price: fiyat, Quantitative: miktarli, Id: optionsId, OptionsId: id });
             lib.addRow(iid, tableOptions, '', { secenek: secenek, kategori: kategoriName, fiyat: fiyat, miktarli: miktarli }, gid, undefined, true);
             lib.editOptionsiid = undefined;
         })
@@ -1517,6 +1522,12 @@
                         $('#optionsKategori').val(opt.Category).trigger("change");
                         $('#optionsFiyat').val(opt.Price);
                         $('#miktarli').val(opt.Quantitative).trigger("change");
+
+                        //$('#Id').val(opt.Id);
+                        $('#ProductId').val(opt.productId);
+                        $('#optionsId').val(opt.Id);
+                        $('#OptionCatsName').val(opt.OptionCatsName);
+                        
 
                         product.Options.splice(index, 1)
                         tableOptions.row('#' + iid).remove().draw();
