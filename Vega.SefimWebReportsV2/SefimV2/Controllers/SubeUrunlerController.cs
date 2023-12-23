@@ -232,6 +232,7 @@ namespace SefimV2.Controllers
 
             var dataTable = new DataTable("Urun_Raporu");
             dataTable.Columns.Add("ŞUBE", typeof(string));
+            dataTable.Columns.Add("ÜRÜN GRUBU", typeof(string));
             dataTable.Columns.Add("ÜRÜN", typeof(string));
             dataTable.Columns.Add("MİKTAR", typeof(decimal));
             dataTable.Columns.Add("TUTAR", typeof(decimal));
@@ -244,6 +245,7 @@ namespace SefimV2.Controllers
                 dataTable.Rows.Add
                     (
                         item.Sube,
+                        item.ProductGroup,
                         item.ProductName,
                         decimal.Round(item.Miktar, 2, MidpointRounding.AwayFromZero),
                         decimal.Round(item.Debit, 2, MidpointRounding.AwayFromZero),
@@ -255,8 +257,7 @@ namespace SefimV2.Controllers
             dataTable.Rows.Add(
                 "TÜM ŞUBE TOPLAMLARI:",
                 "-",
-               
-
+                "-",               
                    decimal.Round(sumMiktar, 2, MidpointRounding.AwayFromZero),
                         decimal.Round(sumDebit, 2, MidpointRounding.AwayFromZero),
                         decimal.Round(sumIkram, 2, MidpointRounding.AwayFromZero),

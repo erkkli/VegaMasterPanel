@@ -106,7 +106,11 @@ namespace SefimV2.Models
 
                     if (payReportID.Equals(""))
                     {
-                        if (AppDbType == "1" /*|| AppDbType == "2"*/)
+                        if (TopluExcel)
+                        {
+                            Query = File.ReadAllText(HostingEnvironment.MapPath("/Sql/SqlNewSef/SubeUrunRaporu/TopluExcelSubeUrun.sql"), System.Text.UTF8Encoding.Default);
+                        }
+                        else if (AppDbType == "1" /*|| AppDbType == "2"*/)
                         {
                             if (SaatGun == "0") // Masa Üstü Raporu, SaatGun Raporu 1.Kırılım
                             {
@@ -977,6 +981,7 @@ namespace SefimV2.Models
                                                     SubeID = (SubeId),
                                                     Miktar = f.RTD(SubeR, "MIKTAR"),
                                                     ProductName = f.RTS(SubeR, "ProductName"),
+                                                    ProductGroup = f.RTS(SubeR, "ProductGroup"),
                                                     Debit = f.RTD(SubeR, "TUTAR"),
                                                     TarihGun = f.RTS(SubeR, "Tarih"),
                                                     TarihSaat = f.RTS(SubeR, "Saat") == null ? "-" : f.RTS(SubeR, "Saat"),

@@ -3368,6 +3368,7 @@
     <Content Include="Sql\SqlNewSef\SubeUrunGrubuRaporu\UrunGrupDetayUrunEslestirme.sql" />
     <Content Include="Sql\SqlNewSef\SubeUrunGrubuRaporu\UrunGrupUrunKategoriUrunEslestirme.sql" />
     <Content Include="Sql\SqlNewSef\ReceteMaliyetRaporu\ReceteMaliyetEslestirme.sql" />
+    <Content Include="Sql\SqlNewSef\SubeUrunRaporu\TopluExcelSubeUrun.sql" />
     <Content Include="Sql\SqlNewSef\SubeUrunRaporu\SubeUrunSubeBazliUrunEslestirme.sql" />
     <Content Include="Sql\SqlNewSef\WaiterSales\WaiterSales3UrunEslestirme.sql" />
     <Content Include="Sql\SqlNewSef\YanUrunlerRaporu\SQL1.sql" />
