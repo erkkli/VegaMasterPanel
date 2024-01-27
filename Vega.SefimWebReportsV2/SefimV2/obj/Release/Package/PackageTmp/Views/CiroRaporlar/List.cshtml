@@ -21,7 +21,7 @@
 
 @{
     decimal TotalCiro = 0, TotalCash = 0, TotalCredit = 0, TotalDebit = 0, TotalTicket = 0, TotalIkram = 0, TotalMSayisi = 0, TotalIskonto = 0, TotalIptal = 0, TotalZayi = 0, TotalOpenTable = 0, TotalOnlinePayment = 0, TotalIade = 0, TotalPaketSatis = 0,
-        TotalAdisyonOrtalamasi = 0, ToplamBakiye = 0;
+        TotalAdisyonOrtalamasi = 0, ToplamBakiye = 0, ToplamPuan = 0;
 
 }
 
@@ -65,6 +65,7 @@
                     <th>Online S.</th>
                     <th>Paket S.</th>
                     <th>Bakiye</th>
+                    <th>Puan</th>
                     <th>Açık Hesap</th>
                     <th>A. Masalar</th>
                     <th>Masa Sayısı</th>
@@ -100,6 +101,7 @@
                             TotalPaketSatis += row.PaketSatis;
                             TotalAdisyonOrtalamasi += row.AdisyonOrtalamasi;
                             ToplamBakiye += row.Bakiye;
+                            ToplamPuan += row.Puan;
                             //TotalGelirGider += row.GelirGider;
                             //TotalSure += row.GecenZaman;
                             <tr id="row_@row.SubeId" style="color:#000000;font-weight:bold ">
@@ -110,8 +112,9 @@
                                 <td id="col_Ticket_@row.Ticket"> @String.Format("{0:#,###.00;-#,###.00;0}", @row.Ticket) </td>
                                 <td id="col_Ticket_@row.OnlinePayment"> @String.Format("{0:#,###.00;-#,###.00;0}", @row.OnlinePayment) </td>
                                 <td id="col_Ticket_@row.PaketSatis"> @String.Format("{0:#,###.00;-#,###.00;0}", @row.PaketSatis) </td>
-                                <td id="col_Debit_@row.Debit"> @String.Format("{0:#,###.00;-#,###.00;0}", @row.Debit) </td>
                                 <td id="col_Bakiye_@row.Bakiye"> @String.Format("{0:#,###.00;-#,###.00;0}", @row.Bakiye) </td>
+                                <td id="col_Bakiye_@row.Bakiye"> @String.Format("{0:#,###.00;-#,###.00;0}", @row.Puan) </td>
+                                <td id="col_Debit_@row.Debit"> @String.Format("{0:#,###.00;-#,###.00;0}", @row.Debit) </td>
                                 <td id="col_OpenTable_@row.OpenTable"> @String.Format("{0:#,###.00;-#,###.00;0}", @row.OpenTable) </td>
                                 <td id="col_TableNo_@row.TableNo">@row.TableNo</td>
                                 <td id="col_AdisyonOrtalamasi_@row.AdisyonOrtalamasi"> @String.Format("{0:#,###.00;-#,###.00;0}", @row.AdisyonOrtalamasi) </td>
@@ -139,8 +142,9 @@
                     <td>@String.Format("{0:#,###.00;-#,###.00;0}", @TotalTicket) </td>
                     <td>@String.Format("{0:#,###.00;-#,###.00;0}", TotalOnlinePayment) </td>
                     <td>@String.Format("{0:#,###.00;-#,###.00;0}", TotalPaketSatis) </td>
-                    <td>@String.Format("{0:#,###.00;-#,###.00;0}", @TotalDebit) </td>
                     <td>@String.Format("{0:#,###.00;-#,###.00;0}", ToplamBakiye) </td>
+                    <td>@String.Format("{0:#,###.00;-#,###.00;0}", ToplamPuan) </td>
+                    <td>@String.Format("{0:#,###.00;-#,###.00;0}", @TotalDebit) </td>
                     <td>@String.Format("{0:#,###.00;-#,###.00;0}", @TotalOpenTable) </td>
                     <td>@TotalMSayisi </td>
                     <td>@String.Format("{0:#,###.00;-#,###.00;0}", (TotalCiro) / (TotalMSayisi != 0 ? TotalMSayisi : 1)) </td>

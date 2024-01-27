@@ -33,6 +33,7 @@
         public decimal AdisyonOrtalamasi { get; set; }
 
         public decimal Bakiye { get; set; } = 0;
+        public decimal Puan { get; set; } = 0;
         public SubeCiro() { }
     }
 }

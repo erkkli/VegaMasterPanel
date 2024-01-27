@@ -1,4 +1,6 @@
-﻿using SefimV2.Models;
+﻿using DocumentFormat.OpenXml.Drawing.Charts;
+using SefimV2.Helper.Exceptions;
+using SefimV2.Models;
 using SefimV2.Models.ProductSefimCRUD;
 using SefimV2.Repository;
 using System;
@@ -12,24 +14,24 @@ namespace SefimV2.Controllers
     public class SefimPanelUrunEkleController : BaseController
     {
         // GET: Product
-
-
-
-
-
         [HttpPost]
         public JsonResult ProductInsert(SefimPanelUrunEkleViewModel Product)
         {
-            var result =new  ActionResultMessages();
+            var result = new ActionResultMessages();
+
+            List<SefimPanelUrunEkleViewModel> ProductList = new List<SefimPanelUrunEkleViewModel>();
+
+            ProductList.Add(Product);
+
             if (Product.Id > 0)
             {
-                 result = new SefimPanelUrunEkleCRUD().UpdateProduct(Product);
+                result = new SefimPanelUrunEkleCRUD().UpdateProduct(Product);
             }
             else
             {
-                 result = new SefimPanelUrunEkleCRUD().Insert(Product);
+                result = new SefimPanelUrunEkleCRUD().Insert(ProductList);
             }
-          
+
             if (result.IsSuccess)
             {
                 var mesaj = SendNotificationAfterAjaxRedirect(result.UserMessage, "ProductList", "SefimPanelUrunEkle");
@@ -79,8 +81,20 @@ namespace SefimV2.Controllers
             ViewBag.YetkiliID = kullaniciId;
             #endregion
 
-            var result = new SefimPanelUrunEkleCRUD().Copy(Id, SubeList, SubeId, YeniUrunMu, kullaniciId);
-            return Json((result), JsonRequestBehavior.AllowGet);
+            Dictionary<int, bool> productItems = new Dictionary<int, bool>();
+            productItems.Add(Id, YeniUrunMu);
+
+            List<int> subeIdList = new List<int>()
+            {
+                SubeId
+            };
+            List<bool> yeniUrunMuList = new List<bool>()
+            {
+                YeniUrunMu
+            };
+            var result = new SefimPanelUrunEkleCRUD().Copy(productItems, SubeList, subeIdList, yeniUrunMuList, kullaniciId);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public JsonResult ProductsCopy(List<SelectedProductItem> ProductList, List<SelectListItem> SubeList)
@@ -95,13 +109,30 @@ namespace SefimV2.Controllers
             string kullaniciId = Request.Cookies["PRAUT"].Value;
             ViewBag.YetkiliID = kullaniciId;
             #endregion
+
             ActionResultMessages result = new ActionResultMessages();
+            Dictionary<int, bool> ints = new Dictionary<int, bool>();
+            List<bool> yeniUrunMuList = new List<bool>();
+            List<int> subeIdList = new List<int>();
+
             foreach (var item in ProductList)
             {
-                result = new SefimPanelUrunEkleCRUD().Copy(item.Id, SubeList, item.SubeId, item.YeniUrunMu, kullaniciId);
+                ints.Add(item.Id, item.YeniUrunMu);
+                // yeniUrunMuList.Add(item.YeniUrunMu);
+                subeIdList.Add(item.SubeId);
             }
 
-            return Json((result), JsonRequestBehavior.AllowGet);
+            var subeId = subeIdList.Distinct().ToList();
+            result = new SefimPanelUrunEkleCRUD().Copy(ints, SubeList, subeId, yeniUrunMuList, kullaniciId);
+            //}
+
+            if (result.Param1 == 1099)
+            {
+                SendError(result.UserMessage);
+                throw new PanelBusinessException("Ürün Fiyat Güncelleme işlemi yapılmaktadır.Lütfen önce Ürün Fiyat Güncelleme işlemini tamamlayınız.", "Test");
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -150,8 +181,10 @@ namespace SefimV2.Controllers
         [HttpPost]
         public JsonResult GetProduct(int Id)
         {
-            SefimPanelUrunEkleViewModel obj = SefimPanelUrunEkleCRUD.GetProduct(Id);
-            return Json((obj), JsonRequestBehavior.AllowGet);
+            List<int> ids = new List<int>() { Id };
+            List<SefimPanelUrunEkleViewModel> obj = SefimPanelUrunEkleCRUD.GetProduct(ids);
+
+            return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -170,14 +203,23 @@ namespace SefimV2.Controllers
             if (cookieExists == false)
             {
                 return Json("/Authentication/Login", JsonRequestBehavior.AllowGet);
-
             }
             string kullaniciId = Request.Cookies["PRAUT"].Value;
             ViewBag.YetkiliID = kullaniciId;
             #endregion
 
-            SefimPanelUrunEkleViewModel obj = new SefimPanelUrunEkleCRUD().GetProductForSube(Id, SubeId, kullaniciId);
-            return Json((obj), JsonRequestBehavior.AllowGet);
+            List<int> productIdList = new List<int>() { Id };
+            List<int> subeIdLis = new List<int>() { SubeId };
+
+            List<SefimPanelUrunEkleViewModel> obj = new SefimPanelUrunEkleCRUD().GetProductForSube(productIdList, subeIdLis, kullaniciId);
+
+            SefimPanelUrunEkleViewModel data = new SefimPanelUrunEkleViewModel();
+            if (obj != null && obj.Count() > 0)
+            {
+                data = obj[0];
+            }
+
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

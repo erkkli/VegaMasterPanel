@@ -201,6 +201,7 @@
     <Reference Include="System.Security.Principal.Windows, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Security.Principal.Windows.6.0.0-preview.5.21301.5\lib\net461\System.Security.Principal.Windows.dll</HintPath>
     </Reference>
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Text.Encoding.CodePages, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.Encoding.CodePages.7.0.0-preview.6.22324.4\lib\net462\System.Text.Encoding.CodePages.dll</HintPath>
     </Reference>
@@ -3641,6 +3642,7 @@
     <Compile Include="Helper\DataService.cs" />
     <Compile Include="Helper\BussinessHelper.cs" />
     <Compile Include="Helper\ExcelHelper\ExcelHelper.cs" />
+    <Compile Include="Helper\Exceptions\PanelBusinessException.cs" />
     <Compile Include="Helper\HtmlHelperExtensions.cs" />
     <Compile Include="Helper\HtmlHelpers.cs" />
     <Compile Include="Helper\Settings.cs" />

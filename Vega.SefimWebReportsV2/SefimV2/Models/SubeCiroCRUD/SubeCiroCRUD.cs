@@ -913,6 +913,7 @@ namespace SefimV2.Models
                                                 iade = Convert.ToDecimal(SubeCiroDt.Rows[0]["iade"]),//f.RTD(SubeR, "iptal");
                                                 PaketSatis = Convert.ToDecimal(SubeCiroDt.Rows[0]["PaketToplam"]),
                                                 Bakiye = Convert.ToDecimal(SubeCiroDt.Rows[0]["Bakiye"]),
+                                                Puan = Convert.ToDecimal(SubeCiroDt.Rows[0]["PUAN"]),
                                             };
 
 
@@ -1054,6 +1055,7 @@ namespace SefimV2.Models
                                                         iade = Convert.ToDecimal(SubeCiroDt.Rows[0]["iade"]),//f.RTD(SubeR, "iptal");
                                                         PaketSatis = Convert.ToDecimal(SubeCiroDt.Rows[0]["PaketToplam"]),
                                                         Bakiye = Convert.ToDecimal(SubeCiroDt.Rows[0]["Bakiye"]),
+                                                        Puan = Convert.ToDecimal(SubeCiroDt.Rows[0]["PUAN"]),
                                                     };
 
 

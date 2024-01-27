@@ -736,7 +736,7 @@ namespace SefimV2.Models
                                "      GROUP BY ProductName," +
                                "               Price," +
                                "               Options) Bp)," +
-                               "     OptSatislar AS" +
+                               "     OptSatislar AS " +
                                "  (SELECT Oe.EquProduct," +
                                "          Oe.Miktar," +
                                "          B.ProductName," +

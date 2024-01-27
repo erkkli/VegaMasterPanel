@@ -1,4 +1,5 @@
-﻿using SefimV2.Helper;
+﻿using OfficeOpenXml.Drawing.Chart.ChartEx;
+using SefimV2.Helper;
 using SefimV2.ViewModels.SPosVeriGonderimi;
 using SefimV2.ViewModels.SubeSettings;
 using System;
@@ -10,6 +11,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Web.Configuration;
 using System.Web.Mvc;
+using System.Web.WebPages;
 using static SefimV2.ViewModels.SPosVeriGonderimi.UrunEditViewModel;
 
 namespace SefimV2.Models
@@ -214,13 +216,13 @@ namespace SefimV2.Models
             try
             {
                 DataTable dataSubeUrunlist;
-                dataSubeUrunlist = mF.GetSubeDataWithQuery((mF.NewConnectionString(subeIp, dbName, sqlKullaniciName, sqlKullaniciPassword))
-                                                                          , ProductGroup == "null" || ProductGroup == null ? SqlData.getProductLocalDbSqlQuery(SubeId) : SqlData.getProductForProductGroupSqlQuery(ProductGroup));
+                dataSubeUrunlist = mF.GetSubeDataWithQuery(mF.NewConnectionString(subeIp, dbName, sqlKullaniciName, sqlKullaniciPassword)
+                                                            , ProductGroup == "null" || ProductGroup == null ? SqlData.getProductLocalDbSqlQuery(SubeId) : SqlData.getProductForProductGroupSqlQuery(ProductGroup));
                 var modelSube = SqlData.GetSube(SubeId);
                 if (dataSubeUrunlist.Rows.Count == 0)
                 {
-                    dataSubeUrunlist = mF.GetSubeDataWithQuery((mF.NewConnectionString(modelSube.SubeIP, modelSube.DBName, modelSube.SqlName, modelSube.SqlPassword))
-                                                                          , ProductGroup == "null" || ProductGroup == null ? SqlData.getProductSqlQuery() : SqlData.getProductForProductGroupSqlQuery(ProductGroup));
+                    dataSubeUrunlist = mF.GetSubeDataWithQuery(mF.NewConnectionString(modelSube.SubeIP, modelSube.DBName, modelSube.SqlName, modelSube.SqlPassword)
+                                                                , ProductGroup == "null" || ProductGroup == null ? SqlData.getProductSqlQuery() : SqlData.getProductForProductGroupSqlQuery(ProductGroup));
                 }
 
                 urunList.UrunEditList = new List<UrunEdit>();
@@ -263,8 +265,10 @@ namespace SefimV2.Models
             }
             catch (Exception ex)
             {
-                urunList.ErrorList = new List<string>();
-                urunList.ErrorList.Add(ex.Message.ToString());
+                urunList.ErrorList = new List<string>
+                {
+                    ex.Message.ToString()
+                };
                 return urunList;
             }
         }
@@ -279,7 +283,7 @@ namespace SefimV2.Models
             #region Local database'e veriler kaydetmek için kullanıldı.
 
             var sqlData = new SqlData(new SqlConnection(mF.NewConnectionString(subeIp, dbName, sqlKullaniciName, sqlKullaniciPassword)));
-            var dataSubeUrunlist = mF.GetSubeDataWithQuery((mF.NewConnectionString(subeIp, dbName, sqlKullaniciName, sqlKullaniciPassword)), SqlData.getProductLocalDbSqlQuery(model.SubeId));
+            var dataSubeUrunlist = mF.GetSubeDataWithQuery(mF.NewConnectionString(subeIp, dbName, sqlKullaniciName, sqlKullaniciPassword), SqlData.getProductLocalDbSqlQuery(model.SubeId));
             //Önceki kullanım direkt olarak şubedeki db'ye değişikliklei kaydediyordu.
             //var modelSube = SqlData.getSube(model.SubeId);
             //var sqlData = new SqlData(new SqlConnection(modelFunctions.NewConnectionString(modelSube.SubeIP, modelSube.DBName, modelSube.SqlName, modelSube.SqlPassword)));
@@ -323,13 +327,16 @@ namespace SefimV2.Models
                 UserMessage = "İşlem başarılı",
             };
 
-            var dataSubeUrunlist = mF.GetSubeDataWithQuery((mF.NewConnectionString(subeIp, dbName, sqlKullaniciName, sqlKullaniciPassword)), SqlData.getProductLocalDbSqlQuery(model.SubeId));
+            var dataSubeUrunlist = mF.GetSubeDataWithQuery(mF.NewConnectionString(subeIp, dbName, sqlKullaniciName, sqlKullaniciPassword), SqlData.getProductLocalDbSqlQuery(model.SubeId));
             var sqlData = new SqlData(new SqlConnection(mF.NewConnectionString(subeIp, dbName, sqlKullaniciName, sqlKullaniciPassword)));
             var modelSube = SqlData.GetSube(model.SubeId);
+            var dataSubeChoiceUrunlist = mF.GetSubeDataWithQuery(mF.NewConnectionString(modelSube.SubeIP, modelSube.DBName, modelSube.SqlName, modelSube.SqlPassword), SqlData.getChoice1SqlQuery3());
+            var dataSubeChoice2Urunlist = mF.GetSubeDataWithQuery(mF.NewConnectionString(modelSube.SubeIP, modelSube.DBName, modelSube.SqlName, modelSube.SqlPassword), SqlData.getChoice2SqlQuery3());
+            var dataSubeUrunOptionslist = mF.GetSubeDataWithQuery(mF.NewConnectionString(modelSube.SubeIP, modelSube.DBName, modelSube.SqlName, modelSube.SqlPassword), SqlData.getOptionsSqlQuery3());
 
             if (choiceMu)
             {
-                dataSubeUrunlist = mF.GetSubeDataWithQuery((mF.NewConnectionString(modelSube.SubeIP, modelSube.DBName, modelSube.SqlName, modelSube.SqlPassword)), SqlData.getProductSqlQuery());
+                dataSubeUrunlist = mF.GetSubeDataWithQuery(mF.NewConnectionString(modelSube.SubeIP, modelSube.DBName, modelSube.SqlName, modelSube.SqlPassword), SqlData.getProductSqlQuery());
 
                 foreach (DataRow item in dataSubeUrunlist.Rows)
                 {
@@ -338,20 +345,19 @@ namespace SefimV2.Models
                         new object[] { mF.RTS(item, "ProductName"), mF.RTS(item, "ProductGroup"), mF.RTS(item, "Price"), model.SubeId, mF.RTI(item, "Id") });
 
                     //Choice1
-                    var dataSubeChoiceUrunlist = mF.GetSubeDataWithQuery((mF.NewConnectionString(modelSube.SubeIP, modelSube.DBName, modelSube.SqlName, modelSube.SqlPassword)), SqlData.getChoice1SqlQuery(mF.RTI(item, "Id")));
+                    //var dataSubeChoiceUrunlist = mF.GetSubeDataWithQuery((mF.NewConnectionString(modelSube.SubeIP, modelSube.DBName, modelSube.SqlName, modelSube.SqlPassword)), SqlData.getChoice1SqlQuery(mF.RTI(item, "Id")));
                     if (dataSubeChoiceUrunlist.Rows.Count > 0)
                     {
-                        foreach (DataRow dataChoice1 in dataSubeChoiceUrunlist.Rows)
+                        foreach (DataRow dataChoice1 in dataSubeChoiceUrunlist.AsEnumerable().Where(x => x.Field<int>("ProductId") == mF.RTI(item, "Id")))
                         {
                             sqlData.ExecuteSql(" Insert Into  Choice1( ProductId, Name, Price, SubeId, Choice1PkId ) Values( @par1, @par2, @par3, @par4, @par5 )",
                             new object[] { mF.RTI(dataChoice1, "ProductId"), mF.RTS(dataChoice1, "ChoiceProductName"), mF.RTD(dataChoice1, "Choice1_Price"), model.SubeId, mF.RTI(dataChoice1, "Id") });
 
                             //Choice2
-                            var dataSubeChoice2Urunlist = mF.GetSubeDataWithQuery((mF.NewConnectionString(modelSube.SubeIP, modelSube.DBName, modelSube.SqlName, modelSube.SqlPassword)),
-                                                                                                                                        SqlData.getChoice2SqlQuery(mF.RTI(dataChoice1, "Id"), mF.RTI(item, "Id")));
+                            //var dataSubeChoice2Urunlist = mF.GetSubeDataWithQuery((mF.NewConnectionString(modelSube.SubeIP, modelSube.DBName, modelSube.SqlName, modelSube.SqlPassword)), SqlData.getChoice2SqlQuery(mF.RTI(dataChoice1, "Id"), mF.RTI(item, "Id")));
                             if (dataSubeChoice2Urunlist.Rows.Count > 0)
                             {
-                                foreach (DataRow dataChoice2 in dataSubeChoice2Urunlist.Rows)
+                                foreach (DataRow dataChoice2 in dataSubeChoice2Urunlist.AsEnumerable().Where(x => x.Field<int>("ProductId") == mF.RTI(dataChoice1, "Id")))
                                 {
                                     sqlData.ExecuteSql(" Insert Into  Choice2( ProductId, Choice1Id, Name, Price, SubeId, Choice2PkId ) Values( @par1, @par2, @par3, @par4, @par5 )",
                                     new object[] { mF.RTI(dataChoice2, "ProductId"), mF.RTI(dataChoice1, "Id"), mF.RTS(dataChoice2, "Choice2ProductName"), mF.RTD(dataChoice2, "Choice2_Price"), model.SubeId, mF.RTI(dataChoice2, "Id") });
@@ -362,10 +368,10 @@ namespace SefimV2.Models
                     }
 
                     //Options
-                    var dataSubeUrunOptionslist = mF.GetSubeDataWithQuery((mF.NewConnectionString(modelSube.SubeIP, modelSube.DBName, modelSube.SqlName, modelSube.SqlPassword)), SqlData.getOptionsSqlQuery(mF.RTI(item, "Id")));
+                    //var dataSubeUrunOptionslist = mF.GetSubeDataWithQuery((mF.NewConnectionString(modelSube.SubeIP, modelSube.DBName, modelSube.SqlName, modelSube.SqlPassword)), SqlData.getOptionsSqlQuery(mF.RTI(item, "Id")));
                     if (dataSubeUrunOptionslist.Rows.Count > 0)
                     {
-                        foreach (DataRow dataOptions in dataSubeUrunOptionslist.Rows)
+                        foreach (DataRow dataOptions in dataSubeUrunOptionslist.AsEnumerable().Where(x => x.Field<int>("ProductId") == mF.RTI(item, "Id")))
                         {
                             sqlData.ExecuteSql(" Insert Into  Options(ProductId, Name, Price, Category, SubeId, OptionsPkId ) Values( @par1, @par2, @par3, @par4, @par5, @par6)",
                             new object[] { mF.RTI(dataOptions, "ProductId"), mF.RTS(dataOptions, "OptionsName"), mF.RTD(dataOptions, "Option_Price"), mF.RTD(dataOptions, "OptionsCategory"), model.SubeId, mF.RTI(dataOptions, "Id") });
@@ -385,20 +391,19 @@ namespace SefimV2.Models
                             new object[] { modelList.ProductName, modelList.ProductGroup, modelList.Price, model.SubeId, modelList.Id });
 
                         //Choice1
-                        var dataSubeChoiceUrunlist = mF.GetSubeDataWithQuery((mF.NewConnectionString(modelSube.SubeIP, modelSube.DBName, modelSube.SqlName, modelSube.SqlPassword)), SqlData.getChoice1SqlQuery(modelList.Id));
+                        //var dataSubeChoiceUrunlist = mF.GetSubeDataWithQuery((mF.NewConnectionString(modelSube.SubeIP, modelSube.DBName, modelSube.SqlName, modelSube.SqlPassword)), SqlData.getChoice1SqlQuery(modelList.Id));
                         if (dataSubeChoiceUrunlist.Rows.Count > 0)
                         {
-                            foreach (DataRow dataChoice1 in dataSubeChoiceUrunlist.Rows)
+                            foreach (DataRow dataChoice1 in dataSubeChoiceUrunlist.AsEnumerable().Where(x => x.Field<int>("ProductId") == modelList.Id))
                             {
                                 sqlData.ExecuteSql(" Insert Into  Choice1( ProductId, Name, Price, SubeId, Choice1PkId ) Values( @par1, @par2, @par3, @par4, @par5 )",
                                 new object[] { mF.RTI(dataChoice1, "ProductId"), mF.RTS(dataChoice1, "ChoiceProductName"), mF.RTD(dataChoice1, "Choice1_Price"), model.SubeId, mF.RTI(dataChoice1, "Id") });
 
                                 //Choice2
-                                var dataSubeChoice2Urunlist = mF.GetSubeDataWithQuery((mF.NewConnectionString(modelSube.SubeIP, modelSube.DBName, modelSube.SqlName, modelSube.SqlPassword)),
-                                                                                                                                            SqlData.getChoice2SqlQuery(mF.RTI(dataChoice1, "Id"), modelList.Id));
+                                //var dataSubeChoice2Urunlist = mF.GetSubeDataWithQuery((mF.NewConnectionString(modelSube.SubeIP, modelSube.DBName, modelSube.SqlName, modelSube.SqlPassword)), SqlData.getChoice2SqlQuery(mF.RTI(dataChoice1, "Id"), modelList.Id));
                                 if (dataSubeChoice2Urunlist.Rows.Count > 0)
                                 {
-                                    foreach (DataRow dataChoice2 in dataSubeChoice2Urunlist.Rows)
+                                    foreach (DataRow dataChoice2 in dataSubeChoice2Urunlist.AsEnumerable().Where(x => x.Field<int>("ProductId") == mF.RTI(dataChoice1, "Id")))
                                     {
                                         sqlData.ExecuteSql(" Insert Into  Choice2( ProductId, Choice1Id, Name, Price, SubeId, Choice2PkId ) Values( @par1, @par2, @par3, @par4, @par5 )",
                                         new object[] { mF.RTI(dataChoice2, "ProductId"), mF.RTI(dataChoice1, "Id"), mF.RTS(dataChoice2, "Choice2ProductName"), mF.RTD(dataChoice2, "Choice2_Price"), model.SubeId, mF.RTI(dataChoice2, "Id") });
@@ -409,10 +414,10 @@ namespace SefimV2.Models
                         }
 
                         //Options
-                        var dataSubeUrunOptionslist = mF.GetSubeDataWithQuery((mF.NewConnectionString(modelSube.SubeIP, modelSube.DBName, modelSube.SqlName, modelSube.SqlPassword)), SqlData.getOptionsSqlQuery(modelList.Id));
+                        //var dataSubeUrunOptionslist = mF.GetSubeDataWithQuery((mF.NewConnectionString(modelSube.SubeIP, modelSube.DBName, modelSube.SqlName, modelSube.SqlPassword)), SqlData.getOptionsSqlQuery(modelList.Id));
                         if (dataSubeUrunOptionslist.Rows.Count > 0)
                         {
-                            foreach (DataRow dataOptions in dataSubeUrunOptionslist.Rows)
+                            foreach (DataRow dataOptions in dataSubeUrunOptionslist.AsEnumerable().Where(x => x.Field<int>("ProductId") == modelList.Id))
                             {
                                 sqlData.ExecuteSql(" Insert Into  Options(ProductId, Name, Price, Category, SubeId, OptionsPkId ) Values( @par1, @par2, @par3, @par4, @par5, @par6)",
                                 new object[] { mF.RTI(dataOptions, "ProductId"), mF.RTS(dataOptions, "OptionsName"), mF.RTD(dataOptions, "Option_Price"), mF.RTD(dataOptions, "OptionsCategory"), model.SubeId, mF.RTI(dataOptions, "Id") });
@@ -508,7 +513,7 @@ namespace SefimV2.Models
             };
 
             #region Local db'den  ProductPkId alıyor.       
-            var dataSubeUrunPkList = mF.GetSubeDataWithQuery((mF.NewConnectionString(subeIp, dbName, sqlKullaniciName, sqlKullaniciPassword)), SqlData.getProductLocalDbPkIdSqlQuery(model.UrunEditList.FirstOrDefault().Id));
+            var dataSubeUrunPkList = mF.GetSubeDataWithQuery(mF.NewConnectionString(subeIp, dbName, sqlKullaniciName, sqlKullaniciPassword), SqlData.getProductLocalDbPkIdSqlQuery(model.UrunEditList.FirstOrDefault().Id));
             var productIdLocal = 0;
             foreach (DataRow item in dataSubeUrunPkList.Rows)
             {
@@ -520,7 +525,7 @@ namespace SefimV2.Models
             //var sqlData = new SqlData(new SqlConnection(modelFunctions.NewConnectionString(modelSube.SubeIP, modelSube.DBName, modelSube.SqlName, modelSube.SqlPassword)));
             var sqlData = new SqlData(new SqlConnection(mF.NewConnectionString(subeIp, dbName, sqlKullaniciName, sqlKullaniciPassword)));
             //var dataSubeUrunlist = modelFunctions.GetSubeDataWithQuery((modelFunctions.NewConnectionString(modelSube.SubeIP, modelSube.DBName, modelSube.SqlName, modelSube.SqlPassword)), SqlData.getChoice1(model.UrunEditList[1].Id));
-            var dataSubeUrunlist = mF.GetSubeDataWithQuery((mF.NewConnectionString(subeIp, dbName, sqlKullaniciName, sqlKullaniciPassword)), SqlData.getChoice1LocalDbSqlQuery(model.SubeId, model.UrunEditList.FirstOrDefault().Id));
+            var dataSubeUrunlist = mF.GetSubeDataWithQuery(mF.NewConnectionString(subeIp, dbName, sqlKullaniciName, sqlKullaniciPassword), SqlData.getChoice1LocalDbSqlQuery(model.SubeId, model.UrunEditList.FirstOrDefault().Id));
 
             foreach (var modelList in model.UrunEditList)
             {
@@ -949,17 +954,22 @@ namespace SefimV2.Models
 
             string logTable = string.Empty;
             int tempInsertCount = 0;
-            foreach (var isSelectedSubeItem in model.IsSelectedSubeList.Where(x => x.IsSelectedHedefSube))
-            {
-                var modelSube = SqlData.GetSube(isSelectedSubeItem.ID);
+            var subeName = string.Empty;
 
-                using (SqlConnection con = new SqlConnection(mF.NewConnectionString(subeIp, dbName, sqlKullaniciName, sqlKullaniciPassword)))
+            using (SqlConnection con = new SqlConnection(mF.NewConnectionString(subeIp, dbName, sqlKullaniciName, sqlKullaniciPassword)))
+            {
+                con.Open();
+                SqlTransaction transaction = con.BeginTransaction();
+                try
                 {
-                    con.Open();
-                    SqlTransaction transaction = con.BeginTransaction();
-                    //SqlData sqlData = new SqlData(con);
-                    try
+                    foreach (var isSelectedSubeItem in model.IsSelectedSubeList.Where(x => x.IsSelectedHedefSube))
                     {
+                        var modelSube = SqlData.GetSube(isSelectedSubeItem.ID);
+
+                        subeName = modelSube.SubeName;
+
+                        //SqlData sqlData = new SqlData(con);
+
                         // sqlData = new SqlData(new SqlConnection(mF.NewConnectionString(subeIp, dbName, sqlKullaniciName, sqlKullaniciPassword)));
                         var dataSubeUrunlist = mF.GetSubeDataWithQuery(mF.NewConnectionString(modelSube.SubeIP, modelSube.DBName, modelSube.SqlName, modelSube.SqlPassword), SqlData.getProductSqlQuery());
 
@@ -1173,18 +1183,18 @@ namespace SefimV2.Models
                                 bulkCopy.WriteToServer(dataSubeUrunOptionslist);
                             }
                         }
+                    }
 
-                        transaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        transaction.Rollback();
-                        Singleton.WritingLogFile2("SPosSubeFiyatGuncellemeCRUD_IsUpdateProduct", "Sube Adı:" + isSelectedSubeItem.SubeName + " Tablo Adı:" + logTable + " tablosunda>>>" + ex.ToString(), null, ex.StackTrace);
-                        result.IsSuccess = false;
-                        result.UserMessage = modelSube.SubeName + " şubesine bağlantı kurulamadı. Lütfen şubenin aktif olduğundan emin olunuz.";
-                        logTable = string.Empty;
-                        return result;
-                    }
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    Singleton.WritingLogFile2("SPosSubeFiyatGuncellemeCRUD_IsUpdateProduct", "Sube Adı:" + subeName + " Tablo Adı:" + logTable + " tablosunda>>>" + ex.ToString(), null, ex.StackTrace);
+                    result.IsSuccess = false;
+                    result.UserMessage = subeName + " şubesine bağlantı kurulamadı. Lütfen şubenin aktif olduğundan emin olunuz.";
+                    logTable = string.Empty;
+                    return result;
                 }
             }
 
@@ -1210,23 +1220,30 @@ namespace SefimV2.Models
                                                                       : SqlData.getProductForProductGroupSqlQueryVeriGonder(productGroup_, subeIdGrupList));
                 #endregion Local database'e veriler kaydetmek için kullanıldı.
 
-                var subeIdList = new List<long>();
-                foreach (DataRow item in dataSubeUrunlist.Rows)
+                var subeIdList = new List<int>();
+                foreach (int item in dataSubeUrunlist.AsEnumerable().Select(x => x.Field<int>("SubeId")).Distinct().ToList())
                 {
-                    subeIdList.Add(mF.RTI(item, "SubeId"));
-                }
-
-                subeIdList = subeIdList.Distinct().ToList();
-                foreach (var sube in subeIdList)
-                {
-                    var drSube = dataSubeUrunlist.Select("SubeId=" + sube)[0];
+                    //subeIdList.Add(item);
+                    var drSube = dataSubeUrunlist.Select("SubeId=" + item)[0];
                     var subeName = mF.RTS(drSube, "SubeName");
                     returnViewModel.SubeList.Add(new ProductCompairSube
                     {
-                        SubeId = sube,
+                        SubeId = item,
                         SubeAdi = subeName,
                     });
                 }
+
+                //subeIdList = subeIdList.Distinct().ToList();
+                //foreach (var sube in subeIdList)
+                //{
+                //    var drSube = dataSubeUrunlist.Select("SubeId=" + sube)[0];
+                //    var subeName = mF.RTS(drSube, "SubeName");
+                //    returnViewModel.SubeList.Add(new ProductCompairSube
+                //    {
+                //        SubeId = sube,
+                //        SubeAdi = subeName,
+                //    });
+                //}
 
                 foreach (DataRow item in dataSubeUrunlist.Rows)
                 {
@@ -1268,13 +1285,21 @@ namespace SefimV2.Models
 
                 foreach (var sube in returnViewModel.SubeList)
                 {
-                    foreach (var product in returnViewModel.productCompairsList)
+                    if (returnViewModel.productCompairsList != null && returnViewModel.productCompairsList.Count > 0)
                     {
-                        if (!product.SubeList.Where(x => x.SubeId == sube.SubeId).Any())
+                        var products = returnViewModel.productCompairsList.Where(x => x.SubeList.Count > 0 && x.SubeList.Where(y => y.SubeId != sube.SubeId).ToList().Count > 0).ToList();
+                        if (products != null && products.Count > 0)
                         {
-                            product.SubeList.Add(new UrunEdit2 { SubeId = sube.SubeId });
+                            foreach (var product in products)
+                            {
+                                //if (!product.SubeList.Where(x => x.SubeId == sube.SubeId).Any())
+                                //{
+                                product.SubeList.Add(new UrunEdit2 { SubeId = sube.SubeId });
+                                //}
+                            }
                         }
                     }
+
                 }
 
                 //var returnViewModel = new UrunEditViewModel()
@@ -1297,7 +1322,7 @@ namespace SefimV2.Models
         {
             var result = new ActionResultMessages() { IsSuccess = true, UserMessage = "İşlem Başarılı", };
             var kullaniciData = BussinessHelper.GetByUserInfoForId("", "", model.KullaniciId);
-            var modelSube = SqlData.GetSube(model.SubeId);
+            //var modelSube = SqlData.GetSube(model.SubeId);
 
             try
             {
@@ -1308,16 +1333,19 @@ namespace SefimV2.Models
 
                 foreach (var modelProduct in model.productCompairsList)
                 {
-                    foreach (DataRow dataUrunSube in dataSubeUrunlist.Rows)
+                    //foreach (DataRow dataUrunSube in dataSubeUrunlist.Rows)
+                    //{
+                    foreach (var price in modelProduct.SubeList)
                     {
-                        foreach (var price in modelProduct.SubeList)
+                        var dataUrunSubeList = dataSubeUrunlist.AsEnumerable().ToList().Where(x => x.Field<string>("ProductName") == modelProduct.ProductName && x.Field<string>("ProductGroup") == modelProduct.ProductGroup && x.Field<int>("SubeId").ToString() == price.SubeId.ToString()).ToList();
+                        if (dataUrunSubeList != null && dataUrunSubeList.Count > 0)
                         {
-                            if (modelProduct.ProductName == mF.RTS(dataUrunSube, "ProductName")
-                                 && modelProduct.ProductGroup == mF.RTS(dataUrunSube, "ProductGroup")
-                                 && price.SubeId == mF.RTD(dataUrunSube, "SubeId")
-                                 && price.SubePriceValue != null
-                                 && price.SubePriceValue != mF.RTD(dataUrunSube, "Price")
-                                )
+                            var dataUrunSube = dataUrunSubeList[0];
+                            if (
+                                      // price.SubeId == mF.RTD(dataUrunSube, "SubeId")
+                                      price.SubePriceValue != null
+                                     && price.SubePriceValue != mF.RTD(dataUrunSube, "Price")
+                                    )
                             {
                                 var productPrice = Convert.ToDecimal(price.SubePriceValue);
                                 sqlData.ExecuteSql("update Product set Price = @par1 Where SubeId = @par2 and ProductGroup = @par3 and  ProductName = @par4 and Id=@par5",
@@ -1342,10 +1370,11 @@ namespace SefimV2.Models
                                       DateTime.Now.Date.ToString("dd'/'MM'/'yyyy HH:mm"),
                                       kullaniciData.UserName
                               });
-                                break;
+                                //break;
                             }
                         }
                     }
+                    //}
                 }
             }
             catch (Exception ex)
@@ -1663,7 +1692,8 @@ namespace SefimV2.Models
                 }
                 else
                 {
-                    dataSubeUrunlist = mF.GetSubeDataWithQuery((mF.NewConnectionString(subeIp, dbName, sqlKullaniciName, sqlKullaniciPassword)), SqlData.getLocalOptionsListSqlQuery(productId));
+                    dataSubeUrunlist = mF.GetSubeDataWithQuery(mF.NewConnectionString(subeIp, dbName, sqlKullaniciName, sqlKullaniciPassword),
+                        SqlData.getLocalOptionsListSqlQuery2(model.productOptionsCompairsList.FirstOrDefault().ProductGroup, model.productOptionsCompairsList.FirstOrDefault().ProductName));
                 }
 
                 #endregion Local database'e veriler kaydetmek için kullanıldı.
@@ -1701,6 +1731,7 @@ namespace SefimV2.Models
                                        //modelProduct.ProductId
                                       });
 
+
                                 var oldPrice = Convert.ToDecimal(mF.RTD(dataUrunSube, "Option_Price"));
                                 sqlData.ExecuteSql(" Insert Into  OptionsTarihce(ProductId, Name, Price, Category, SubeId, SubeName, OptionsPkId, IsUpdateDate,IsUpdateKullanici ) Values( @par1, @par2, @par3, @par4, @par5, @par6,@par7,@par8,@par9)",
                                    new object[]
@@ -1715,7 +1746,7 @@ namespace SefimV2.Models
                                        DateTime.Now.Date.ToString("dd'/'MM'/'yyyy HH:mm"),
                                        kullaniciData.UserName
                                    });
-                                break;
+                                //break;
                             }
                         }
                     }
@@ -2194,7 +2225,6 @@ namespace SefimV2.Models
 
             if (model.SubeIdGrupList == "TumSubelereYay")
             {
-
                 //var spiltSubeId = SubeIdGrupList.TrimEnd(',').Split(',').FirstOrDefault();
                 //if (spiltSubeId.Count() == 1)
                 //{
@@ -2203,30 +2233,28 @@ namespace SefimV2.Models
 
                 //var subeId = model.GuncellenecekSubeGruplariList.FirstOrDefault().FiyatGuncellemsiHazirlananSubeList.FirstOrDefault().ID;
                 var subeId = Convert.ToInt32(model.HedefSubeId);
-
-
                 #region Local pruduct tablosundaki şubeler alınır 
-
-                //var isSelectedUpdatedSubeList = model.GuncellenecekSubeGruplariList.FirstOrDefault().FiyatGuncellemsiHazirlananSubeList.Where(x => x.IsSelectedHazirlananSubeList == true).ToList();                
-                //var isSelectedUpdatedSubeList = SqlData.GetIsActivAllSube();
-                var isSelectedUpdatedSubeList = model.IsSelectedSubeList.Where(x => x.IsSelectedHedefSube == true).ToList();
-                foreach (var isSelectedSubeId in isSelectedUpdatedSubeList)
+                using (SqlConnection con = new SqlConnection(mF.NewConnectionString(subeIp, dbName, sqlKullaniciName, sqlKullaniciPassword)))
                 {
-                    var updatedSProductSubeList = mF.GetSubeDataWithQuery(mF.NewConnectionString(subeIp, dbName, sqlKullaniciName, sqlKullaniciPassword), SqlData.getProductJoinSubesettingsSqlQuery2(subeId));
-                    var yeniSubeIdGrupList = string.Empty;
-                    var kullaniciSubeYetkisi = UsersListCRUD.KullaniciSubeYetkiListesi(kullaniciId);
-                    //foreach (DataRow itemSube in updatedSProductSubeList.Rows)
-                    //{
-                    //var updateSubeId = mF.RTS(itemSube, "SubeId");
-                    var updateSubeId = isSelectedSubeId.ID.ToString(); //mF.RTS(itemSube, "SubeId");
-                    using (SqlConnection con = new SqlConnection(mF.NewConnectionString(subeIp, dbName, sqlKullaniciName, sqlKullaniciPassword)))
-                    {
-                        con.Open();
-                        SqlTransaction transaction = con.BeginTransaction();
-                        SqlData sqlData = new SqlData(con);
+                    con.Open();
+                    //SqlTransaction transaction = con.BeginTransaction();
+                    SqlData sqlData = new SqlData(con);
 
-                        try
+                    try
+                    {
+                        //var isSelectedUpdatedSubeList = model.GuncellenecekSubeGruplariList.FirstOrDefault().FiyatGuncellemsiHazirlananSubeList.Where(x => x.IsSelectedHazirlananSubeList == true).ToList();                
+                        //var isSelectedUpdatedSubeList = SqlData.GetIsActivAllSube();
+                        var isSelectedUpdatedSubeList = model.IsSelectedSubeList.Where(x => x.IsSelectedHedefSube == true).ToList();
+                        foreach (var isSelectedSubeId in isSelectedUpdatedSubeList)
                         {
+                            var updatedSProductSubeList = mF.GetSubeDataWithQuery(mF.NewConnectionString(subeIp, dbName, sqlKullaniciName, sqlKullaniciPassword), SqlData.getProductJoinSubesettingsSqlQuery2(subeId));
+                            var yeniSubeIdGrupList = string.Empty;
+                            var kullaniciSubeYetkisi = UsersListCRUD.KullaniciSubeYetkiListesi(kullaniciId);
+                            //foreach (DataRow itemSube in updatedSProductSubeList.Rows)
+                            //{
+                            //var updateSubeId = mF.RTS(itemSube, "SubeId");
+                            var updateSubeId = isSelectedSubeId.ID.ToString(); //mF.RTS(itemSube, "SubeId");
+
                             //Kullanıcının şube yetki kontrolü.
                             if (kullaniciSubeYetkisi != null && kullaniciSubeYetkisi.FR_SubeListesi.Where(x => x.SubeID == Convert.ToInt32(updateSubeId)).Select(x => x.SubeID).Any())
                             {
@@ -2290,22 +2318,24 @@ namespace SefimV2.Models
                                 result.SuccessAlertList.Add("(Başarılı) " + updatesubeName + " şubesine fiyat güncellemesi başarılı bir şekilde gönderildi." + " " + Environment.NewLine);
                             }
                         }
-                        catch (Exception ex)
-                        {
-                            transaction.Rollback();
-                            Singleton.WritingLogFile2("SPosSubeFiyatGuncellemeCRUD_IsUpdateProduct", ex.ToString(), null, ex.StackTrace);
-                            result.IsSuccess = false;
-                            result.ErrorList.Add(updatesubeName + " şubesine bağlantı kurulamadı veya bir hata oluştu. Lütfen şubenin aktif olduğundan emin olunuz." + " " + Environment.NewLine);
-                            //return result;
-                        }
+                        //}
                     }
-                    //}
+                    catch (Exception ex)
+                    {
+                        //transaction.Rollback();
+                        Singleton.WritingLogFile2("SPosSubeFiyatGuncellemeCRUD_IsUpdateProduct", ex.ToString(), null, ex.StackTrace);
+                        result.IsSuccess = false;
+                        result.ErrorList.Add(updatesubeName + " şubesine bağlantı kurulamadı veya bir hata oluştu. Lütfen şubenin aktif olduğundan emin olunuz." + " " + Environment.NewLine);
+                        //return result;
+                    }
                 }
+
                 #endregion Local pruduct tablosundaki şubeler alınır 
             }
             else
             {
                 #region Local pruduct tablosundaki şubeler alınır 
+
 
                 var isSelectedUpdatedSubeList = model.GuncellenecekSubeGruplariList.FirstOrDefault().FiyatGuncellemsiHazirlananSubeList.Where(x => x.IsSelectedHazirlananSubeList == true).ToList();
                 foreach (var isSelectedSubeId in isSelectedUpdatedSubeList)
@@ -2313,17 +2343,19 @@ namespace SefimV2.Models
                     var updatedSProductSubeList = mF.GetSubeDataWithQuery(mF.NewConnectionString(subeIp, dbName, sqlKullaniciName, sqlKullaniciPassword), SqlData.getProductJoinSubesettingsSqlQuery2(isSelectedSubeId.ID));
                     var yeniSubeIdGrupList = string.Empty;
                     var kullaniciSubeYetkisi = UsersListCRUD.KullaniciSubeYetkiListesi(kullaniciId);
-                    foreach (DataRow itemSube in updatedSProductSubeList.Rows)
-                    {
-                        var updateSubeId = mF.RTS(itemSube, "SubeId");
-                        using (SqlConnection con = new SqlConnection(mF.NewConnectionString(subeIp, dbName, sqlKullaniciName, sqlKullaniciPassword)))
-                        {
-                            con.Open();
-                            SqlTransaction transaction = con.BeginTransaction();
-                            SqlData sqlData = new SqlData(con);
+                    updatesubeName = isSelectedSubeId.SubeName;
 
-                            try
+
+                    using (SqlConnection con = new SqlConnection(mF.NewConnectionString(subeIp, dbName, sqlKullaniciName, sqlKullaniciPassword)))
+                    {
+                        con.Open();
+                        SqlTransaction transaction = con.BeginTransaction();
+                        SqlData sqlData = new SqlData(con);
+                        try
+                        {
+                            foreach (DataRow itemSube in updatedSProductSubeList.Rows)
                             {
+                                var updateSubeId = mF.RTS(itemSube, "SubeId");
                                 //Kullanıcının şube yetki kontrolü.
                                 if (kullaniciSubeYetkisi != null && kullaniciSubeYetkisi.FR_SubeListesi.Where(x => x.SubeID == Convert.ToInt32(updateSubeId)).Select(x => x.SubeID).Any())
                                 {
@@ -2380,23 +2412,30 @@ namespace SefimV2.Models
                                         SubeIdGrupList
                                     });
 
-                                    transaction.Commit();
+
 
                                     SubeIdGrupList = yeniSubeIdGrupList;
                                     result.SuccessAlertList.Add("(Başarılı) " + updatesubeName + " şubesine fiyat güncellemesi başarılı bir şekilde gönderildi." + " " + Environment.NewLine);
                                 }
                             }
-                            catch (Exception ex)
-                            {
-                                transaction.Rollback();
-                                Singleton.WritingLogFile2("SPosSubeFiyatGuncellemeCRUD_IsUpdateProduct", ex.ToString(), null, ex.StackTrace);
-                                result.IsSuccess = false;
-                                result.ErrorList.Add(updatesubeName + " şubesine bağlantı kurulamadı veya bir hata oluştu. Lütfen şubenin aktif olduğundan emin olunuz." + " " + Environment.NewLine);
-                                //return result;
-                            }
+
+                            transaction.Commit();
+
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback();
+                            Singleton.WritingLogFile2("SPosSubeFiyatGuncellemeCRUD_IsUpdateProduct", ex.ToString(), null, ex.StackTrace);
+                            result.IsSuccess = false;
+                            result.ErrorList.Add(updatesubeName + " şubesine bağlantı kurulamadı veya bir hata oluştu. Lütfen şubenin aktif olduğundan emin olunuz." + " " + Environment.NewLine);
+                            //return result;
                         }
                     }
+
                 }
+
+
+                //}
                 #endregion Local pruduct tablosundaki şubeler alınır 
             }
 

@@ -1244,6 +1244,7 @@ namespace SefimV2.Models
                                                             SubeID = (SubeId),
                                                             Miktar = f.RTD(SubeR, "MIKTAR"),
                                                             ProductName = f.RTS(SubeR, "ProductName"),
+                                                            ProductGroup = f.RTS(SubeR, "ProductGroup"),
                                                             Debit = f.RTD(SubeR, "TUTAR"),
                                                             TarihGun = f.RTS(SubeR, "Tarih"),
                                                             TarihSaat = f.RTS(SubeR, "Saat") == null ? "-" : f.RTS(SubeR, "Saat"),

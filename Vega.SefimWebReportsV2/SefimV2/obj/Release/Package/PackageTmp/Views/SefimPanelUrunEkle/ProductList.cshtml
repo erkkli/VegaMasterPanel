@@ -1969,6 +1969,7 @@
             $('#ProductName').val(Product.ProductName);
             $('#Order').val(Product.Order);
             $('#ProductType').val(Product.ProductType);
+            console.log("price_",Product.Price)
             $('#Price').val(Product.Price.replace(',', '.'));
             $('#Plu').val(Product.Plu);
             $('#VatRate').val(Product.VatRate.replace(',', '.'));
@@ -2306,7 +2307,7 @@
                                 if (location.search) {
                                     window.location.href = /*response*/ '/SefimPanelUrunEkle/ProductList' + location.search;
                                 } else {
-                                    window.location.href = response;
+                                    window.location.href = '/SefimPanelUrunEkle/ProductList';
                                 }
                             }
                         }
@@ -2482,6 +2483,10 @@
     })
 
     $('#btnKopyalaForKopyaProduct').click(function () {
+
+        document.getElementById("loading").setAttribute("class", "myloading-active");
+        document.getElementById("contbody").setAttribute("style", "position:fixed;");
+
         var selList = [];
         $('#SubelerForKopyaProduct').select2('data').forEach(function (data) {
             if (data.text && data.id) {
@@ -2494,6 +2499,8 @@
             ProductLst.push(item)
         })
 
+
+
         $.ajax(
             {
                 url: '/SefimPanelUrunEkle/ProductsCopy',
@@ -2502,9 +2509,10 @@
                 data: { ProductList: ProductLst, SubeList: selList },
                 success: function (response) {
                     if (response.IsSuccess) {
-
+                        console.log("btnKopyalaForKopyaProductSuccess");
                         location.reload();
                     } else {
+
                         alert(response.UserMessage)
                         document.getElementById("loading").setAttribute("class", "");
                         document.getElementById("contbody").setAttribute("style", "");

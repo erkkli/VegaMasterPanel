@@ -265,8 +265,6 @@ namespace SefimV2.Helper
             return selectListItem;
         }
 
-
-
         //Yetkili şube list
         public List<SelectListItem> GetSubeListForUserId(string kullaniciId)
         {

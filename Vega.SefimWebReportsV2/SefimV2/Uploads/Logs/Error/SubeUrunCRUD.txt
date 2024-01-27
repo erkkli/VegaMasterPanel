@@ -48,3 +48,27 @@ Hata Açıklaması : System.Exception: Trabzonstudyrepdb
  Tarih Formatları 
 InnerException:    at SefimV2.Models.RecipeCostCRUD.<>c__DisplayClass0_1.<List>b__0(DataRow r) in C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\Models\RecipeCostCRUD\RecipeCostCRUD.cs:line 526
 -----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 17.01.2024 16:41:46
+Hata Mesajı : SubeUrunCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Urla Db
+   at SefimV2.Models.RecipeCostCRUD.<>c__DisplayClass0_1.<List>b__0(DataRow r) in C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\SefimV2\Models\RecipeCostCRUD\RecipeCostCRUD.cs:line 527
+ Tarih Formatları 
+InnerException:    at SefimV2.Models.RecipeCostCRUD.<>c__DisplayClass0_1.<List>b__0(DataRow r) in C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\SefimV2\Models\RecipeCostCRUD\RecipeCostCRUD.cs:line 527
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 17.01.2024 16:52:22
+Hata Mesajı : SubeUrunCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Urla Db
+   at SefimV2.Models.RecipeCostCRUD.<>c__DisplayClass0_1.<List>b__0(DataRow r) in C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\SefimV2\Models\RecipeCostCRUD\RecipeCostCRUD.cs:line 527
+ Tarih Formatları 
+InnerException:    at SefimV2.Models.RecipeCostCRUD.<>c__DisplayClass0_1.<List>b__0(DataRow r) in C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\SefimV2\Models\RecipeCostCRUD\RecipeCostCRUD.cs:line 527
+-----------------Log Bıtıs
+-----------------Log Baslangıç
+Hata Zamanı : 22.01.2024 13:25:01
+Hata Mesajı : SubeUrunCRUD Hata Oluştu
+Hata Açıklaması : System.Exception: Urla Db
+   at SefimV2.Models.RecipeCostCRUD.<>c__DisplayClass0_1.<List>b__0(DataRow r) in C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\SefimV2\Models\RecipeCostCRUD\RecipeCostCRUD.cs:line 527
+ Tarih Formatları 
+InnerException:    at SefimV2.Models.RecipeCostCRUD.<>c__DisplayClass0_1.<List>b__0(DataRow r) in C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\SefimV2\Models\RecipeCostCRUD\RecipeCostCRUD.cs:line 527
+-----------------Log Bıtıs

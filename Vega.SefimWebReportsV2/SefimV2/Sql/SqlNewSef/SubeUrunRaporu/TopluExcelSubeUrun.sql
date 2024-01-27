@@ -133,7 +133,7 @@ PR.Id
 
 ) as t
 
---WHERE t.ProductGroup = @par3
+WHERE t.ProductGroup is not null
 group by
 t.ProductName,
 t.ProductGroup,

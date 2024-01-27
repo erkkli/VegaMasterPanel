@@ -1323,3 +1323,395 @@ DateTime: 21.12.2023 13:31:43
 ActionName: SefimPanelIp
 LogText: Ip Adres:192.168.1.103 User Id:1
 -----------------
+DateTime: 23.12.2023 21:25:47
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 23.12.2023 21:45:20
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 25.12.2023 09:13:38
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 25.12.2023 10:10:33
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 25.12.2023 10:14:51
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 25.12.2023 10:29:46
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 25.12.2023 11:48:16
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 25.12.2023 11:53:21
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 25.12.2023 12:16:12
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 25.12.2023 12:38:51
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 25.12.2023 12:43:09
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 25.12.2023 12:46:06
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 25.12.2023 13:06:12
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 25.12.2023 17:30:53
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 25.12.2023 17:37:02
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 25.12.2023 17:53:31
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 25.12.2023 18:00:11
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 26.12.2023 10:15:25
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 26.12.2023 10:18:04
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 26.12.2023 10:54:54
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 26.12.2023 17:15:46
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 26.12.2023 17:24:46
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 26.12.2023 18:13:39
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 26.12.2023 18:18:58
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 26.12.2023 18:25:28
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 26.12.2023 18:28:55
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 26.12.2023 18:35:06
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 26.12.2023 19:00:21
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 26.12.2023 19:03:09
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 26.12.2023 19:08:21
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 26.12.2023 19:18:56
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 26.12.2023 19:49:13
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 27.12.2023 15:03:54
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 27.12.2023 16:02:39
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 27.12.2023 16:15:09
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 27.12.2023 16:32:18
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 27.12.2023 16:37:26
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 27.12.2023 16:40:13
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 27.12.2023 18:23:25
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 27.12.2023 18:25:50
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 27.12.2023 18:30:11
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 28.12.2023 16:37:49
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 28.12.2023 16:39:38
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 28.12.2023 17:04:57
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 28.12.2023 19:32:25
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 28.12.2023 19:34:51
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 28.12.2023 19:49:52
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 28.12.2023 19:50:37
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 28.12.2023 20:05:41
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 28.12.2023 20:07:08
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 28.12.2023 20:25:33
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 28.12.2023 20:42:10
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 28.12.2023 20:46:36
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 29.12.2023 15:05:25
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 29.12.2023 15:19:28
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 29.12.2023 16:43:07
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 29.12.2023 17:11:56
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 29.12.2023 17:13:45
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 29.12.2023 17:15:32
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 29.12.2023 17:18:35
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 29.12.2023 17:24:26
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 29.12.2023 17:27:53
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 29.12.2023 17:59:47
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 29.12.2023 18:08:14
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 29.12.2023 18:19:06
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 29.12.2023 18:20:22
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 29.12.2023 18:23:40
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 29.12.2023 18:27:25
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 29.12.2023 18:38:55
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 29.12.2023 18:41:27
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 29.12.2023 18:46:14
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:40013
+-----------------
+DateTime: 30.12.2023 11:31:30
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 30.12.2023 11:36:09
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 30.12.2023 11:54:05
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 8.01.2024 12:03:45
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 8.01.2024 13:04:25
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 8.01.2024 13:40:01
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:4
+-----------------
+DateTime: 8.01.2024 13:40:34
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 8.01.2024 13:54:30
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 8.01.2024 14:11:05
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 8.01.2024 14:19:29
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 8.01.2024 14:22:16
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 8.01.2024 14:31:21
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 8.01.2024 16:48:53
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 8.01.2024 17:16:08
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.103 User Id:1
+-----------------
+DateTime: 9.01.2024 17:25:59
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.104 User Id:1
+-----------------
+DateTime: 12.01.2024 12:57:15
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.104 User Id:1
+-----------------
+DateTime: 13.01.2024 14:44:11
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.104 User Id:1
+-----------------
+DateTime: 13.01.2024 14:49:14
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.104 User Id:1
+-----------------
+DateTime: 13.01.2024 14:54:15
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.104 User Id:1
+-----------------
+DateTime: 16.01.2024 15:31:02
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.104 User Id:1
+-----------------
+DateTime: 16.01.2024 15:39:24
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.104 User Id:1
+-----------------
+DateTime: 16.01.2024 15:50:41
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.104 User Id:1
+-----------------
+DateTime: 16.01.2024 16:07:36
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.104 User Id:1
+-----------------
+DateTime: 16.01.2024 16:29:33
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.104 User Id:1
+-----------------
+DateTime: 16.01.2024 16:34:21
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.104 User Id:1
+-----------------
+DateTime: 16.01.2024 16:38:22
+ActionName: SefimPanelIp
+LogText: Ip Adres:192.168.1.104 User Id:1
+-----------------
+DateTime: 26.01.2024 10:05:41
+ActionName: SefimPanelIp
+LogText: Ip Adres:fe80::fb43:7464:cfe8:7541%14 User Id:1
+-----------------

@@ -1,4 +1,5 @@
 ﻿using SefimV2.Helper;
+using SefimV2.Models;
 using SefimV2.ViewModels.SubeSettings;
 using System;
 using System.Collections.Generic;
@@ -539,6 +540,13 @@ namespace SefimV2
                      Where c1.ProductId=" + productId);
         }
 
+        public static string getChoice1SqlQuery3()
+        {
+            return (@"Select  p.ProductGroup ,p.ProductName, c1.Id,c1.ProductId ,c1.Name ChoiceProductName ,P.Price Product_Price,c1.Price Choice1_Price 
+                      From Product p 
+                     Left Join Choice1 c1 on p.Id=c1.ProductId");
+        }
+
         public static string getChoice1SqlQuery2()
         {
             return (@"SELECT  [Id] as Choice1PkId
@@ -566,6 +574,14 @@ namespace SefimV2
                       Where c2.Choice1Id=" + Choice1Id);
         }
 
+        public static string getChoice2SqlQuery3()
+        {
+            return (@"Select  p.ProductGroup ,p.ProductName, c2.Id,c2.ProductId ,c2.Name ChoiceProductName ,P.Price Product_Price,c2.Price Choice2_Price 
+                      From Product p 
+                      Left Join Choice1 c1 on p.Id=c1.ProductId
+					  Left join Choice2 c2 on c1.Id=c2.Choice1Id and c1.ProductId=c2.ProductId ");
+        }
+
         public static string getChoice2SqlQuery2()
         {
             return (@"SELECT  [Id] as Choice2PkId
@@ -591,6 +607,13 @@ namespace SefimV2
                       From Product p 
                       Left Join Options O on O.ProductId=P.Id
                       Where o.ProductId=" + productId);
+        }
+        public static string getOptionsSqlQuery3()
+        {
+            return (@"Select p.ProductGroup, p.ProductName, o.Id, o.ProductId, o.Name OptionsName, P.Price Product_Price, o.Price Option_Price, o.Category
+                      From Product p 
+                      Left Join Options O on O.ProductId=P.Id");
+
         }
 
         public static string getOptionsSqlQuery2()
@@ -719,6 +742,15 @@ namespace SefimV2
                       Left Join Options o On  p.ProductPkId= o.ProductId 
                       Where o.ProductId=" + productId + "  ");
         }
+
+        public static string getLocalOptionsListSqlQuery2(string productGroup, string ProductName)
+        {
+            return (@"Select p.ProductGroup, p.ProductName, o.Id, o.ProductId, o.Name OptionsName, P.Price Product_Price, o.Price Option_Price, o.Category, o.SubeId, o.SubeName 
+                      From Product p 
+                      Left Join Options o On  p.ProductPkId= o.ProductId 
+                      Where p.ProductGroup='" + productGroup + "' and p.ProductName='" + ProductName + "'  ");
+        }
+
 
         #endregion local db'den datalar alınır
 
@@ -2592,17 +2624,18 @@ WHERE t.ProductGroup = '" + productGroup + @"'
         }
         public static string insertChoice1SqlQuery(string productId, string dbHedef, string subeId)
         {
-            var query = @"select * from Choice1 where YeniUrunmu=1 and ProductId=" + productId + " and SubeId=" + subeId;
+            var query = @"select * from Choice1 where YeniUrunmu=1 and ProductId in(" + productId + ") and SubeId=" + subeId;
             return query;
         }
+
         public static string insertChoice2SqlQuery(string choice1Id, string dbHedef, string subeId)
         {
-            var sqlQuery = @"select * from Choice2 where YeniUrunmu=1 and Choice1Id=" + choice1Id + " and SubeId=" + subeId;
+            var sqlQuery = @"select * from Choice2 where YeniUrunmu=1 and Choice1Id in(" + choice1Id + ") and SubeId=" + subeId;
             return sqlQuery;
         }
         public static string insertOptionsForCategorySqlQuery(string productId, string CategoryId, string dbHedef, string subeId)
         {
-            var sqlQuery = @"select * from Options where YeniUrunmu=1 and ProductId=" + productId + " and Category='" + CategoryId + "'" + " and SubeId=" + subeId;
+            var sqlQuery = @"select * from Options where YeniUrunmu=1 and ProductId in(" + productId + ") and Category in('" + CategoryId + "' )" + " and SubeId=" + subeId;
 
             return sqlQuery;
         }
@@ -2617,54 +2650,54 @@ WHERE t.ProductGroup = '" + productGroup + @"'
         //Yeni Oluşturuldu// 25.11.2023 
         public static string insertOptionsSqlQuery2(string productId, string dbHedef, string subeId)
         {
-            var sqlQuery = @"select * from Options where YeniUrunmu=1 and ProductId=" + productId + " and SubeId=" + subeId + " ";
+            var sqlQuery = @"select * from Options where YeniUrunmu=1 and ProductId in(" + productId + ") and SubeId=" + subeId + " ";
 
             return sqlQuery;
         }
 
         public static string insertOptionCatsSqlQuery(string productId, string dbHedef, string subeId)
         {
-            var sqlQuery = @"select * from OptionCats where ProductId=" + productId + " and SubeId=" + subeId;
+            var sqlQuery = @"select * from OptionCats where ProductId in(" + productId + " ) and SubeId=" + subeId;
 
             return sqlQuery;
         }
 
         public static string insertBomsSqlQuery(string productId, string dbHedef, string subeId)
         {
-            var sqlQuery = @"select * from Bom where YeniUrunMu=1 and ProductId=" + productId + " and SubeId=" + subeId;
+            var sqlQuery = @"select * from Bom where YeniUrunMu=1 and ProductId in(" + productId + ") and SubeId=" + subeId;
 
             return sqlQuery;
         }
 
         public static string insertBomOptionsSqlQuery(string optionsId, string productName, string dbHedef, string subeId)
         {
-            var sqlQuery = @"select * from BomOptions where YeniUrunMu=1 and OptionsId=" + optionsId + " and ProductName='" + productName + "'" + " and SubeId=" + subeId; ;
+            var sqlQuery = @"select * from BomOptions where YeniUrunMu=1 and OptionsId in(" + optionsId + ") and ProductName in('" + productName + "')" + " and SubeId=" + subeId; ;
 
             return sqlQuery;
         }
 
         public static string insertBomsNotProductSqlQuery(string subeId, string dbHedef)
         {
-            var sqlQuery = @"select * from Bom where SubeId=" + subeId;
+            var sqlQuery = @"select * from Bom where SubeId in(" + subeId + ") ";
 
             return sqlQuery;
         }
         public static string insertBomsNotProductProductIdSqlQuery(string subeId, string dbHedef)
         {
-            var sqlQuery = @"select ProductName from Bom where SubeId=" + subeId + " Group By ProductName";
+            var sqlQuery = @"select * from Bom where SubeId in(" + subeId + ") ";
 
             return sqlQuery;
         }
 
         public static string insertBomOptionsNotProductSqlQuery(string subeId, string dbHedef)
         {
-            var sqlQuery = @"select * from BomOptions where SubeId=" + subeId;
+            var sqlQuery = @"select * from BomOptions where SubeId in (" + subeId + ") ";
 
             return sqlQuery;
         }
         public static string insertBomOptionsNotProductProductIdSqlQuery(string subeId, string dbHedef)
         {
-            var sqlQuery = @"select ProductName from BomOptions where SubeId=" + subeId + " Group By ProductName";
+            var sqlQuery = @"select * from BomOptions where SubeId in(" + subeId + ") ";
 
             return sqlQuery;
         }

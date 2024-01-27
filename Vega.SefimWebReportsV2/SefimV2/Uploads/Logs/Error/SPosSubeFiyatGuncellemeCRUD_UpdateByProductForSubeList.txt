@@ -1,0 +1,20 @@
+Created on 29.12.2023 16:44:40
+
+-----------------Log Baslangıç
+Hata Zamanı : 29.12.2023 16:44:40
+Hata Mesajı : SPosSubeFiyatGuncellemeCRUD_UpdateByProductForSubeList Hata Oluştu
+Hata Açıklaması : System.InvalidCastException: Unable to cast object of type 'System.Int32' to type 'System.String'.
+   at System.Data.DataRowExtensions.UnboxT`1.ReferenceField(Object value)
+   at SefimV2.Models.SPosSubeFiyatGuncellemeCRUD.<>c__DisplayClass24_1.<UpdateByProductForSubeList>b__0(DataRow x)
+   at System.Linq.Enumerable.WhereListIterator`1.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at SefimV2.Models.SPosSubeFiyatGuncellemeCRUD.UpdateByProductForSubeList(UrunEditViewModel model)
+ Tarih Formatları 
+InnerException:    at System.Data.DataRowExtensions.UnboxT`1.ReferenceField(Object value)
+   at SefimV2.Models.SPosSubeFiyatGuncellemeCRUD.<>c__DisplayClass24_1.<UpdateByProductForSubeList>b__0(DataRow x)
+   at System.Linq.Enumerable.WhereListIterator`1.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at SefimV2.Models.SPosSubeFiyatGuncellemeCRUD.UpdateByProductForSubeList(UrunEditViewModel model)
+-----------------Log Bıtıs
