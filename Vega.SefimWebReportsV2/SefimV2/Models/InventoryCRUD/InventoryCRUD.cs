@@ -1,4 +1,4 @@
-﻿using SefimV2.Controllers;
+﻿using SefimV2.Enums;
 using SefimV2.ViewModels.Inventory;
 using SefimV2.ViewModels.User;
 using System;
@@ -6,16 +6,15 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Web;
 using System.Web.Hosting;
 
 namespace SefimV2.Models
 {
     public class InventoryCRUD
     {
-        public String SubeName;
-        public String StartDate;
-        public String EndDate;
+        public string SubeName;
+        public string StartDate;
+        public string EndDate;
         public static List<InventoryVievModel> List(DateTime Date1, DateTime Date2, string subeid, string ID)
         {
             List<InventoryVievModel> Liste = new List<InventoryVievModel>();
@@ -33,25 +32,28 @@ namespace SefimV2.Models
                 string filter = "Where Status=1";
                 if (subeid != null && !subeid.Equals(""))
                     filter += " and Id=" + subeid;
-                DataTable dt_ = f.DataTable("select * from SubeSettings " + filter);
 
-                string DepoId = "";
-                string SubeId = "";
-                string FirmaId = "";
+                DataTable dataSubeSettings = f.DataTable("select * from SubeSettings " + filter);
+
                 int DonemId = 0;
-                string SubeAdi = "";
-                string SubeIP = "";
-                string SqlName = "";
-                string SqlPassword = "";
-                string DBName = "";
-                string AppDbType = "";
+                string DepoId = string.Empty;
+                string SubeId = string.Empty;
+                string FirmaId = string.Empty;
+                string SubeAdi = string.Empty;
+                string SubeIP = string.Empty;
+                string SqlName = string.Empty; 
+                string DBName = string.Empty;
+                string SqlPassword = string.Empty;
+                string AppDbType = string.Empty;
+                string EnvanterOzelKodTipi = string.Empty;
+                string EnvanterOzelKodAdi = string.Empty;
 
                 if (subeid.Equals(""))
                 {
                     if (ID == "1")
                     {
                         #region Şubeler Listeleniyor.                   
-                        foreach (DataRow d in dt_.Rows)
+                        foreach (DataRow d in dataSubeSettings.Rows)
                         {
                             InventoryVievModel items = new InventoryVievModel();
                             DepoId = f.RTS(d, "DepoID");
@@ -69,7 +71,7 @@ namespace SefimV2.Models
                         {
 
                             #region Şubeler Listeleniyor.                   
-                            foreach (DataRow d in dt_.Rows)
+                            foreach (DataRow d in dataSubeSettings.Rows)
                             {
                                 InventoryVievModel items = new InventoryVievModel();
                                 DepoId = f.RTS(d, "DepoID");
@@ -90,35 +92,43 @@ namespace SefimV2.Models
                 else
                 {
                     #region Şube ID boş değilse VegaDB quary için  Gerekli parametreleri almak için.                   
-                    foreach (DataRow d in dt_.Rows)
+                    foreach (DataRow d in dataSubeSettings.Rows)
                     {
+                        SubeId = f.RTS(d, "Id");
+                        SubeIP = f.RTS(d, "SubeIP");
                         DepoId = f.RTS(d, "DepoID");
                         DonemId = f.RTI(d, "DonemID");
                         FirmaId = f.RTS(d, "FirmaID");
-                        SubeId = f.RTS(d, "Id");
                         SubeAdi = f.RTS(d, "SubeName");
-                        SubeIP = f.RTS(d, "SubeIP");
-                        SqlName = f.RTS(d, "SqlName");
-                        SqlPassword = f.RTS(d, "SqlPassword");
                         DBName = f.RTS(d, "DBName");
+                        SqlName = f.RTS(d, "SqlName");                       
                         AppDbType = f.RTS(d, "AppDbType");
+                        SqlPassword = f.RTS(d, "SqlPassword");
                         appDbTypeEnvater = AppDbType;
+                        var envanterTipi = f.RTS(d, "EnvanterOzelKodTipi");
+                        //EnvanterOzelKodTipi = (General.EnvanterOzelKodTipi)(int)envanterTipi;
+                        EnvanterOzelKodAdi = f.RTS(d, "EnvanterOzelKodAdi");
+                        if (string.IsNullOrWhiteSpace(EnvanterOzelKodAdi))
+                        {
+                            EnvanterOzelKodAdi = "SEFIMWEBREPORT";
+                        }
+
                     }
                     #endregion Şube ID boş değilse VegaDB quary için  Gerekli parametreleri almak için.   
 
-                    DataTable dt = f.DataTable("SELECT Id,DBName,IP,SqlName,SqlPassword  FROM  VegaDbSettings");
-                    foreach (DataRow r in dt.Rows)
+                    DataTable dataVegaDbSettings = f.DataTable("SELECT Id,DBName,IP,SqlName,SqlPassword  FROM  VegaDbSettings");
+                    foreach (DataRow r in dataVegaDbSettings.Rows)
                     {
                         string VegaDbId = f.RTS(r, "Id");
-                        string VegaDbName = f.RTS(r, "DBName");
                         string VegaDbIp = f.RTS(r, "IP");
+                        string VegaDbName = f.RTS(r, "DBName");
                         string VegaDbSqlName = f.RTS(r, "SqlName");
                         string VegaDbSqlPassword = f.RTS(r, "SqlPassword");
-                        string QueryTimeStart = Date1.ToString("yyyy-MM-dd HH:mm:ss");
                         string QueryTimeEnd = Date2.ToString("yyyy-MM-dd HH:mm:ss");
+                        string QueryTimeStart = Date1.ToString("yyyy-MM-dd HH:mm:ss");
 
                         #region GetAktifDonem
-                        String __ResultString = String.Empty;
+                        String __ResultString = string.Empty;
                         int __Uzunluk = 0;
                         int __Sayi = DonemId;
                         while (__Sayi > 0)
@@ -254,7 +264,7 @@ namespace SefimV2.Models
 
                         if (PaymentDt.Rows.Count > 0)
                         {
-                            string __SQLScript = "";
+                            string __SQLScript = string.Empty;
                             if (AppDbType == "1" || AppDbType == "2")
                             {
                                 #region SQL (VEGADB ENVANTER)                   
@@ -290,7 +300,7 @@ namespace SefimV2.Models
                                     "AS EnvanterliStok " +
                                     "INNER JOIN F0" + FirmaId + "TBLBIRIMLEREX AS BIRIMLER " +
                                     "ON EnvanterliStok.IND = BIRIMLER.STOKNO " +
-                                    "WHERE STATUS=1 AND EnvanterliStok.ANABIRIM = BIRIMLER.IND AND EnvanterliStok.KOD5='SEFIMWEBREPORT'";
+                                    "WHERE STATUS=1 AND EnvanterliStok.ANABIRIM = BIRIMLER.IND AND EnvanterliStok.KOD5='" + EnvanterOzelKodAdi + "'";
                                 #endregion SQL (VEGADB ENVANTER)  
                             }
                             else if (AppDbType == "3")
@@ -330,7 +340,7 @@ namespace SefimV2.Models
                                              " INNER JOIN F0" + FirmaId + "TBLBIRIMLEREX AS BIRIMLER ON EnvanterliStok.IND = BIRIMLER.STOKNO" +
                                              " WHERE ISNULL(STATUS,0)= 1" +
                                              " AND EnvanterliStok.ANABIRIM = BIRIMLER.IND" +
-                                             " AND(EnvanterliStok.KOD5 = 'SEFIMWEBREPORT' OR EnvanterliStok.KOD5 = 'MASTER')";
+                                             " AND(EnvanterliStok.KOD5 = '" + EnvanterOzelKodAdi + "' OR EnvanterliStok.KOD5 = 'MASTER')";
                                 #endregion SQL FASTERPOS (VEGADB ENVANTER)  
                             }
 

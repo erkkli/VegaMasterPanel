@@ -211,15 +211,20 @@ namespace SefimV2.Controllers
             List<int> productIdList = new List<int>() { Id };
             List<int> subeIdLis = new List<int>() { SubeId };
 
+            var date =  DateTime.Now;
+
+
             List<SefimPanelUrunEkleViewModel> obj = new SefimPanelUrunEkleCRUD().GetProductForSube(productIdList, subeIdLis, kullaniciId);
+
+            var date2 = DateTime.Now;
 
             SefimPanelUrunEkleViewModel data = new SefimPanelUrunEkleViewModel();
             if (obj != null && obj.Count() > 0)
             {
                 data = obj[0];
             }
-
-            return Json(data, JsonRequestBehavior.AllowGet);
+            var date3 = DateTime.Now;
+            return Json((data), JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

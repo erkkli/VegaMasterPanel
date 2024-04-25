@@ -1,7 +1,9 @@
 ﻿using DocumentFormat.OpenXml.Drawing.Charts;
+using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
 using iTextSharp.text;
+using Jint;
 using Microsoft.Ajax.Utilities;
 using SefimV2.Helper;
 using SefimV2.Models.SefimPanelBelgeCRUD;
@@ -20,7 +22,7 @@ namespace SefimV2.Models.ProductSefimCRUD
 {
     public class SefimPanelUrunEkleCRUD
     {
-        ModelFunctions mF = new ModelFunctions();
+        readonly ModelFunctions mF = new ModelFunctions();
         #region Config local copy db connction setting       
         static readonly string subeIp = WebConfigurationManager.AppSettings["Server"];
         static readonly string dbName = WebConfigurationManager.AppSettings["DBName"];
@@ -1888,6 +1890,9 @@ namespace SefimV2.Models.ProductSefimCRUD
                 //23.08.2023 yorum satırına alındı 
                 ////var kullaniciSubeYetkisi = UsersListCRUD.KullaniciSubeYetkiListesi(kullaniciId);
 
+                var locked = new Object();
+                int? FirmaId = null;
+
                 foreach (DataRow r in dt.Rows)
                 {
                     string subeId = mF.RTS(r, "ID");
@@ -1899,6 +1904,11 @@ namespace SefimV2.Models.ProductSefimCRUD
                     string SqlName = mF.RTS(r, "SqlName");
                     string SqlPassword = mF.RTS(r, "SqlPassword");
                     string DBName = mF.RTS(r, "DBName");
+
+                    if (mF.RTS(r, "FirmaID") != "")
+                    {
+                        FirmaId = Convert.ToInt32(mF.RTS(r, "FirmaID"));
+                    }
 
                     string Query = "select * from Product where Id in(" + string.Join<int>(",", ProductIds) + ")";
                     string QueryChoice1 = "select * from Choice1 where ProductId in(" + string.Join<int>(",", ProductIds) + ")";
@@ -1927,140 +1937,190 @@ namespace SefimV2.Models.ProductSefimCRUD
                     var masterBoms = GetBoms2Birlesecek(ProductIds, Convert.ToInt32(subeId));
                     var masterBomOptions = GetBomOptions2Birlesecek(ProductIds, Convert.ToInt32(subeId));
 
+                    var getHamMaddeNameList = AlisBelgesiCRUD.GetStokSelectList3(FirmaId.Value, 0);
+
                     //Choice1Dt = mF.GetSubeDataWithQuery((mF.NewConnectionString(SubeIP, DBName, SqlName, SqlPassword)), QueryChoice1.ToString());
-                    foreach (DataRow prdct in ProductDt.Rows)
+                    //foreach (DataRow prdct in ProductDt.Rows)
+                    //{
+                    Parallel.ForEach(ProductDt.AsEnumerable(), prdct =>
                     {
-                        SefimPanelUrunEkleViewModel product = new SefimPanelUrunEkleViewModel();
-                        product.Id = mF.RTI(prdct, "Id");
-                        product.ProductName = mF.RTS(prdct, "ProductName");
-                        product.ProductGroup = mF.RTS(prdct, "ProductGroup");
-                        product.ProductCode = mF.RTS(prdct, "ProductCode");
-                        product.Order = mF.RTS(prdct, "Order");
-                        product.Price = mF.RTS(prdct, "Price").Replace(",", "."); ;
-                        product.VatRate = mF.RTS(prdct, "VatRate").Replace(",", "."); ;
+                        SefimPanelUrunEkleViewModel product = new SefimPanelUrunEkleViewModel
+                        {
+                            Id = mF.RTI(prdct, "Id"),
+                            ProductName = mF.RTS(prdct, "ProductName"),
+                            ProductGroup = mF.RTS(prdct, "ProductGroup"),
+                            ProductCode = mF.RTS(prdct, "ProductCode"),
+                            Order = mF.RTS(prdct, "Order"),
+                            Price = mF.RTS(prdct, "Price").Replace(",", "."),
+                            VatRate = mF.RTS(prdct, "VatRate").Replace(",", "."),
+                            InvoiceName = mF.RTS(prdct, "InvoiceName"),
+                            ProductType = mF.RTS(prdct, "ProductType"),
+                            Plu = mF.RTS(prdct, "Plu"),
+                            ProductPkId = mF.RTI(prdct, "ProductPkId"),
+                            SubeId = Convert.ToInt32(subeId),
+                            SubeName = SubeAdi,
+                            Favorites = mF.RTS(prdct, "Favorites")
+                        };
+
                         if (prdct["FreeItem"] != DBNull.Value)
                         {
                             product.FreeItem = Convert.ToBoolean(mF.RTS(prdct, "FreeItem"));
                         }
-                        product.InvoiceName = mF.RTS(prdct, "InvoiceName");
-                        product.ProductType = mF.RTS(prdct, "ProductType");
-                        product.Plu = mF.RTS(prdct, "Plu");
+
                         if (prdct["SkipOptionSelection"] != DBNull.Value)
                         {
                             product.SkipOptionSelection = Convert.ToBoolean(mF.RTS(prdct, "SkipOptionSelection"));
                         }
-                        product.Favorites = mF.RTS(prdct, "Favorites");
+
                         if (prdct["Aktarildi"] != DBNull.Value)
                         {
                             product.Aktarildi = Convert.ToBoolean(mF.RTS(prdct, "Aktarildi"));
                         }
 
-                        product.ProductPkId = mF.RTI(prdct, "ProductPkId");
-                        product.SubeId = Convert.ToInt32(subeId);
-                        product.SubeName = SubeAdi;
-
-
                         product.Choice1 = new List<Choice1>();
-                        foreach (DataRow ch1 in Choice1Dt.AsEnumerable().Where(x => x.Field<int>("ProductId") == product.Id))
-                        {
-
-                            Choice1 choice1 = new Choice1
+                        var dtChoice1List = Choice1Dt.AsEnumerable().Where(x => x.Field<int>("ProductId") == product.Id).ToList<DataRow>();
+                        //foreach (DataRow ch1 in Choice1Dt.AsEnumerable().Where(x => x.Field<int>("ProductId") == product.Id))
+                        //{
+                        Parallel.ForEach(dtChoice1List, ch1 =>
                             {
-                                Id = mF.RTI(ch1, "Id"),
-                                Name = mF.RTS(ch1, "Name"),
-                                Price = mF.RTS(ch1, "Price").Replace(",", "."),
-                                ProductId = mF.RTI(ch1, "ProductId")
-                            };
+                                Choice1 choice1 = new Choice1
+                                {
+                                    Id = mF.RTI(ch1, "Id"),
+                                    Name = mF.RTS(ch1, "Name"),
+                                    Price = mF.RTS(ch1, "Price").Replace(",", "."),
+                                    ProductId = mF.RTI(ch1, "ProductId")
+                                };
 
-                            product.Choice1.Add(choice1);
-                        }
-
+                                //product.Choice1.Add(choice1);
+                                lock (locked)
+                                {
+                                    product.Choice1.Add(choice1);
+                                }
+                                //}
+                            });
 
                         product.Choice2 = new List<Choice2>();
-                        foreach (DataRow ch2 in Choice2Dt.AsEnumerable().Where(x => x.Field<int>("ProductId") == product.Id))
-                        {
-                            Choice2 choice2 = new Choice2
+                        var dtChoice2List = Choice2Dt.AsEnumerable().Where(x => x.Field<int>("ProductId") == product.Id).ToList<DataRow>();
+                        //foreach (DataRow ch2 in Choice2Dt.AsEnumerable().Where(x => x.Field<int>("ProductId") == product.Id))
+                        //{
+                        Parallel.ForEach(dtChoice1List, ch2 =>
                             {
-                                Id = mF.RTI(ch2, "Id"),
-                                Name = mF.RTS(ch2, "Name"),
-                                Price = mF.RTS(ch2, "Price").Replace(",", "."),
-                                Choice1Id = mF.RTI(ch2, "Choice1Id"),
-                                ProductId = mF.RTI(ch2, "ProductId")
-                            };
+                                Choice2 choice2 = new Choice2
+                                {
+                                    Id = mF.RTI(ch2, "Id"),
+                                    Name = mF.RTS(ch2, "Name"),
+                                    Price = mF.RTS(ch2, "Price").Replace(",", "."),
+                                    Choice1Id = mF.RTI(ch2, "Choice1Id"),
+                                    ProductId = mF.RTI(ch2, "ProductId")
+                                };
 
-                            product.Choice2.Add(choice2);
-                        }
+                                //product.Choice2.Add(choice2);
+                                lock (locked)
+                                {
+                                    product.Choice2.Add(choice2);
+                                }
+                                //}
+                            });
 
                         product.Options = new List<Options>();
-                        foreach (DataRow opt in OptionsDt.AsEnumerable().Where(x => x.Field<int>("ProductId") == product.Id))
-                        {
-                            Options options = new Options
+                        var dtOptionsList = OptionsDt.AsEnumerable().Where(x => x.Field<int>("ProductId") == product.Id).ToList<DataRow>();
+                        Parallel.ForEach(dtOptionsList, opt =>
                             {
-                                Id = mF.RTI(opt, "Id"),
-                                Name = mF.RTS(opt, "Name"),
-                                Price = mF.RTS(opt, "Price").Replace(",", "."),
-                                Quantitative = Convert.ToBoolean(mF.RTS(opt, "Quantitative")),
-                                Category = mF.RTS(opt, "Category"),
-                                ProductId = mF.RTI(opt, "ProductId")
-                            };
+                                // foreach (DataRow opt in OptionsDt.AsEnumerable().Where(x => x.Field<int>("ProductId") == product.Id))
+                                //{
+                                Options options = new Options
+                                {
+                                    Id = mF.RTI(opt, "Id"),
+                                    Name = mF.RTS(opt, "Name"),
+                                    Price = mF.RTS(opt, "Price").Replace(",", "."),
+                                    Quantitative = Convert.ToBoolean(mF.RTS(opt, "Quantitative")),
+                                    Category = mF.RTS(opt, "Category"),
+                                    ProductId = mF.RTI(opt, "ProductId")
+                                };
 
-                            product.Options.Add(options);
-                        }
-
+                                //product.Options.Add(options);
+                                lock (locked)
+                                {
+                                    product.Options.Add(options);
+                                }
+                                //}
+                            });
 
                         product.OptionCats = new List<OptionCats>();
-                        foreach (DataRow optCat in OptionCatsDt.AsEnumerable().Where(x => x.Field<int>("ProductId") == product.Id))
-                        {
-                            OptionCats optionCats = new OptionCats
+                        var dtOptionsCatsList = OptionCatsDt.AsEnumerable().Where(x => x.Field<int>("ProductId") == product.Id).ToList<DataRow>();
+                        //foreach (DataRow optCat in OptionCatsDt.AsEnumerable().Where(x => x.Field<int>("ProductId") == product.Id))
+                        //{
+                        Parallel.ForEach(dtOptionsCatsList, optCat =>
                             {
-                                Id = mF.RTI(optCat, "Id"),
-                                Name = mF.RTS(optCat, "Name"),
-                                MaxSelections = mF.RTS(optCat, "MaxSelections").Replace(",", "."),
-                                MinSelections = mF.RTS(optCat, "MinSelections").Replace(",", "."),
-                                ProductId = mF.RTI(optCat, "ProductId")
-                            };
+                                OptionCats optionCats = new OptionCats
+                                {
+                                    Id = mF.RTI(optCat, "Id"),
+                                    Name = mF.RTS(optCat, "Name"),
+                                    MaxSelections = mF.RTS(optCat, "MaxSelections").Replace(",", "."),
+                                    MinSelections = mF.RTS(optCat, "MinSelections").Replace(",", "."),
+                                    ProductId = mF.RTI(optCat, "ProductId")
+                                };
 
-                            product.OptionCats.Add(optionCats);
-                        }
+                                //product.OptionCats.Add(optionCats);
+                                lock (locked)
+                                {
+                                    product.OptionCats.Add(optionCats);
+                                }
+                                //}
+                            });
 
                         //
                         //var items = AlisBelgesiCRUD.GetStokSelectList2(new UserCRUD().GetUserForSubeSettings(kullaniciId).FirmaID,);//generic alınmalı                      
                         //Singleton.WritingLog("SefimPanelUrunEkleCRUD_Copy2", " UrunId: " + ProductId + " SubeId: " + subeId + " KullaniciId: " + kullaniciId + " QueryBom:" + QueryBom.ToString());
 
                         product.Boms = new List<Bom>();
-                        foreach (DataRow bm in dtBoms.AsEnumerable().Where(x => x.Field<int>("ProductId") == product.Id))
-                        {
-                            var bomStokId = new Bom
-                            {
-                                StokID = mF.RTI(bm, "StokID")
-                            };
+                        var dtBomsList = dtBoms.AsEnumerable().Where(x => x.Field<int>("ProductId") == product.Id).ToList<DataRow>();
 
-                            var hamMaddeName = string.Empty;
-                            var getHamMaddeName = AlisBelgesiCRUD.GetStokSelectList2(new UserCRUD().GetUserForSubeSettingsForSubeId(subeId).FirmaID, bomStokId.StokID);
-                            if (getHamMaddeName != null && getHamMaddeName.Count > 0)
+                        //foreach (DataRow bm in dtBoms.AsEnumerable().Where(x => x.Field<int>("ProductId") == product.Id))
+                        //{
+                        Parallel.ForEach(dtBomsList, bm =>
                             {
-                                foreach (var item in getHamMaddeName)
+                                var bomStokId = new Bom
                                 {
-                                    hamMaddeName = item.MalinCinsi;
-                                }
-                                // hamMaddeName = getHamMaddeName.Select(x => x.MalinCinsi).ToString();
-                            }
-                            //Singleton.WritingLog("SefimPanelUrunEkleCRUD_Copy2", "bomStokId:" + bomStokId.StokID + " UrunId: " + ProductId + " SubeId: " + subeId + " KullaniciId: " + kullaniciId + " QueryBom:" + QueryBom.ToString());
+                                    StokID = mF.RTI(bm, "StokID")
+                                };
 
-                            Bom bom = new Bom
-                            {
-                                Id = mF.RTI(bm, "Id"),
-                                ProductName = mF.RTS(bm, "ProductName"),
-                                MaterialName = mF.RTS(bm, "MaterialName"),
-                                MalinCinsi = hamMaddeName, // mF.RTS(bm, "MalinCinsi"),
-                                Quantity = mF.RTS(bm, "Quantity").Replace(",", "."),
-                                Unit = mF.RTS(bm, "Unit"),
-                                StokID = mF.RTI(bm, "StokID"),
-                                ProductId = mF.RTI(bm, "ProductId"),
-                                SubeId = Convert.ToInt32(subeId)
-                            };
-                            product.Boms.Add(bom);
-                        }
+                                var hamMaddeName = string.Empty;
+                                //var getHamMaddeName = AlisBelgesiCRUD.GetStokSelectList2(new UserCRUD().GetUserForSubeSettingsForSubeId(subeId).FirmaID, bomStokId.StokID);
+                                //var getHamMaddeName = AlisBelgesiCRUD.GetStokSelectList2(FirmaId.Value, bomStokId.StokID);
+
+
+                                if (getHamMaddeNameList != null && getHamMaddeNameList.Count > 0)
+                                {
+                                    foreach (var item in getHamMaddeNameList.ToList().Where(x => x.StokID == bomStokId.StokID))
+                                    {
+                                        hamMaddeName = item.MalinCinsi;
+                                    }
+                                    // hamMaddeName = getHamMaddeName.Select(x => x.MalinCinsi).ToString();
+                                }
+                                //Singleton.WritingLog("SefimPanelUrunEkleCRUD_Copy2", "bomStokId:" + bomStokId.StokID + " UrunId: " + ProductId + " SubeId: " + subeId + " KullaniciId: " + kullaniciId + " QueryBom:" + QueryBom.ToString());
+
+                                Bom bom = new Bom
+                                {
+                                    Id = mF.RTI(bm, "Id"),
+                                    ProductName = mF.RTS(bm, "ProductName"),
+                                    MaterialName = mF.RTS(bm, "MaterialName"),
+                                    MalinCinsi = hamMaddeName, // mF.RTS(bm, "MalinCinsi"),
+                                    Quantity = mF.RTS(bm, "Quantity").Replace(",", "."),
+                                    Unit = mF.RTS(bm, "Unit"),
+                                    StokID = mF.RTI(bm, "StokID"),
+                                    ProductId = mF.RTI(bm, "ProductId"),
+                                    SubeId = Convert.ToInt32(subeId)
+                                };
+                                //product.Boms.Add(bom);
+
+                                lock (locked)
+                                {
+                                    product.Boms.Add(bom);
+                                }
+                                //}
+                            });
+
 
                         string QueryBomOptions = "select * from BomOptions where ProductName=";
 
@@ -2071,31 +2131,9 @@ namespace SefimV2.Models.ProductSefimCRUD
 
                             DataTable dtBomOptionss = mF.GetSubeDataWithQuery(mF.NewConnectionString(SubeIP, DBName, SqlName, SqlPassword), QueryBomOptions.ToString() + "'" + product.ProductName + "'");
 
-                            foreach (DataRow bmOp in dtBomOptionss.Rows)
-                            {
-                                BomOptions bomOps = new BomOptions
-                                {
-                                    Id = mF.RTI(bmOp, "Id"),
-                                    ProductName = mF.RTS(bmOp, "ProductName"),
-                                    MaterialName = mF.RTS(bmOp, "MaterialName"),
-                                    Quantity = mF.RTS(bmOp, "Quantity").Replace(",", "."),
-                                    Unit = mF.RTS(bmOp, "Unit"),
-                                    StokID = mF.RTI(bmOp, "StokID"),
-                                    OptionsId = mF.RTI(bmOp, "OptionsId"),
-                                    OptionsName = mF.RTS(bmOp, "OptionsName"),
-                                    SubeId = Convert.ToInt32(subeId)
-                                };
-                                product.BomOptionss.Add(bomOps);
-                            }
-                        }
-                        else
-                        {
-                            foreach (var ch1 in product.Choice1)
-                            {
-                                string productEk = "." + ch1.Name;
-                                DataTable dtBomOptionss = mF.GetSubeDataWithQuery((mF.NewConnectionString(SubeIP, DBName, SqlName, SqlPassword)), QueryBomOptions.ToString() + "'" + product.ProductName + productEk + "'");
-
-                                foreach (DataRow bmOp in dtBomOptionss.Rows)
+                            //foreach (DataRow bmOp in dtBomOptionss.Rows)
+                            //{
+                            Parallel.ForEach(dtBomOptionss.AsEnumerable(), bmOp =>
                                 {
                                     BomOptions bomOps = new BomOptions
                                     {
@@ -2109,34 +2147,83 @@ namespace SefimV2.Models.ProductSefimCRUD
                                         OptionsName = mF.RTS(bmOp, "OptionsName"),
                                         SubeId = Convert.ToInt32(subeId)
                                     };
-                                    product.BomOptionss.Add(bomOps);
-                                }
+                                    //product.BomOptionss.Add(bomOps);
+                                    lock (locked)
+                                    {
+                                        product.BomOptionss.Add(bomOps);
+                                    }
+                                    //}
+                                });
+
+                        }
+                        else
+                        {
+                            foreach (var ch1 in product.Choice1)
+                            {
+                                string productEk = "." + ch1.Name;
+                                DataTable dtBomOptionss = mF.GetSubeDataWithQuery(mF.NewConnectionString(SubeIP, DBName, SqlName, SqlPassword), QueryBomOptions.ToString() + "'" + product.ProductName + productEk + "'");
+
+                                //foreach (DataRow bmOp in dtBomOptionss.Rows)
+                                //{
+                                Parallel.ForEach(dtBomOptionss.AsEnumerable(), bmOp =>
+                                    {
+                                        BomOptions bomOps = new BomOptions
+                                        {
+                                            Id = mF.RTI(bmOp, "Id"),
+                                            ProductName = mF.RTS(bmOp, "ProductName"),
+                                            MaterialName = mF.RTS(bmOp, "MaterialName"),
+                                            Quantity = mF.RTS(bmOp, "Quantity").Replace(",", "."),
+                                            Unit = mF.RTS(bmOp, "Unit"),
+                                            StokID = mF.RTI(bmOp, "StokID"),
+                                            OptionsId = mF.RTI(bmOp, "OptionsId"),
+                                            OptionsName = mF.RTS(bmOp, "OptionsName"),
+                                            SubeId = Convert.ToInt32(subeId)
+                                        };
+
+                                        //product.BomOptionss.Add(bomOps);
+                                        lock (locked)
+                                        {
+                                            product.BomOptionss.Add(bomOps);
+                                        }
+                                        //}
+                                    });
+
                                 foreach (var ch2 in product.Choice2)
                                 {
                                     if (ch1.Id == ch2.Choice1Id)
                                     {
                                         var productEk2 = "." + ch2.Name;
 
-                                        DataTable dtBomOptions = mF.GetSubeDataWithQuery((mF.NewConnectionString(SubeIP, DBName, SqlName, SqlPassword)), QueryBomOptions.ToString() + "'" + product.ProductName + productEk + productEk2 + "'");
+                                        DataTable dtBomOptions = mF.GetSubeDataWithQuery(mF.NewConnectionString(SubeIP, DBName, SqlName, SqlPassword), QueryBomOptions.ToString() + "'" + product.ProductName + productEk + productEk2 + "'");
                                         //product.BomOptionss = new List<BomOptions>();
-                                        foreach (DataRow bmOp in dtBomOptions.Rows)
-                                        {
-                                            BomOptions bomOps = new BomOptions
+                                        //foreach (DataRow bmOp in dtBomOptions.Rows)
+                                        //{
+                                        Parallel.ForEach(dtBomOptions.AsEnumerable(), bmOp =>
                                             {
-                                                Id = mF.RTI(bmOp, "Id"),
-                                                ProductName = mF.RTS(bmOp, "ProductName"),
-                                                MaterialName = mF.RTS(bmOp, "MaterialName"),
-                                                Quantity = mF.RTS(bmOp, "Quantity").Replace(",", "."),
-                                                Unit = mF.RTS(bmOp, "Unit"),
-                                                StokID = mF.RTI(bmOp, "StokID"),
-                                                OptionsId = mF.RTI(bmOp, "OptionsId"),
-                                                OptionsName = mF.RTS(bmOp, "OptionsName"),
-                                                SubeId = Convert.ToInt32(subeId)
-                                            };
-                                            product.BomOptionss.Add(bomOps);
-                                        }
+                                                BomOptions bomOps = new BomOptions
+                                                {
+                                                    Id = mF.RTI(bmOp, "Id"),
+                                                    ProductName = mF.RTS(bmOp, "ProductName"),
+                                                    MaterialName = mF.RTS(bmOp, "MaterialName"),
+                                                    Quantity = mF.RTS(bmOp, "Quantity").Replace(",", "."),
+                                                    Unit = mF.RTS(bmOp, "Unit"),
+                                                    StokID = mF.RTI(bmOp, "StokID"),
+                                                    OptionsId = mF.RTI(bmOp, "OptionsId"),
+                                                    OptionsName = mF.RTS(bmOp, "OptionsName"),
+                                                    SubeId = Convert.ToInt32(subeId)
+                                                };
+                                                //product.BomOptionss.Add(bomOps);
+
+                                                lock (locked)
+                                                {
+                                                    product.BomOptionss.Add(bomOps);
+                                                }
+                                                //}
+                                            });
                                     }
                                 }
+
+
                             }
                         }
 
@@ -2159,8 +2246,16 @@ namespace SefimV2.Models.ProductSefimCRUD
                         };
 
 
-                        productList.Add(product);
-                    }
+                        lock (locked)
+                        {
+                            productList.Add(product);
+                        }
+
+
+                        //}
+                    });
+
+
                 }
             }
 
@@ -2226,10 +2321,10 @@ namespace SefimV2.Models.ProductSefimCRUD
                         DataTable dtOptionCats = f.GetSubeDataWithQuery(f.NewConnectionString(SubeIP, DBName, SqlName, SqlPassword), queryOptionCats.ToString());
                         DataTable dtBoms = f.GetSubeDataWithQuery(f.NewConnectionString(SubeIP, DBName, SqlName, SqlPassword), queryBom.ToString());
 
-                        //foreach (DataRow SubeR in productDt.Rows)
-                        //{
-                        Parallel.ForEach(productList, SubeR =>
+                        foreach (DataRow SubeR in productDt.Rows)
                         {
+                            //Parallel.ForEach(productList, SubeR =>
+                            //{
                             //items.Sube = SubeCiroDt.Rows[0]["Sube"].ToString(); //f.RTS(SubeR, "Sube");
                             //items.SubeId = SubeId;
                             //items.Cash = Convert.ToDecimal(SubeCiroDt.Rows[0]["Cash"]); //f.RTD(SubeR, "Cash");
@@ -2240,29 +2335,32 @@ namespace SefimV2.Models.ProductSefimCRUD
                                 ProductGroup = f.RTS(SubeR, "ProductGroup"),
                                 ProductCode = f.RTS(SubeR, "ProductCode"),
                                 Order = f.RTS(SubeR, "[Order]"),
-                                Price = f.RTS(SubeR, "Price").Replace(",", ".")
+                                Price = f.RTS(SubeR, "Price").Replace(",", "."),
+                                VatRate = f.RTS(SubeR, "VatRate").Replace(",", "."),
+                                InvoiceName = f.RTS(SubeR, "InvoiceName"),
+                                ProductType = f.RTS(SubeR, "ProductType"),
+                                Plu = f.RTS(SubeR, "Plu"),
+                                Favorites = f.RTS(SubeR, "Favorites"),
+                                ProductPkId = f.RTI(SubeR, "ProductPkId"),
+                                SubeId = Convert.ToInt32(SubeId),
+                                SubeName = SubeAdi
                             };
 
-                            items.VatRate = f.RTS(SubeR, "VatRate").Replace(",", "."); ;
                             if (SubeR["FreeItem"] != DBNull.Value)
                             {
                                 items.FreeItem = Convert.ToBoolean(f.RTS(SubeR, "FreeItem"));
                             }
-                            items.InvoiceName = f.RTS(SubeR, "InvoiceName");
-                            items.ProductType = f.RTS(SubeR, "ProductType");
-                            items.Plu = f.RTS(SubeR, "Plu");
+
                             if (SubeR["SkipOptionSelection"] != DBNull.Value)
                             {
                                 items.SkipOptionSelection = Convert.ToBoolean(f.RTS(SubeR, "SkipOptionSelection"));
                             }
-                            items.Favorites = f.RTS(SubeR, "Favorites");
+
                             if (SubeR["Aktarildi"] != DBNull.Value)
                             {
                                 items.Aktarildi = Convert.ToBoolean(f.RTS(SubeR, "Aktarildi"));
                             }
-                            items.ProductPkId = f.RTI(SubeR, "ProductPkId");
-                            items.SubeId = Convert.ToInt32(SubeId);
-                            items.SubeName = SubeAdi;
+
 
                             //items.Adet = f.RTI(SubeR, "ADET");
                             //items.Debit = f.RTD(SubeR, "TUTAR");
@@ -2437,12 +2535,12 @@ namespace SefimV2.Models.ProductSefimCRUD
 
                                 list.Add(items);
                             }
-                            //}
-                        });
+                        }
+                        //});
                     }
                     catch (Exception ex)
                     {
-                        Singleton.WritingLogFile2("SefimPanelUrunEkleCRUDGetData:", ex.Message.ToString(), "", ex.StackTrace);
+                        Singleton.WritingLogFile2("SefimPanelUrunEkleCRUDGetData", ex.Message.ToString(), "", ex.StackTrace);
                     }
                     #endregion GET DATA
 
@@ -2452,7 +2550,7 @@ namespace SefimV2.Models.ProductSefimCRUD
             }
             catch (DataException ex)
             {
-                Singleton.WritingLogFile2("SefimPanelUrunEkleCRUDParallelForeach:", ex.Message.ToString(), "", ex.StackTrace);
+                Singleton.WritingLogFile2("SefimPanelUrunEkleCRUDParallelForeach", ex.Message.ToString(), "", ex.StackTrace);
             }
 
 
@@ -2500,7 +2598,7 @@ namespace SefimV2.Models.ProductSefimCRUD
             }
             catch (Exception ex)
             {
-                Singleton.WritingLogFile2("SefimPanelUrunEkleCRUDGetProduct1:", ex.Message.ToString(), "", ex.StackTrace);
+                Singleton.WritingLogFile2("SefimPanelUrunEkleCRUDGetProduct1", ex.Message.ToString(), "", ex.StackTrace);
             }
 
             return list;
@@ -2676,7 +2774,7 @@ namespace SefimV2.Models.ProductSefimCRUD
             }
             catch (Exception ex)
             {
-                Singleton.WritingLogFile2("SefimPanelUrunEkleCRUDGetProduct2:", ex.Message.ToString(), "", ex.StackTrace);
+                Singleton.WritingLogFile2("SefimPanelUrunEkleCRUDGetProduct2", ex.Message.ToString(), "", ex.StackTrace);
             }
 
             return productList;
@@ -2889,7 +2987,7 @@ namespace SefimV2.Models.ProductSefimCRUD
             }
             catch (Exception ex)
             {
-                Singleton.WritingLogFile2("SefimPanelUrunEkleCRUDGetProduct2:", ex.Message.ToString(), "", ex.StackTrace);
+                Singleton.WritingLogFile2("SefimPanelUrunEkleCRUDGetProduct2", ex.Message.ToString(), "", ex.StackTrace);
             }
 
             return items;
@@ -2948,26 +3046,38 @@ namespace SefimV2.Models.ProductSefimCRUD
         }
         public static List<Bom> GetBoms2Birlesecek(List<int> Ids, int SubeId)
         {
+
+            var locked = new Object();
             ModelFunctions f = new ModelFunctions();
             List<Bom> bomLst = new List<Bom>();
             f.SqlConnOpen();
             DataTable dtBoms = f.DataTable("select * from bom where ProductId in(" + string.Join(",", Ids) + ") and SubeId=" + SubeId);
-            foreach (DataRow bm in dtBoms.Rows)
+            f.SqlConnClose();
+            //foreach (DataRow bm in dtBoms.Rows)
+            //{
+            Parallel.ForEach(dtBoms.AsEnumerable(), bm =>
             {
-                Bom bom = new Bom();
-                bom.Id = f.RTI(bm, "Id");
-                bom.ProductName = f.RTS(bm, "ProductName");
-                bom.MaterialName = f.RTS(bm, "MaterialName");
-                bom.MalinCinsi = f.RTS(bm, "MalinCinsi");
-                bom.Quantity = f.RTS(bm, "Quantity").Replace(",", ".");
-                bom.Unit = f.RTS(bm, "Unit");
-                bom.StokID = f.RTI(bm, "StokID");
-                bom.ProductId = f.RTI(bm, "ProductId");
+                Bom bom = new Bom
+                {
+                    Id = f.RTI(bm, "Id"),
+                    ProductName = f.RTS(bm, "ProductName"),
+                    MaterialName = f.RTS(bm, "MaterialName"),
+                    MalinCinsi = f.RTS(bm, "MalinCinsi"),
+                    Quantity = f.RTS(bm, "Quantity").Replace(",", "."),
+                    Unit = f.RTS(bm, "Unit"),
+                    StokID = f.RTI(bm, "StokID"),
+                    ProductId = f.RTI(bm, "ProductId")
+                };
                 if (!string.IsNullOrEmpty(f.RTS(bm, "YeniUrunMu")))
                     bom.YeniUrunMu = Convert.ToBoolean(f.RTS(bm, "YeniUrunMu"));
-                bomLst.Add(bom);
-            }
-            f.SqlConnClose();
+
+                lock (locked)
+                {
+                    bomLst.Add(bom);
+                }
+
+            });
+
             return bomLst;
         }
         public static List<BomOptions> GetBomOptions(long Id, int SubeId)
@@ -3027,28 +3137,40 @@ namespace SefimV2.Models.ProductSefimCRUD
 
         public static List<BomOptions> GetBomOptions2Birlesecek(List<int> Ids, int SubeId)
         {
-            ModelFunctions f = new ModelFunctions();
+            var locked = new Object();
+            var f = new ModelFunctions();
             f.SqlConnOpen();
             List<BomOptions> bomOptionsLst = new List<BomOptions>();
             DataTable dtBomOptions = f.DataTable("select * from bomOptions where ProductId in(" + string.Join(",", Ids) + ") and SubeId=" + SubeId);
-            foreach (DataRow bmOp in dtBomOptions.Rows)
+            f.SqlConnClose();
+
+            //foreach (DataRow bmOp in dtBomOptions.Rows)
+            //{
+            Parallel.ForEach(dtBomOptions.AsEnumerable(), bmOp =>
             {
-                BomOptions bomOps = new BomOptions();
-                bomOps.Id = f.RTI(bmOp, "Id");
-                bomOps.ProductName = f.RTS(bmOp, "ProductName");
-                bomOps.MaterialName = f.RTS(bmOp, "MaterialName");
-                bomOps.Quantity = f.RTS(bmOp, "Quantity").Replace(",", ".");
-                bomOps.Unit = f.RTS(bmOp, "Unit");
-                bomOps.StokID = f.RTI(bmOp, "StokID");
-                bomOps.OptionsId = f.RTI(bmOp, "OptionsId");
-                bomOps.OptionsName = f.RTS(bmOp, "OptionsName");
-                bomOps.SubeId = f.RTI(bmOp, "SubeId");
-                bomOps.ProductId = f.RTI(bmOp, "ProductId");
+                BomOptions bomOps = new BomOptions
+                {
+                    Id = f.RTI(bmOp, "Id"),
+                    ProductName = f.RTS(bmOp, "ProductName"),
+                    MaterialName = f.RTS(bmOp, "MaterialName"),
+                    Quantity = f.RTS(bmOp, "Quantity").Replace(",", "."),
+                    Unit = f.RTS(bmOp, "Unit"),
+                    StokID = f.RTI(bmOp, "StokID"),
+                    OptionsId = f.RTI(bmOp, "OptionsId"),
+                    OptionsName = f.RTS(bmOp, "OptionsName"),
+                    SubeId = f.RTI(bmOp, "SubeId"),
+                    ProductId = f.RTI(bmOp, "ProductId")
+                };
                 if (!string.IsNullOrEmpty(f.RTS(bmOp, "YeniUrunMu")))
                     bomOps.YeniUrunMu = Convert.ToBoolean(f.RTS(bmOp, "YeniUrunMu"));
-                bomOptionsLst.Add(bomOps);
-            }
-            f.SqlConnClose();
+                lock (locked)
+                {
+                    bomOptionsLst.Add(bomOps);
+
+                }
+
+            });
+
             return bomOptionsLst;
         }
         #endregion //**********Localden Get Bom ve BomOptions*******
@@ -3112,31 +3234,41 @@ namespace SefimV2.Models.ProductSefimCRUD
             {
                 f.SqlConnOpen();
                 DataTable dt = f.DataTable(@"SELECT
-	COALESCE('.'+Choice1.Name,'') + COALESCE('.'+Choice2.Name,'') ProductName,Product.Id as ProductId,
-	CAST(0.0 as decimal(28,2)) as Quantity,
-	ISNULL(
-	(SELECT TOP 1  '1' FROM Bom WHERE Bom.ProductName=
-		Product.ProductName+COALESCE('.'+Choice1.Name,'') + COALESCE('.'+Choice2.Name,'')),'0') as HasBom,
-    ISNULL(
-	(SELECT TOP 1  '1' FROM BomOptions WHERE BomOptions.ProductName=
-		Product.ProductName+COALESCE('.'+Choice1.Name,'') + COALESCE('.'+Choice2.Name,'')),'0') as HasOptions
-FROM Product
-LEFT JOIN Choice1 ON
-	Choice1.ProductId = Product.Id and Choice1.SubeId = " + SubeId + @"
-LEFT JOIN Choice2 ON
-	Choice2.ProductId = Product.Id AND
-	Choice2.Choice1Id=Choice1.Id and Choice2.SubeId=" + SubeId + @"
-WHERE  ProductName NOT LIKE '%\[R]%' ESCAPE '\' and Product.Id=" + Id +
-    "ORDER BY COALESCE('.'+Choice1.Name,'') + COALESCE('.'+Choice2.Name,'')");
-                foreach (DataRow r in dt.Rows)
-                {
-                    items.Add(new SelectListItem
-                    {
-                        Text = f.RTS(r, "ProductName").ToString(),
-                        Value = f.RTS(r, "ProductName"),
-                    });
-                }
+                                            COALESCE('.'+Choice1.Name,'') + COALESCE('.'+Choice2.Name,'') ProductName,Product.Id as ProductId,
+                                            CAST(0.0 as decimal(28,2)) as Quantity,
+                                            ISNULL(
+                                            (SELECT TOP 1  '1' FROM Bom WHERE Bom.ProductName=
+                                            Product.ProductName+COALESCE('.'+Choice1.Name,'') + COALESCE('.'+Choice2.Name,'')),'0') as HasBom,
+                                            ISNULL(
+                                            (SELECT TOP 1  '1' FROM BomOptions WHERE BomOptions.ProductName=
+                                            Product.ProductName+COALESCE('.'+Choice1.Name,'') + COALESCE('.'+Choice2.Name,'')),'0') as HasOptions
+                                            FROM Product
+                                            LEFT JOIN Choice1 ON
+                                            Choice1.ProductId = Product.Id and Choice1.SubeId = " + SubeId + @"
+                                            LEFT JOIN Choice2 ON
+                                            Choice2.ProductId = Product.Id AND
+                                            Choice2.Choice1Id=Choice1.Id and Choice2.SubeId=" + SubeId + @"
+                                            WHERE  ProductName NOT LIKE '%\[R]%' ESCAPE '\' and Product.Id=" + Id +
+                                            "ORDER BY COALESCE('.'+Choice1.Name,'') + COALESCE('.'+Choice2.Name,'')");
                 f.SqlConnClose();
+
+                //foreach (DataRow r in dt.Rows)
+                //{
+
+                var locked = new Object();
+                Parallel.ForEach(dt.AsEnumerable(), r =>
+                {
+                    lock (locked)
+                    {
+                        items.Add(new SelectListItem
+                        {
+                            Text = f.RTS(r, "ProductName").ToString(),
+                            Value = f.RTS(r, "ProductName"),
+                        });
+                    }
+                    //}
+                });
+
 
                 #region SUBSTATION LIST               
                 f.SqlConnOpen();
@@ -3152,36 +3284,42 @@ WHERE  ProductName NOT LIKE '%\[R]%' ESCAPE '\' and Product.Id=" + Id +
                     string SqlPassword = f.RTS(r, "SqlPassword");
                     string DBName = f.RTS(r, "DBName");
                     DataTable ProductDt = new DataTable();
-                    ProductDt = f.GetSubeDataWithQuery((f.NewConnectionString(SubeIP, DBName, SqlName, SqlPassword)), @"SELECT
-	COALESCE('.'+Choice1.Name,'') + COALESCE('.'+Choice2.Name,'') ProductName,Product.Id as ProductId,
-	CAST(0.0 as decimal(28,2)) as Quantity,
-	ISNULL(
-	(SELECT TOP 1  '1' FROM Bom WHERE Bom.ProductName=
-		Product.ProductName+COALESCE('.'+Choice1.Name,'') + COALESCE('.'+Choice2.Name,'')),'0') as HasBom,
-    ISNULL(
-	(SELECT TOP 1  '1' FROM BomOptions WHERE BomOptions.ProductName=
-		Product.ProductName+COALESCE('.'+Choice1.Name,'') + COALESCE('.'+Choice2.Name,'')),'0') as HasOptions
-FROM Product
-LEFT JOIN Choice1 ON
-	Choice1.ProductId = Product.Id
-LEFT JOIN Choice2 ON
-	Choice2.ProductId = Product.Id AND
-	Choice2.Choice1Id=Choice1.Id
-WHERE  ProductName NOT LIKE '%\[R]%' ESCAPE '\' and Product.Id=" + Id +
-    "ORDER BY COALESCE('.'+Choice1.Name,'') + COALESCE('.'+Choice2.Name,'')");
+                    ProductDt = f.GetSubeDataWithQuery(f.NewConnectionString(SubeIP, DBName, SqlName, SqlPassword),
+                                                        @"SELECT
+                                                        COALESCE('.'+Choice1.Name,'') + COALESCE('.'+Choice2.Name,'') ProductName,Product.Id as ProductId,
+                                                        CAST(0.0 as decimal(28,2)) as Quantity,
+                                                        ISNULL(
+                                                        (SELECT TOP 1  '1' FROM Bom WHERE Bom.ProductName=
+                                                        Product.ProductName+COALESCE('.'+Choice1.Name,'') + COALESCE('.'+Choice2.Name,'')),'0') as HasBom,
+                                                        ISNULL(
+                                                        (SELECT TOP 1  '1' FROM BomOptions WHERE BomOptions.ProductName=
+                                                        Product.ProductName+COALESCE('.'+Choice1.Name,'') + COALESCE('.'+Choice2.Name,'')),'0') as HasOptions
+                                                        FROM Product
+                                                        LEFT JOIN Choice1 ON
+                                                        Choice1.ProductId = Product.Id
+                                                        LEFT JOIN Choice2 ON
+                                                        Choice2.ProductId = Product.Id AND
+                                                        Choice2.Choice1Id=Choice1.Id
+                                                        WHERE  ProductName NOT LIKE '%\[R]%' ESCAPE '\' and Product.Id=" + Id +
+                                                        "ORDER BY COALESCE('.'+Choice1.Name,'') + COALESCE('.'+Choice2.Name,'')");
 
-                    foreach (DataRow prdct in ProductDt.Rows)
+                    //foreach (DataRow prdct in ProductDt.Rows)
+                    //{
+                    Parallel.ForEach(ProductDt.AsEnumerable(), prdct =>
                     {
-                        items.Add(new SelectListItem
+                        lock (locked)
                         {
-                            Text = f.RTS(prdct, "ProductName").ToString(),
-                            Value = f.RTS(prdct, "ProductName"),
-                        });
-                    }
+                            items.Add(new SelectListItem
+                            {
+                                Text = f.RTS(prdct, "ProductName").ToString(),
+                                Value = f.RTS(prdct, "ProductName"),
+                            });
+                        }
+                        //}
+                    });
                 }
-
             }
-            catch (System.Exception ex) { }
+            catch (Exception ex) { }
             return items;
         }
 
@@ -3785,7 +3923,7 @@ WHERE  ProductName NOT LIKE '%\[R]%' ESCAPE '\' and Product.Id=" + Id +
             }
             catch (Exception ex)
             {
-                Singleton.WritingLogFile2("SefimPanelUrunEkleCRUD_IsInsertProduct:", ex.Message.ToString(), "", ex.StackTrace);
+                Singleton.WritingLogFile2("SefimPanelUrunEkleCRUD_IsInsertProduct", ex.Message.ToString(), "", ex.StackTrace);
             }
             return result;
         }

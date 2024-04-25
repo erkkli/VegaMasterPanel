@@ -35,6 +35,10 @@
     <!-- END: Subheader -->
     @*<div class="x_panel">*@
     <div class="x_title">
+        <div class="col-sm-2">
+            <div class="col-sm-4"><label>Stok Tipi</label></div>
+            @Html.EnumDropDownListFor(model => model.FirstOrDefault().HammaddeStokTipi, new { @id = "HammaddeStokTipi" })
+        </div>
         <div class="clearfix">
             @*<div style="padding-top:15px; padding-bottom:15px;">*@
             <button type="button" id="RefreshPage" class="btn btn-success pull-left " value="Refresh" name="Command"> <i class="fa fa-refresh"></i> </button>
@@ -79,8 +83,8 @@
                             TotalKarMaliyet += row.KarTutari;
 
                             <tr id="row_@row.SubeID" style="color:#000000;font-weight:bold ">
-                                <td hideExcel="true">                                   
-                                    <input  id="tumStoklarGetirilsinMi_@row.SubeID" name="" title="Tüm Stoklar Getirilsin Mi?" type="checkbox" value="true"  />                          
+                                <td hideExcel="true">
+                                    <input id="tumStoklarGetirilsinMi_@row.SubeID" name="" title="Tüm Stoklar Getirilsin Mi?" type="checkbox" value="true" />
                                 </td>
                                 <td id="col_Sube_@row.Sube"> <img src="~/img/details_open.jpg" rel=@row.SubeID alt="expand/collapse"> @row.Sube  </td>
                                 <td id="col_Miktar_@row.Miktar">@row.Miktar.ToString("C")  @*@decimal.Round(row.Miktar, 2, MidpointRounding.AwayFromZero)*@   @*@String.Format("{0:0.##}", row.Miktar)*@   </td>
@@ -286,7 +290,7 @@
     });
 
     //Veri Getir butonu click durumu
-    $(document).on("click", "#btnExcelExportDetail", function (e) { 
+    $(document).on("click", "#btnExcelExportDetail", function (e) {
         var subeid = $(this).attr("rel");
         location.href = 'ExcelExportDetayliReceteMaliyet?StartDate=' + localStorage.tarihBaslangic + '&EndDate=' + localStorage.tarihBitis + '&SubeId=' + subeid;
         //ExcelExportDetayliReceteMaliyet(StartDate, EndDate, ePostaAdress, Pages, SubeId);
@@ -301,9 +305,11 @@
                 if (localStorage.durum == null) {
                     localStorage.durum = "bugun";
                 }
+
+                var hammaddeStokTipi = $('#HammaddeStokTipi').val();
                 document.getElementById("loading").setAttribute("class", "myloading-active");
                 document.getElementById("contbody").setAttribute("style", "position:fixed;");
-                location.href = $(this).attr('href') + '?durum=' + localStorage.durum + '&tarihBas=' + localStorage.tarihBaslangic + '&tarihBitis=' + localStorage.tarihBitis;
+                location.href = $(this).attr('href') + '?durum=' + localStorage.durum + '&tarihBas=' + localStorage.tarihBaslangic + '&tarihBitis=' + localStorage.tarihBitis + '&hammaddeStokTipi=' + localStorage.hammaddeStokTipi;
             })
         });
         //$('#tableRapor').DataTable({
@@ -345,7 +351,9 @@
             var tumStoklarGetirilsinMi = $("#tumStoklarGetirilsinMi_" + subeid).is(":checked");
             localStorage.subeid = subeid;
             localStorage.tumStoklarGetirilsinMi = tumStoklarGetirilsinMi;
-            $.get("Details?durum=" + localStorage.durum + "&tarihBas=" + localStorage.tarihBaslangic + "&tarihBitis=" + localStorage.tarihBitis + "&subeid=" + subeid + "&tumStoklarGetirilsinMi=" + tumStoklarGetirilsinMi, function (details) {
+            var hammaddeStokTipi = $('#HammaddeStokTipi').val();
+            localStorage.hammaddeStokTipi = hammaddeStokTipi;
+            $.get("Details?durum=" + localStorage.durum + "&tarihBas=" + localStorage.tarihBaslangic + "&tarihBitis=" + localStorage.tarihBitis + "&subeid=" + subeid + "&tumStoklarGetirilsinMi=" + tumStoklarGetirilsinMi + "&hammaddeStokTipi=" + hammaddeStokTipi, function (details) {
                 oTable.fnOpen(nTr, details, 'details');
             });
         }
@@ -361,19 +369,25 @@
 
     $('.btnToday').click(function () {
         localStorage.durum = "bugun";
-        location.href = 'List?durum=' + localStorage.durum + '&tarihBas=' + localStorage.tarihBaslangic + '&tarihBitis=' + localStorage.tarihBitis;
+        var hammaddeStokTipi = $('#HammaddeStokTipi').val();
+        localStorage.hammaddeStokTipi = hammaddeStokTipi;
+        location.href = 'List?durum=' + localStorage.durum + '&tarihBas=' + localStorage.tarihBaslangic + '&tarihBitis=' + localStorage.tarihBitis + '&hammaddeStokTipi=' + localStorage.hammaddeStokTipi;
         document.getElementById("loading").setAttribute("class", "myloading-active");
         document.getElementById("contbody").setAttribute("style", "position:fixed;");
     });
     $('.btnYesterday').click(function () {
         localStorage.durum = "dun";
-        location.href = 'List?durum=' + localStorage.durum + '&tarihBas=' + localStorage.tarihBaslangic + '&tarihBitis=' + localStorage.tarihBitis;
+        var hammaddeStokTipi = $('#HammaddeStokTipi').val();
+        localStorage.hammaddeStokTipi = hammaddeStokTipi;
+        location.href = 'List?durum=' + localStorage.durum + '&tarihBas=' + localStorage.tarihBaslangic + '&tarihBitis=' + localStorage.tarihBitis + '&hammaddeStokTipi=' + localStorage.hammaddeStokTipi;
         document.getElementById("loading").setAttribute("class", "myloading-active");
         document.getElementById("contbody").setAttribute("style", "position:fixed;");
     });
     $('.btnMonth').click(function () {
         localStorage.durum = "buAy";
-        location.href = 'List?durum=' + localStorage.durum + '&tarihBas=' + localStorage.tarihBaslangic + '&tarihBitis=' + localStorage.tarihBitis;
+        var hammaddeStokTipi = $('#HammaddeStokTipi').val();
+        localStorage.hammaddeStokTipi = hammaddeStokTipi;
+        location.href = 'List?durum=' + localStorage.durum + '&tarihBas=' + localStorage.tarihBaslangic + '&tarihBitis=' + localStorage.tarihBitis + '&hammaddeStokTipi=' + localStorage.hammaddeStokTipi;
         document.getElementById("loading").setAttribute("class", "myloading-active");
         document.getElementById("contbody").setAttribute("style", "position:fixed;");
     });
@@ -384,7 +398,9 @@
         localStorage.durum = "tarihAraligi";
         localStorage.tarihBaslangic = tarihBaslangic;
         localStorage.tarihBitis = tarihBitis;
-        location.href = 'List?durum=' + localStorage.durum + '&tarihBas=' + localStorage.tarihBaslangic + '&tarihBitis=' + localStorage.tarihBitis;
+        var hammaddeStokTipi = $('#HammaddeStokTipi').val();
+        localStorage.hammaddeStokTipi = hammaddeStokTipi;
+        location.href = 'List?durum=' + localStorage.durum + '&tarihBas=' + localStorage.tarihBaslangic + '&tarihBitis=' + localStorage.tarihBitis + '&hammaddeStokTipi=' + localStorage.hammaddeStokTipi;
     });
 
     //function formatDate(date) {

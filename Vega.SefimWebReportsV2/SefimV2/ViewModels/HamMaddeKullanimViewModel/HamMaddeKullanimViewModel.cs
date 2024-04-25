@@ -1,4 +1,6 @@
-﻿namespace SefimV2.Models
+﻿using static SefimV2.Enums.General;
+
+namespace SefimV2.Models
 {
     public class HamMaddeKullanimViewModel
     {
@@ -14,7 +16,7 @@
         public decimal? DonemBasiEnvanter { get; set; }
         public decimal? DonemIciGonderilen { get; set; }
         public decimal? DonemIciCikan { get; set; }
-        public decimal? Kalan { get; set; }
+        public decimal? Kalan { get; set; }        
         public HamMaddeKullanimViewModel() { }
     }
 }

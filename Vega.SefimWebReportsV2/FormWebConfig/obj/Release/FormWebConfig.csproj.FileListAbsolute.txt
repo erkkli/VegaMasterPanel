@@ -10,3 +10,15 @@ C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\FormWebConfig\obj\Release\F
 C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\FormWebConfig\obj\Release\FormWebConfig.csproj.CopyComplete
 C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\FormWebConfig\obj\Release\Vega Master Web Config.exe
 C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\FormWebConfig\obj\Release\Vega Master Web Config.pdb
+C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\FormWebConfig\bin\Release\Vega Master Web Config.exe.config
+C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\FormWebConfig\bin\Release\Vega Master Web Config.exe
+C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\FormWebConfig\bin\Release\Vega Master Web Config.pdb
+C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\FormWebConfig\bin\Release\System.Web.dll
+C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\FormWebConfig\obj\Release\FormWebConfig.csproj.AssemblyReference.cache
+C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\FormWebConfig\obj\Release\FormWebConfig.Form1.resources
+C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\FormWebConfig\obj\Release\FormWebConfig.Properties.Resources.resources
+C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\FormWebConfig\obj\Release\FormWebConfig.csproj.GenerateResource.cache
+C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\FormWebConfig\obj\Release\FormWebConfig.csproj.CoreCompileInputs.cache
+C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\FormWebConfig\obj\Release\FormWebConfig.csproj.CopyComplete
+C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\FormWebConfig\obj\Release\Vega Master Web Config.exe
+C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\FormWebConfig\obj\Release\Vega Master Web Config.pdb

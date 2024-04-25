@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using static SefimV2.Enums.General;
 
 namespace SefimV2.ViewModels.SubeSettings
 {
@@ -42,7 +43,10 @@ namespace SefimV2.ViewModels.SubeSettings
         //VPos
         public string VPosSubeKodu { get; set; }
         public string VPosKasaKodu { get; set; }
-        public List<VPosKasalarList> VPosKasalarList { get; set; }      
+        public List<VPosKasalarList> VPosKasalarList { get; set; }
+
+        public string EnvanterOzelKodAdi { get; set; }
+        public EnvanterOzelKodTipi EnvanterOzelKodTipi { get; set; }
     }
 
     public class VPosKasalarList

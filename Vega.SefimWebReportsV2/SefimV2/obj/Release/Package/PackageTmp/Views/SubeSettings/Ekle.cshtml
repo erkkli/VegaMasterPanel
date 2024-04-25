@@ -257,6 +257,19 @@
                     @Html.DropDownListFor(m => m.ZimmetCariInd, new List<SelectListItem>(), new { @id = "ZimmetCariInd", @class = "form-control m-select2" })
                 </div>
             </div>
+                  <div class="form-group m-form__group row">
+                <label class="col-form-label col-md-3 col-sm-3 col-xs-12"> Envanter Özel Kod Tipi </label>
+                <div class="col-lg-9 col-md-12 col-sm-12">
+                    @Html.EnumDropDownListFor(model => model.EnvanterOzelKodTipi, new { @id = "EnvanterOzelKodTipi" })
+                </div>
+            </div>
+            <div class="form-group m-form__group row">
+                <label class="col-form-label col-md-3 col-sm-3 col-xs-12"> Envanter Özel Kod  </label>
+                <div class="col-lg-9 col-md-12 col-sm-12">
+                    @Html.TextBoxFor(m => m.EnvanterOzelKodAdi, htmlAttributes: new { @id = "EnvanterOzelKodAdi", @maxlength = "255", @class = "form-control", @placeholder = "Envanter Özel Kod" })
+                </div>
+            </div>
+
             <div class="m-form__group form-group row">
                 <label class="col-form-label col-md-3 col-sm-3 col-xs-12"> Belge Sayım Tarih Dahil mi?</label>
                 <div class="col-4">

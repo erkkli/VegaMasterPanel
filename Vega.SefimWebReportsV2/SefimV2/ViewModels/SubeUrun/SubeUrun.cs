@@ -1,4 +1,6 @@
-﻿namespace SefimV2.Models
+﻿using static SefimV2.Enums.General;
+
+namespace SefimV2.Models
 {
     public class SubeUrun
     {
@@ -30,5 +32,7 @@
         public string BIRIMADI { get; set; }
         public decimal MaliyetTutari { get; set; }    
         public decimal MALIYET { get; set; }
+
+        public HammaddeStokTipi HammaddeStokTipi { get; set; }
     }
 }

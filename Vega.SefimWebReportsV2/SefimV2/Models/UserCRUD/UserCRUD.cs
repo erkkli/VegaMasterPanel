@@ -242,7 +242,7 @@ namespace SefimV2.Models
         {
             UserViewModel model = new UserViewModel();
             ModelFunctions f = new ModelFunctions();
-            DateTime startDate = DateTime.Now;
+
             try
             {
                 f.SqlConnOpen();
@@ -263,15 +263,16 @@ namespace SefimV2.Models
                                               " ,[SubeSirasiGorunsunMu]" +
                                               " , st.DepoID " +
                                               " ,st.FirmaID " +
-                                               ",st.DonemID" +
+                                              " ,st.DonemID" +
                                               " ,st.FasterSubeID " +
-                                              ",us.BelgeTipYetkisi " +
-                                              ",st.SefimPanelZimmetCagrisi " +
-                                                ",st.BelgeSayimTarihDahil " +
+                                              " ,us.BelgeTipYetkisi " +
+                                              " ,st.SefimPanelZimmetCagrisi " +
+                                              " ,st.BelgeSayimTarihDahil " +
                                           " FROM [dbo].[Users] us " +
                                           " left outer join [dbo].[SubeSettings] st on st.Id = us.SubeID " +
                                           //" where us.Id =" + id);//22.08.23
                                           " where st.Id =" + subeId);
+                f.SqlConnClose();
 
                 foreach (DataRow r in dt.Rows)
                 {
@@ -298,11 +299,11 @@ namespace SefimV2.Models
                     //model.Status = Convert.ToInt32(f.RTS(r, "Status"));
                 }
 
-                f.SqlConnClose();
+
             }
             catch (Exception ex)
             {
-                Singleton.WritingLog("GetUserForSubeSettings:", "ex:" + ex.Message);
+                Singleton.WritingLog("GetUserForSubeSettings ", "ex " + ex.Message);
             }
             return model;
         }
@@ -311,7 +312,6 @@ namespace SefimV2.Models
         {
             var model = new UserViewModel();
             var f = new ModelFunctions();
-            var startDate = DateTime.Now;
             try
             {
                 f.SqlConnOpen();
@@ -346,7 +346,7 @@ namespace SefimV2.Models
             }
             catch (Exception ex)
             {
-                Singleton.WritingLog("GetUserForSubeSettingsForSubeIdEx:", "ex:" + ex.Message);
+                Singleton.WritingLog("GetUserForSubeSettingsForSubeIdEx ", "ex " + ex.Message);
             }
             return model;
         }

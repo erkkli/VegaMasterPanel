@@ -5,7 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>C:\Program Files (x86)\Vega\WEB_REPORT_PUBLISH</_PublishTargetUrl>
-    <History>True|2023-12-21T11:38:21.5868548Z;True|2023-12-12T01:55:53.7185927+03:00;True|2023-12-11T22:48:27.3085538+03:00;True|2023-12-09T02:46:32.1784435+03:00;True|2023-12-08T23:26:15.2458873+03:00;True|2023-12-08T23:25:34.1253032+03:00;</History>
+    <History>True|2024-04-22T06:19:25.6426462Z;True|2024-04-06T11:10:03.3090926+03:00;True|2024-03-21T10:15:37.0534094+03:00;True|2024-03-15T10:08:13.5871917+03:00;True|2024-03-04T16:32:10.3738128+03:00;True|2023-12-21T14:38:21.5868548+03:00;True|2023-12-12T01:55:53.7185927+03:00;True|2023-12-11T22:48:27.3085538+03:00;True|2023-12-09T02:46:32.1784435+03:00;True|2023-12-08T23:26:15.2458873+03:00;True|2023-12-08T23:25:34.1253032+03:00;</History>
     <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
@@ -7336,13 +7336,13 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>02/15/2022 05:38:42</publishTime>
     </File>
     <File Include="bin/SefimV2.dll">
-      <publishTime>12/21/2023 14:38:10</publishTime>
+      <publishTime>04/22/2024 09:19:09</publishTime>
     </File>
     <File Include="bin/SefimV2.dll.config">
-      <publishTime>12/21/2023 14:38:08</publishTime>
+      <publishTime>04/22/2024 09:19:07</publishTime>
     </File>
     <File Include="bin/SefimV2.pdb">
-      <publishTime>12/21/2023 14:38:10</publishTime>
+      <publishTime>04/22/2024 09:19:09</publishTime>
     </File>
     <File Include="bin/SharpCompress.dll">
       <publishTime>07/29/2022 09:47:32</publishTime>
@@ -10234,7 +10234,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>10/23/2023 09:40:25</publishTime>
     </File>
     <File Include="Sql/SqlNewSef/SubeToplamCiroNewSefim.sql">
-      <publishTime>04/11/2023 10:38:38</publishTime>
+      <publishTime>01/10/2024 16:39:08</publishTime>
     </File>
     <File Include="Sql/SqlNewSef/SubeToplamCiroNewSefimDashboard.sql">
       <publishTime>05/11/2020 19:20:14</publishTime>
@@ -10249,7 +10249,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/09/2022 14:12:30</publishTime>
     </File>
     <File Include="Sql/SqlNewSef/SubeUrunRaporu/TopluExcelSubeUrun.sql">
-      <publishTime>12/21/2023 14:28:23</publishTime>
+      <publishTime>12/25/2023 13:14:28</publishTime>
     </File>
     <File Include="Sql/SqlNewSef/WaiterSales/WaiterSales3UrunEslestirme.sql">
       <publishTime>06/09/2022 14:12:44</publishTime>
@@ -10495,7 +10495,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>05/07/2022 12:57:45</publishTime>
     </File>
     <File Include="Views/AcikMasalar/List.cshtml">
-      <publishTime>01/09/2023 08:13:22</publishTime>
+      <publishTime>04/22/2024 09:01:24</publishTime>
     </File>
     <File Include="Views/AcikMasalar/MasaDetails.cshtml">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -10522,7 +10522,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/22/2022 23:04:42</publishTime>
     </File>
     <File Include="Views/Authentication/Login.cshtml">
-      <publishTime>11/25/2023 10:30:20</publishTime>
+      <publishTime>03/21/2024 10:14:58</publishTime>
     </File>
     <File Include="Views/Authentication/Login___.cshtml">
       <publishTime>10/11/2019 14:17:22</publishTime>
@@ -10534,7 +10534,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/22/2022 23:38:35</publishTime>
     </File>
     <File Include="Views/CiroRaporlar/List.cshtml">
-      <publishTime>10/28/2023 10:59:23</publishTime>
+      <publishTime>01/10/2024 16:42:19</publishTime>
     </File>
     <File Include="Views/Dashboard/Index.cshtml">
       <publishTime>09/29/2023 11:18:22</publishTime>
@@ -10558,7 +10558,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Views/HamMaddeKullanimRaporu/List.cshtml">
-      <publishTime>12/15/2022 00:26:39</publishTime>
+      <publishTime>02/17/2024 13:43:40</publishTime>
     </File>
     <File Include="Views/IadeRaporu/Details.cshtml">
       <publishTime>05/07/2022 12:57:45</publishTime>
@@ -10672,13 +10672,13 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>05/07/2022 12:57:45</publishTime>
     </File>
     <File Include="Views/RecipeCost/Details.cshtml">
-      <publishTime>09/20/2023 23:11:09</publishTime>
+      <publishTime>03/15/2024 10:06:26</publishTime>
     </File>
     <File Include="Views/RecipeCost/List.cshtml">
-      <publishTime>01/03/2023 01:55:15</publishTime>
+      <publishTime>02/09/2024 12:26:59</publishTime>
     </File>
     <File Include="Views/RecipeCost/ProductDetails.cshtml">
-      <publishTime>05/25/2023 16:33:08</publishTime>
+      <publishTime>03/15/2024 10:06:09</publishTime>
     </File>
     <File Include="Views/ReportsDetail/Index.cshtml">
       <publishTime>07/23/2022 08:33:41</publishTime>
@@ -10783,7 +10783,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>02/15/2022 10:12:57</publishTime>
     </File>
     <File Include="Views/SefimPanelUrunEkle/ProductList.cshtml">
-      <publishTime>12/12/2023 02:45:23</publishTime>
+      <publishTime>04/08/2024 17:39:44</publishTime>
     </File>
     <File Include="Views/SefimPanelUrunEkle/UpdatedProductList.cshtml">
       <publishTime>08/09/2023 00:58:13</publishTime>
@@ -10852,7 +10852,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>03/31/2022 12:36:57</publishTime>
     </File>
     <File Include="Views/SubeSettings/Ekle.cshtml">
-      <publishTime>08/15/2023 13:42:06</publishTime>
+      <publishTime>03/03/2024 18:58:43</publishTime>
     </File>
     <File Include="Views/SubeSettings/Ekle__org.cshtml">
       <publishTime>05/07/2022 12:57:45</publishTime>
@@ -10948,7 +10948,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>03/03/2023 01:06:46</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>12/08/2023 23:25:23</publishTime>
+      <publishTime>04/22/2024 09:19:11</publishTime>
     </File>
   </ItemGroup>
 </Project>

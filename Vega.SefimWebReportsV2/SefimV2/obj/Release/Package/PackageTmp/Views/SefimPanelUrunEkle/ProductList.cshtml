@@ -306,7 +306,7 @@
                                                 <div class="form-group m-form__group row">
                                                     <div class="row col-sm-12 col-md-12 col-lg-12 col-xs-12">
                                                         <input type="number" id="seviye1Fiyat" class="form-control" aria-describedby="seviye1Fiyat" placeholder="Fiyat">
-                                                        <input type="hidden" id="choice1Id" class="form-control" aria-describedby="choice1Id" >
+                                                        <input type="hidden" id="choice1Id" class="form-control" aria-describedby="choice1Id">
                                                     </div>
                                                 </div>
                                                 <div class="form-group m-form__group row">
@@ -791,6 +791,8 @@
 
     $(document).ready(function () {
 
+
+
         //hepsiniSec kodlarımız
         $("#hepsiniSec").on("click", function () {
             if ($(this).is(':checked')) {
@@ -920,14 +922,14 @@
                 url: '/SefimPanelUrunEkle/ProductOptionsJson',
                 type: 'POST',
                 data: { Id: id, SubeId: subeId },
-                beforeSend: function (request) {
-                    //mApp.blockPage();
-                },
-                complete: function () {
-                    window.setTimeout(function () {
-                        //mApp.unblockPage();
-                    }, 100);
-                },
+                //beforeSend: function (request) {
+                //    //mApp.blockPage();
+                //},
+                //complete: function () {
+                //    window.setTimeout(function () {
+                //        //mApp.unblockPage();
+                //    }, 100);
+                //},
                 dataType: 'json',
                 success: function (data) {
 
@@ -1157,6 +1159,8 @@
 
 
         $('#btnFilter').click(function () {
+
+            StokList();
             //tblUrun.draw();
             location.href = "/SefimPanelUrunEkle/ProductList?SubeIds=" + $('#SubelerForMainList').val().toString()
         })
@@ -1351,7 +1355,7 @@
             var ch1Selected = $('#OptionsNameForRecete')[0].selectedOptions[0];
             if (ch1) {
                 if (!ch1Selected)
-                return alert('Lütfen Seçim giriniz.')
+                    return alert('Lütfen Seçim giriniz.')
             }
 
 
@@ -1527,7 +1531,7 @@
                         $('#ProductId').val(opt.productId);
                         $('#optionsId').val(opt.Id);
                         $('#OptionCatsName').val(opt.OptionCatsName);
-                        
+
 
                         product.Options.splice(index, 1)
                         tableOptions.row('#' + iid).remove().draw();
@@ -1728,7 +1732,7 @@
         });
 
         lib.recete = function (id, subeId, yeniUrunMu, productName) {
-            debugger;
+
             recete = [];
             receteOptions = [];
             if (lib.kopyaBoms.length > 0 || lib.kopyaBomOptions.length > 0) {
@@ -1750,23 +1754,22 @@
             $('#productIdForRecete').val(id);
             $('#SubeNameForReceteModal')[0].innerHTML = "";
 
-
-
             $('#MaterialNameForBomOptions').val("");
             $('#OptionsForBomOptions').val("");
             $('#QuantityForBomOptions').val('');
             $('#UnitForBomOptions').val("");
 
-
-            var sube = lib.SubeList.filter(function (obj) { return obj.id == subeId })
-            $('#SubeNameForReceteModal')[0].innerHTML = sube[0].name;
-            ProductOptionsJsonList(id, subeId);
-            StokList();
             if (yeniUrunMu) {
                 lib.receteFill(id);
             } else {
                 lib.receteFillForSube(id, subeId);
             }
+
+            var sube = lib.SubeList.filter(function (obj) { return obj.id == subeId })
+            $('#SubeNameForReceteModal')[0].innerHTML = sube[0].name;
+            ProductOptionsJsonList(id, subeId);
+            StokList();
+
 
             $('#modalRecete').modal('show');
         }
@@ -1943,19 +1946,19 @@
             });
         }
         lib.receteFillForSube = function (id, subeId) {
-            debugger;
+
             $.ajax({
                 url: '/SefimPanelUrunEkle/GetProductForSube',
                 type: 'POST',
                 data: { Id: id, SubeId: subeId },
-                beforeSend: function (request) {
-                    //mApp.blockPage();
-                },
-                complete: function () {
-                    window.setTimeout(function () {
-                        //mApp.unblockPage();
-                    }, 100);
-                },
+                //beforeSend: function (request) {
+                //    //mApp.blockPage();
+                //},
+                //complete: function () {
+                //    window.setTimeout(function () {
+                //        //mApp.unblockPage();
+                //    }, 100);
+                //},
                 dataType: 'json',
                 success: function (data) {
                     lib.clear();
@@ -1969,7 +1972,7 @@
             $('#ProductName').val(Product.ProductName);
             $('#Order').val(Product.Order);
             $('#ProductType').val(Product.ProductType);
-            console.log("price_",Product.Price)
+            //console.log("price_",Product.Price)
             $('#Price').val(Product.Price.replace(',', '.'));
             $('#Plu').val(Product.Plu);
             $('#VatRate').val(Product.VatRate.replace(',', '.'));
@@ -2410,41 +2413,71 @@
         });
     }
 
+    lib.stoklist = {};
+    var options = $('#MaterialName');
+    var matoptions = $('#MaterialNameForBomOptions');
     function StokList(subeId) {
-        var subeId = $('#subeIdForRecete').val();
-        $.ajax({
-            url: '/SefimPanelBelgeIslemleri/StokSelectListJsonUrunEkle',
-            type: 'POST',
-            data: { SubeId: subeId },
-            beforeSend: function (request) {
-                //mApp.blockPage();
-            },
-            complete: function () {
-                window.setTimeout(function () {
-                    //mApp.unblockPage();
-                }, 100);
-            },
-            dataType: 'json',
-            success: function (data) {
 
 
-                var options = $('#MaterialName');
-                var matoptions = $('#MaterialNameForBomOptions');
-                $('option', matoptions).remove();
-                matoptions.append($('<option />').val(0).text("Seçiniz"));
+        var subeId = $('#SubelerForMainList').val();
+        if (!lib.stoklist[subeId]||lib.stoklist[subeId].length == 0) {
+            //var subeId = $('#subeIdForRecete').val();
+            
 
-                $('option', options).remove();
-                options.append($('<option />').val(0).text("Seçiniz"));
-                $.each(data, function () {
-                    options.append($('<option />').val(this.Value).text(this.Text));
-                    matoptions.append($('<option />').val(this.Value).text(this.Text));
-                });
+            //console.log("StokList1", $('#SubelerForMainList').val());
+            //console.log("StokList2", $('#subeIdForRecete').val());
 
-                //if (user.SubeID) {
-                //    $('#Stok').val(user.SubeID).trigger('change');
-                //}
-            }
-        });
+            document.getElementById("loading").setAttribute("class", "myloading-active");
+            document.getElementById("contbody").setAttribute("style", "position:fixed;");
+            $.ajax({
+                url: '/SefimPanelBelgeIslemleri/StokSelectListJsonUrunEkle',
+                type: 'POST',
+                data: { SubeId: subeId },
+                //beforeSend: function (request) {
+                //    //mApp.blockPage();
+                //},
+                //complete: function () {
+                //    window.setTimeout(function () {
+                //        //mApp.unblockPage();
+                //    }, 100);
+                //},
+                dataType: 'json',
+                success: function (data) {
+                    lib.stoklist[subeId] = data ;
+                    //var options = $('#MaterialName');
+                    //var matoptions = $('#MaterialNameForBomOptions');
+                    //$('option', matoptions).remove();
+                    //matoptions.append($('<option />').val(0).text("Seçiniz"));
+
+                    //$('option', options).remove();
+                    //options.append($('<option />').val(0).text("Seçiniz"));
+                    //$.each(data, function () {
+                    //    options.append($('<option />').val(this.Value).text(this.Text));
+                    //    matoptions.append($('<option />').val(this.Value).text(this.Text));
+                    //});
+                    $('option', matoptions).remove();
+                    matoptions.append($('<option />').val(0).text("Seçiniz"));
+
+                    $('option', options).remove()
+                    options.append($('<option />').val(0).text("Seçiniz"));
+
+                    $.each(lib.stoklist[subeId], function () {
+                        options.append($('<option />').val(this.Value).text(this.Text));
+                        matoptions.append($('<option />').val(this.Value).text(this.Text));
+                    });
+
+                    document.getElementById("loading").removeAttribute("class", "myloading-active");
+                    document.getElementById("contbody").removeAttribute("style", "position:fixed;");
+
+                    //if (user.SubeID) {
+                    //    $('#Stok').val(user.SubeID).trigger('change');
+                    //}
+                }
+            });
+        } else {
+
+        }
+    
     }
 
     var copyProductList = [];

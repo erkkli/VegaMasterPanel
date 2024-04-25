@@ -3629,6 +3629,8 @@
     <Compile Include="Controllers\UsersListController.cs" />
     <Compile Include="Controllers\VegaDBSettingsController.cs" />
     <Compile Include="Controllers\WaiterSalesController.cs" />
+    <Compile Include="Enums\EnvanterOzelKodTipi.cs" />
+    <Compile Include="Enums\HammaddeStokTipi.cs" />
     <Compile Include="Enums\YemekKartiTipi.cs" />
     <Compile Include="Enums\BankaTipi.cs" />
     <Compile Include="Enums\OnayDurumu.cs" />
@@ -3649,9 +3651,11 @@
     <Compile Include="Helper\Singleton.cs" />
     <Compile Include="Helper\StringExtensions.cs" />
     <Compile Include="Helper\Utility.cs" />
+    <Compile Include="Models\Attachment.cs" />
     <Compile Include="Models\GramajliSatislarRaporuCRUD\GramajliSatislarRaporuCRUD.cs" />
     <Compile Include="Models\GramajSaatlikSatisCRUD\GramajSaatlikSatisCRUD.cs" />
     <Compile Include="Models\IcecekRaporuCRUD\IcecekRaporuCRUD.cs" />
+    <Compile Include="Models\mdlAdmin.cs" />
     <Compile Include="Models\MiktarsalKilolukSatialrCRUD\MiktarsalKilolukSatialrCRUD.cs" />
     <Compile Include="Models\OnlineOzetSatisAnalizleriCRUD\OnlineOzetSatisAnalizleriCRUD.cs" />
     <Compile Include="Models\OnlineSatislarAnaliziCRUD\OnlineSatislarAnaliziCRUD.cs" />
@@ -3687,6 +3691,8 @@
     <Compile Include="Models\PersonelYemekRaporuCRUD\PersonelYemekRaporuCRUD.cs" />
     <Compile Include="Models\HamMaddeKullanimCRUD\HamMaddeKullanimCRUD.cs" />
     <Compile Include="Models\IcmalCRUD\IcmalCRUD.cs" />
+    <Compile Include="Models\SubeSatislar.cs" />
+    <Compile Include="Models\SubeSettingsModel.cs" />
     <Compile Include="Models\UrunFiyatCRUD\UrunFiyatCRUD.cs" />
     <Compile Include="Models\YanUrunlerRaporuCRUD\YanUrunlerRaporuCRUD.cs" />
     <Compile Include="Models\YetkiNesneCRUD\YetkiNesneCRUD.cs" />
@@ -3725,8 +3731,6 @@
     <Compile Include="Models\License\ResultLicense.cs" />
     <Compile Include="ViewModels\LogReports\LogReportsViewModels.cs" />
     <Compile Include="ViewModels\mdlActionResult\mdlActionResult.cs" />
-    <Compile Include="Models\mdlAdmin.cs" />
-    <Compile Include="Models\mdlOrderStatistic.cs" />
     <Compile Include="Models\ModelFunctions\ModelFunctions.cs" />
     <Compile Include="ViewModels\PaketCiro\PaketCiro.cs" />
     <Compile Include="Models\PaketCiroCRUD\PaketCiroCRUD.cs" />
@@ -3755,10 +3759,8 @@
     <Compile Include="ViewModels\Icmal\IcmalViewModel.cs" />
     <Compile Include="ViewModels\SubeCiro\SubeCiro.cs" />
     <Compile Include="Models\SubeCiroCRUD\SubeCiroCRUD.cs" />
-    <Compile Include="Models\SubeSatislar.cs" />
     <Compile Include="Models\SubeSatislarCRUD\SubeSatislarCRUD.cs" />
     <Compile Include="Models\SubeSettingsCRUD\SubeSettingsCRUD.cs" />
-    <Compile Include="Models\SubeSettingsModel.cs" />
     <Compile Include="ViewModels\SPosVeriGonderimi\UrunEdit.cs" />
     <Compile Include="ViewModels\SubeUrun\SubeUrunExcelExport.cs" />
     <Compile Include="ViewModels\SubeUrun\SubeUrun.cs" />

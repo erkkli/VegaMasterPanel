@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
+using static SefimV2.Enums.General;
 
 namespace SefimV2.Models
 {
@@ -141,11 +142,16 @@ namespace SefimV2.Models
 
             string resut = "true";
 
+            if (string.IsNullOrWhiteSpace(course.EnvanterOzelKodAdi))
+            {
+                course.EnvanterOzelKodAdi = "SEFIMWEBREPORT";
+            }
+
             try
             {
                 mf.SqlConnOpen();
                 string TimeStamp = DateTime.Now.ToFileTimeUtc().ToString();
-                string CmdString = "Insert Into SubeSettings(CreateDate,CreateDate_Timestamp,SubeName,SubeIP,SqlName,SqlPassword,DBName,FirmaID,DonemID,DepoID,AppDbType,AppDbTypeStatus,FasterSubeID, SefimPanelZimmetCagrisi,Status,ServiceAdress,BelgeSayimTarihDahil,PersonelYemekRaporuAdi, VPosSubeKodu,VPosKasaKodu,UrunEslestirmeVarMi)" +
+                string CmdString = "Insert Into SubeSettings(CreateDate,CreateDate_Timestamp,SubeName,SubeIP,SqlName,SqlPassword,DBName,FirmaID,DonemID,DepoID,AppDbType,AppDbTypeStatus,FasterSubeID, SefimPanelZimmetCagrisi,Status,ServiceAdress,BelgeSayimTarihDahil,PersonelYemekRaporuAdi, VPosSubeKodu,VPosKasaKodu, EnvanterOzelKodTipi, EnvanterOzelKodAdi, UrunEslestirmeVarMi)" +
                                    "Values(" +
                                    "getdate() , " +
                                    "'" + TimeStamp + "' , " +
@@ -167,6 +173,8 @@ namespace SefimV2.Models
                                    "'" + course.PersonelYemekRaporu + "' , " +
                                    "'" + course.VPosSubeKodu + "' , " +
                                    "'" + course.VPosKasaKodu + "' , " +
+                                   "'" + course.EnvanterOzelKodTipi.GetHashCode() + "' , " +
+                                   "'" + course.EnvanterOzelKodAdi + "' , " +
                                    "'" + course.UrunEslestirmeVarMi + "'  " +
                                    ")" +
                                     "select CAST(scope_identity() AS int);";
@@ -242,7 +250,7 @@ namespace SefimV2.Models
                 catch (Exception ex)
                 {
                     Singleton.WritingLogFile2("SubeSettingsCRUDSubeSettingsInsert_MongoServer:", ex.Message.ToString(), "", ex.StackTrace);
-                    resut = ex.Message.ToString(); result.IsSuccess = false; result.UserMessage = ex.ToString(); 
+                    resut = ex.Message.ToString(); result.IsSuccess = false; result.UserMessage = ex.ToString();
                     //return result;
                 }
 
@@ -276,6 +284,12 @@ namespace SefimV2.Models
 
             string resut = "true";
 
+            if (string.IsNullOrWhiteSpace(course.EnvanterOzelKodAdi))
+            {
+                course.EnvanterOzelKodAdi = "SEFIMWEBREPORT";
+            }
+
+
             try
             {
                 mf.SqlConnOpen();
@@ -305,6 +319,11 @@ namespace SefimV2.Models
                 if (course.PersonelYemekRaporu != null) { CmdString = CmdString + " , PersonelYemekRaporuAdi='" + course.PersonelYemekRaporu + "' "; }
                 if (course.VPosSubeKodu != null) { CmdString = CmdString + " , VPosSubeKodu='" + course.VPosSubeKodu + "' "; }
                 if (course.VPosKasaKodu != null) { CmdString = CmdString + " , VPosKasaKodu='" + course.VPosKasaKodu + "' "; }
+
+                var envanterTip = course.EnvanterOzelKodTipi.GetHashCode();
+                if (course.EnvanterOzelKodTipi != null) { CmdString = CmdString + " , EnvanterOzelKodTipi='" + envanterTip + "' "; }
+                if (course.EnvanterOzelKodAdi != null) { CmdString = CmdString + " , EnvanterOzelKodAdi='" + course.EnvanterOzelKodAdi + "' "; }
+
 
                 if (course.FasterKasaListesi != null) { CmdString = CmdString + " , FasterSubeID='" + course.FasterKasaListesi + "' "; }
                 else
@@ -480,6 +499,9 @@ namespace SefimV2.Models
                     model.PersonelYemekRaporu = mf.RTS(r, "PersonelYemekRaporuAdi");
                     model.VPosSubeKodu = mf.RTS(r, "VPosSubeKodu");
                     model.VPosKasaKodu = mf.RTS(r, "VPosKasaKodu");
+                    var EnvanterOzelKodTipi = (mf.RTS(r, "EnvanterOzelKodTipi"));
+                    model.EnvanterOzelKodTipi = (EnvanterOzelKodTipi)Convert.ToInt32(EnvanterOzelKodTipi);
+                    model.EnvanterOzelKodAdi = mf.RTS(r, "EnvanterOzelKodAdi");
                 }
                 //model.ZimmetCariInd = model.ZimmetCariInd == null ? "0" : model.ZimmetCariInd;
             }

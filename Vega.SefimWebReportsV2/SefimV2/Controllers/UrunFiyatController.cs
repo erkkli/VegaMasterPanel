@@ -8,8 +8,10 @@ using SefimV2.Repository;
 using SefimV2.ViewModels.GetTime;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Web.Mvc;
 
 namespace SefimV2.Controllers
@@ -191,6 +193,21 @@ namespace SefimV2.Controllers
 
         public ActionResult ProductList(string SubeIds)
         {
+            var culture = new CultureInfo("tr-TR");
+            culture.NumberFormat.CurrencyGroupSeparator = "";
+            culture.NumberFormat.NumberGroupSeparator = "";
+            //TL ve % işaretlerinin sağda görünmesi için.           
+            culture.NumberFormat.CurrencyNegativePattern = 1;
+            culture.NumberFormat.CurrencyPositivePattern = 3;
+            culture.NumberFormat.PercentPositivePattern = 3;
+            culture.NumberFormat.PercentNegativePattern = 3;
+            culture.NumberFormat.NumberNegativePattern = 1;
+
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
+
             List<SefimPanelUrunEkleViewModel> lst = new List<SefimPanelUrunEkleViewModel>();
             try
             {

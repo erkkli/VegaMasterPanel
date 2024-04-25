@@ -56,8 +56,8 @@ namespace SefimV2.Controllers
             {
                 Singleton.WritingLogFile("SubeUrunlerController_Details", ex.Message.ToString());
             }
-            TimeViewModel viewModel = Singleton.GetTimeViewModel(tarihAraligiStartDate, tarihAraligiEndDate, durum);
 
+            TimeViewModel viewModel = Singleton.GetTimeViewModel(tarihAraligiStartDate, tarihAraligiEndDate, durum);
             ViewBag.StartDateTime = viewModel.StartDate;
             ViewBag.EndDateTime = viewModel.EndDate;
             ViewBag.Pages = "Envanter Raporları";

@@ -526,7 +526,7 @@ namespace SefimV2.Models
                                     " SELECT " +
                                     " Sube,Sube1,Kasa, SUM(MIKTAR) AS MIKTAR, SUM(TUTAR) AS TUTAR " +
                                     " FROM(SELECT Sube, Sube1, Kasa_No as Kasa, Sum(Tutar) as TUTAR, Sum(Miktar) as MIKTAR " +
-                                    " FROM " + vega_Db + "..TBLMASTERENPOSSTOK AS HR  WHERE HR.BELGETARIH >= @Trh1 and HR.BELGETARIH <= @Trh2 " +
+                                    " FROM " + vega_Db + "..TBLMASTERENPOSSTOK AS HR  WHERE HR.Tarih >= @Trh1 and HR.Tarih <= @Trh2 " +
                                     " group by  Sube, Sube1, Kasa_No) AS T  group by Sube,Sube1,Kasa ,MIKTAR,TUTAR ";
                             #endregion NPOS QUARY 1.KIRILIM
 
@@ -540,7 +540,7 @@ namespace SefimV2.Models
                                     " SELECT " +
                                     " Sube,Sube1,Kasa_No AS Kasa, KOD1 AS ProductGroup ,MALINCINSI as ProductName ,Sum(Tutar) as TUTAR,Sum(Miktar) as MIKTAR " +
                                     " FROM " + vega_Db + "..TBLMASTERENPOSSTOK AS HR " +
-                                    " WHERE HR.BELGETARIH >= @Trh1 and HR.BELGETARIH <= @Trh2 " +
+                                    " WHERE HR.Tarih >= @Trh1 and HR.Tarih <= @Trh2 " +
                                     " group by " +
                                     " MALINCINSI," +
                                     " Sube,Sube1,Kasa_No,kod1 ";

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Configuration;
 using System.Web.Mvc;
 using Vega.Belge.Wrapper;
@@ -1469,8 +1470,6 @@ namespace SefimV2.Models.SefimPanelBelgeCRUD
                     DataTable AcikHesapDt = f.DataTable(Query, true);
                     if (AcikHesapDt.Rows.Count > 0)
                     {
-
-
                         foreach (DataRow SubeR in AcikHesapDt.Rows)
                         {
                             items.Add(new SelectListItem
@@ -1495,10 +1494,12 @@ namespace SefimV2.Models.SefimPanelBelgeCRUD
             ModelFunctions f = new ModelFunctions();
             try
             {
+                var locked = new Object();
 
                 f.SqlConnOpen();
                 DataTable dt = f.DataTable("SELECT Id,DBName,IP,SqlName,SqlPassword  FROM  VegaDbSettings");
-                string Query = "";
+                f.SqlConnClose();
+                string Query = string.Empty;
                 foreach (DataRow r in dt.Rows)
                 {
                     string VegaDbId = f.RTS(r, "Id");
@@ -1510,27 +1511,35 @@ namespace SefimV2.Models.SefimPanelBelgeCRUD
                     string connString = "Provider=SQLOLEDB;Server=" + VegaDbIp + ";User Id=" + VegaDbSqlName + ";Password=" + VegaDbSqlPassword + ";Database=" + VegaDbName + "";
                     f.SqlConnOpen(true, connString);
 
-                    Singleton.WritingLogFile2("GetStokSelectList_Log:", "TanımID:" + TanimId, "", "Query:" + Query);
+                    //Singleton.WritingLogFile2("GetStokSelectList_Log", "TanımID" + TanimId, "", "Query" + Query);
 
                     DataTable AcikHesapDt = f.DataTable(Query, true);
+                    f.SqlConnClose();
                     if (AcikHesapDt.Rows.Count > 0)
                     {
-                        foreach (DataRow SubeR in AcikHesapDt.Rows)
+                        //foreach (DataRow SubeR in AcikHesapDt.Rows)
+                        //{
+
+                        Parallel.ForEach(AcikHesapDt.AsEnumerable(), SubeR =>
                         {
-                            BelgeAlisGiderCreate model = new BelgeAlisGiderCreate();
-                            items.Add(new SelectListItem
+                            //BelgeAlisGiderCreate model = new BelgeAlisGiderCreate();
+                            lock (locked)
                             {
-                                Text = f.RTS(SubeR, "STOK").ToString(),
-                                Value = f.RTS(SubeR, "STOKIND"),
-                            });
-                        }
+                                items.Add(new SelectListItem
+                                {
+                                    Text = f.RTS(SubeR, "STOK").ToString(),
+                                    Value = f.RTS(SubeR, "STOKIND"),
+                                });
+                            }
+                            //}
+                        });
                     }
                 }
-                f.SqlConnClose();
+
             }
             catch (Exception ex)
             {
-                Singleton.WritingLogFile2("GetStokSelectList:", ex.Message.ToString(), "", ex.StackTrace);
+                Singleton.WritingLogFile2("GetStokSelectList_Exception", ex.Message.ToString(), "", ex.StackTrace);
             }
             return items.ToList();
         }
@@ -1539,10 +1548,12 @@ namespace SefimV2.Models.SefimPanelBelgeCRUD
         {
             var items = new List<Bom>();
             var f = new ModelFunctions();
+            var locked = new Object();
             try
             {
                 f.SqlConnOpen();
                 var dtVegaDbSettings = f.DataTable("SELECT Id,DBName,IP,SqlName,SqlPassword  FROM  VegaDbSettings");
+                f.SqlConnClose();
                 string Query = string.Empty;
                 foreach (DataRow r in dtVegaDbSettings.Rows)
                 {
@@ -1552,31 +1563,95 @@ namespace SefimV2.Models.SefimPanelBelgeCRUD
                     string VegaDbSqlName = f.RTS(r, "SqlName");
                     string VegaDbSqlPassword = f.RTS(r, "SqlPassword");
                     Query = "SELECT S.IND, S.STOKKODU , S.MALINCINSI , ISNULL(B.BARCODE,'') , ISNULL(B.BIRIMADI,'') AS STOK, S.IND STOKIND from F0" + TanimId + "TBLSTOKLAR S,F0" + TanimId + "TBLBIRIMLEREX B WHERE S.IND=B.STOKNO AND STATUS=1 and S.IND=" + StokId;
-                   
-                    Singleton.WritingLog("GetStokSelectList2", "bomStokId:" + StokId + " TanimId: " + TanimId + " QueryBom:" + Query.ToString());
+
+                    //Singleton.WritingLog("GetStokSelectList2", "bomStokId:" + StokId + " TanimId: " + TanimId + " QueryBom:" + Query.ToString());
 
                     string connString = "Provider=SQLOLEDB;Server=" + VegaDbIp + ";User Id=" + VegaDbSqlName + ";Password=" + VegaDbSqlPassword + ";Database=" + VegaDbName + "";
                     f.SqlConnOpen(true, connString);
                     var tblStoklarDt = f.DataTable(Query, true);
+                    f.SqlConnClose();
                     if (tblStoklarDt.Rows.Count > 0)
                     {
-                        foreach (DataRow SubeR in tblStoklarDt.Rows)
+                        //foreach (DataRow SubeR in tblStoklarDt.Rows)
+                        //{
+                        Parallel.ForEach(tblStoklarDt.AsEnumerable(), SubeR =>
                         {
                             var model = new Bom();
-                            items.Add(new Bom
+                            lock (locked)
                             {
-                                MalinCinsi = f.RTS(SubeR, "MALINCINSI").ToString(),
-                                MaterialName = f.RTS(SubeR, "STOKKODU"),
-                                StokID = f.RTI(SubeR, "IND"),
-                            });
-                        }
+                                items.Add(new Bom
+                                {
+                                    MalinCinsi = f.RTS(SubeR, "MALINCINSI").ToString(),
+                                    MaterialName = f.RTS(SubeR, "STOKKODU"),
+                                    StokID = f.RTI(SubeR, "IND"),
+                                });
+                            }
+                            //}
+                        });
+
                     }
                 }
-                f.SqlConnClose();
+
             }
             catch (Exception ex)
             {
-                Singleton.WritingLogFile2("AlisBelgesiCRUD_GetStokSelectList2:", ex.Message.ToString(), "", ex.StackTrace);
+                Singleton.WritingLogFile2("AlisBelgesiCRUD_GetStokSelectList2_Exception", ex.Message.ToString(), "", ex.StackTrace);
+            }
+            return items;
+        }
+
+        public static List<Bom> GetStokSelectList3(int TanimId, int StokId)
+        {
+            var items = new List<Bom>();
+            var f = new ModelFunctions();
+            var locked = new Object();
+            try
+            {
+                f.SqlConnOpen();
+                var dtVegaDbSettings = f.DataTable("SELECT Id,DBName,IP,SqlName,SqlPassword  FROM  VegaDbSettings");
+                f.SqlConnClose();
+                string Query = string.Empty;
+                foreach (DataRow r in dtVegaDbSettings.Rows)
+                {
+                    string VegaDbId = f.RTS(r, "Id");
+                    string VegaDbName = f.RTS(r, "DBName");
+                    string VegaDbIp = f.RTS(r, "IP");
+                    string VegaDbSqlName = f.RTS(r, "SqlName");
+                    string VegaDbSqlPassword = f.RTS(r, "SqlPassword");
+                    Query = "SELECT S.IND, S.STOKKODU , S.MALINCINSI , ISNULL(B.BARCODE,'') , ISNULL(B.BIRIMADI,'') AS STOK, S.IND STOKIND from F0" + TanimId + "TBLSTOKLAR S,F0" + TanimId + "TBLBIRIMLEREX B WHERE S.IND=B.STOKNO AND STATUS=1";
+
+                    //Singleton.WritingLog("GetStokSelectList2", "bomStokId:" + StokId + " TanimId: " + TanimId + " QueryBom:" + Query.ToString());
+
+                    string connString = "Provider=SQLOLEDB;Server=" + VegaDbIp + ";User Id=" + VegaDbSqlName + ";Password=" + VegaDbSqlPassword + ";Database=" + VegaDbName + "";
+                    f.SqlConnOpen(true, connString);
+                    var tblStoklarDt = f.DataTable(Query, true);
+                    f.SqlConnClose();
+                    if (tblStoklarDt.Rows.Count > 0)
+                    {
+                        //foreach (DataRow SubeR in tblStoklarDt.Rows)
+                        //{
+                        Parallel.ForEach(tblStoklarDt.AsEnumerable(), SubeR =>
+                        {
+                            var model = new Bom();
+                            lock (locked)
+                            {
+                                items.Add(new Bom
+                                {
+                                    MalinCinsi = f.RTS(SubeR, "MALINCINSI").ToString(),
+                                    MaterialName = f.RTS(SubeR, "STOKKODU"),
+                                    StokID = f.RTI(SubeR, "IND"),
+                                });
+                            }
+                            //}
+                        });
+
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Singleton.WritingLogFile2("AlisBelgesiCRUD_GetStokSelectList2_Exception", ex.Message.ToString(), "", ex.StackTrace);
             }
             return items;
         }

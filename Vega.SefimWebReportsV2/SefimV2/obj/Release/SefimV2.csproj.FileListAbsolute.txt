@@ -86,6 +86,7 @@ C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\obj\Release\SefimV2
 C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\obj\Release\SefimV2.csproj.CopyComplete
 C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\obj\Release\SefimV2.dll
 C:\WORK\VegaSefimWebReportsV2\Vega.SefimWebReportsV2\SefimV2\obj\Release\SefimV2.pdb
+C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\SefimV2\obj\Release\SefimV2.csproj.AssemblyReference.cache
 C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\SefimV2\bin\libzstd.dll
 C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\SefimV2\bin\snappy32.dll
 C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\SefimV2\bin\snappy64.dll
@@ -169,7 +170,6 @@ C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\SefimV2\bin\System
 C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\SefimV2\bin\System.Web.Optimization.xml
 C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\SefimV2\bin\es\System.Web.Optimization.resources.dll
 C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\SefimV2\obj\Release\SefimV2.csproj.App.config
-C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\SefimV2\obj\Release\SefimV2.csproj.AssemblyReference.cache
 C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\SefimV2\obj\Release\SefimV2.csproj.CoreCompileInputs.cache
 C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\SefimV2\obj\Release\SefimV2.csproj.CopyComplete
 C:\RepoVegaMasterPanel\VegaMasterPanel\Vega.SefimWebReportsV2\SefimV2\obj\Release\SefimV2.dll

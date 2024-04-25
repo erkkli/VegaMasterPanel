@@ -68,6 +68,8 @@ namespace SefimDesktop
                 [PersonelYemekRaporuAdi] [varchar](500) NULL,
                 [VPosSubeKodu] [varchar](255) NULL,
                 [VPosKasaKodu] [varchar](255) NULL,
+                [EnvanterOzelKodTipi] [tinyint] NULL,
+                [EnvanterOzelKodAdi] [varchar](255) NULL,
 
                 PRIMARY KEY CLUSTERED 
                 (

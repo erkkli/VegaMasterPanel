@@ -1,4 +1,5 @@
-﻿using SefimV2.Helper;
+﻿using Microsoft.Ajax.Utilities;
+using SefimV2.Helper;
 using SefimV2.ViewModels.User;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace SefimV2.Models
 {
     public class RecipeCostCRUD2
     {
-        public static List<SubeUrun> List(DateTime Date1, DateTime Date2, string subeid, string ID, string payReportID, string SaatGun, int KirilimNo, bool tumStoklarGetirilsinMi)
+        public static List<SubeUrun> List(DateTime Date1, DateTime Date2, string subeid, string ID, string payReportID, string SaatGun, int KirilimNo, bool tumStoklarGetirilsinMi, string hammaddeStokTipi)
         {
             List<SubeUrun> Liste = new List<SubeUrun>();
             ModelFunctions ff = new ModelFunctions();
@@ -79,6 +80,12 @@ namespace SefimV2.Models
                     string AppDbTypeStatus = f.RTS(r, "AppDbTypeStatus");
                     string urunEslestirmeVarMi = f.RTS(r, "UrunEslestirmeVarMi");
                     string query = string.Empty;
+                    string hamMaddeQuery = string.Empty;
+
+                    if (!string.IsNullOrWhiteSpace(hammaddeStokTipi) && hammaddeStokTipi != "0")
+                    {
+                        hamMaddeQuery = " where t.STOKTIPI=" + hammaddeStokTipi;
+                    }
 
                     #region Faster Kasalar seçildiyse ona göre query oluşturuluyor. 
                     string FasterSubeIND = f.RTS(r, "FasterSubeID");
@@ -107,6 +114,9 @@ namespace SefimV2.Models
                             }
                             else if (KirilimNo == 2 && tumStoklarGetirilsinMi) //Tüm stokları getirmek için güncellendi
                             {
+
+
+                                #region eski
                                 //query =
                                 //         " Declare @par1 nvarchar(20) = '{TARIH1}';" +
                                 //         " Declare @par2 nvarchar(20) = '{TARIH2}';" +
@@ -660,6 +670,9 @@ namespace SefimV2.Models
                                 //        " LEFT JOIN maliyet ON maliyet.IND = recete.StokID" +
                                 //        " where pro.pname is not null" +
                                 //        " GROUP BY pro.pname";
+                                #endregion eski
+
+
                                 query =
                                " Declare @par1 nvarchar(20) = '{TARIH1}';" +
                                " Declare @par2 nvarchar(20) = '{TARIH2}';" +
@@ -676,6 +689,7 @@ namespace SefimV2.Models
                                "          IND," +
                                "          STOKKODU HMKODU," +
                                "          MALINCINSI HMADI" +
+                               "          ,STOKTIPI " +
                                "   FROM " + vega_Db + ".DBO.F0" + FirmaId + "TBLSTOKLAR), " +
                                "  " +
                                "     ProEqu AS" +
@@ -908,22 +922,25 @@ namespace SefimV2.Models
                                "       SUM(ISNULL(t.INDIRIM, 0)) INDIRIM," +
                                "       SUM(ISNULL(t.IKRAM, 0)) IKRAM," +
                                "       SUM(ISNULL(t.RECETEMIKTARTOPLAM, 0)) RECETEMIKTARTOPLAM," +
-                               "       SUM(ISNULL(t.RECETETUTAR, 0))  RECETETUTAR" +
+                               "       SUM(ISNULL(t.RECETETUTAR, 0))  RECETETUTAR " +
+                               "       ,t.STOKTIPI" +
                                "	   FROM (" +
                                " select " +
                                " b.*," +
                                "  (ISNULL(b.MIKTAR,1)*ISNULL(recete.RQuantity, 1)) RECETEMIKTARTOPLAM ," +
                                "          ((ISNULL(b.MIKTAR,1)*ISNULL(recete.RQuantity, 1)))*(case when ISNULL(maliyet.MALIYET,0)=0 then m2.MALIYET else  ISNULL(maliyet.MALIYET,0) end ) RECETETUTAR," +
-                               "		  m3.HMADI" +
-                               "		  " +
+                               "		  m3.HMADI , " +
+                               "	m3.STOKTIPI	  " +
                                "		  from maliyet m3" +
                                " LEFT JOIN satisproduct b ON m3.HMADI=b.ProductName " +
                                " LEFT JOIN recete ON recete.ProductName=m3.HMADI" +
                                " LEFT JOIN maliyet ON maliyet.IND=recete.StokID" +
                                " LEFT JOIN maliyet m2 ON m2.HMADI=b.ProductName " +
                                " ) as t" +
+                               "  " + hamMaddeQuery + " " +
                                " group by " +
-                               " t.HMADI ";
+                               " t.HMADI " +
+                               ",t.STOKTIPI ";
                             }
                             else if (KirilimNo == 2 && !tumStoklarGetirilsinMi) //Tüm stoklar false
                             {
@@ -943,6 +960,7 @@ namespace SefimV2.Models
                                        "          IND," +
                                        "          STOKKODU HMKODU," +
                                        "          MALINCINSI HMADI" +
+                                       "  ,STOKTIPI" +
                                        "   FROM " + vega_Db + ".DBO.F0" + FirmaId + "TBLSTOKLAR), " +
                                        "     ProEqu AS" +
                                        "  (SELECT ISNULL(pq.ProductName, '') + ISNULL('.' +" +
@@ -1174,19 +1192,23 @@ namespace SefimV2.Models
                                        "       SUM(ISNULL(t.INDIRIM, 0)) INDIRIM," +
                                        "       SUM(ISNULL(t.IKRAM, 0)) IKRAM," +
                                        "       SUM(ISNULL(t.RECETEMIKTARTOPLAM, 0)) RECETEMIKTARTOPLAM," +
-                                       "       SUM(ISNULL(t.RECETETUTAR, 0))  RECETETUTAR" +
+                                       "       SUM(ISNULL(t.RECETETUTAR, 0))  RECETETUTAR ," +
+                                       "        t.STOKTIPI" +
                                        "	   FROM (" +
                                        " select " +
                                        " b.*," +
                                        "  (b.MIKTAR*ISNULL(recete.RQuantity, 1)) RECETEMIKTARTOPLAM ," +
-                                       "          ((b.MIKTAR*ISNULL(recete.RQuantity, 1)))*(case when ISNULL(maliyet.MALIYET,0)=0 then m2.MALIYET else  ISNULL(maliyet.MALIYET,0) end ) RECETETUTAR" +
+                                       "          ((b.MIKTAR*ISNULL(recete.RQuantity, 1)))*(case when ISNULL(maliyet.MALIYET,0)=0 then m2.MALIYET else  ISNULL(maliyet.MALIYET,0) end ) RECETETUTAR ," +
+                                       "   maliyet.STOKTIPI" +
                                        "		  " +
                                        "		  from satisproduct b" +
                                        " LEFT JOIN recete ON recete.ProductName=b.ProductName" +
                                        " LEFT JOIN maliyet ON maliyet.IND=recete.StokID" +
                                        " LEFT JOIN maliyet m2 ON m2.HMADI=b.ProductName  ) as t" +
+                                        "  " + hamMaddeQuery + " " +
                                        " group by " +
-                                       " t.ProductName";
+                                       " t.ProductName" +
+                                        ",t.STOKTIPI ";
                             }
                             else
                             {
@@ -1864,7 +1886,7 @@ namespace SefimV2.Models
                                                         }
                                                     }
                                                 }
-                                                
+
                                                 items.NetTutar = items.Debit - (items.Indirim /*+ items.Ikram*/);
                                                 //items.KarTutari = items.Debit - items.ReceteTutari;
                                                 items.KarTutari = items.NetTutar - items.ReceteBirimMaliyeti;
@@ -1985,7 +2007,7 @@ namespace SefimV2.Models
                                                     {
                                                         items.ReceteTutari = receteMaliyet.ReceteTutari;
                                                         //items.KarTutari = items.Debit - items.ReceteTutari;
-                                                        
+
                                                         //items.ReceteBirimMaliyeti = items.ReceteTutari / items.Miktar;
                                                         items.ReceteBirimMaliyeti = items.ReceteTutari > 0M && items.Miktar > 0M ? Math.Abs(items.ReceteTutari) / Math.Abs(items.Miktar) : 0;
                                                         items.KarTutari = items.NetTutar - items.ReceteTutari;

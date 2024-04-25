@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
-using System.Threading;
 using System.Web.Mvc;
 
 namespace SefimV2.Controllers
@@ -38,6 +37,7 @@ namespace SefimV2.Controllers
             string tarihAraligiEndDate = string.Empty;
             string subeid = string.Empty;
             string durum = string.Empty;
+            string hammaddeStokTipi = string.Empty;
 
             try
             {
@@ -54,6 +54,9 @@ namespace SefimV2.Controllers
                 {
                     subeid = Request.QueryString["subeid"].ToString();
                 }
+
+                if (Request.QueryString["HammaddeStokTipi"] != null)
+                    hammaddeStokTipi = Request.QueryString["HammaddeStokTipi"].ToString();
             }
             catch (Exception ex)
             {
@@ -85,7 +88,7 @@ namespace SefimV2.Controllers
             culture.NumberFormat.PercentNegativePattern = 3;
             culture.NumberFormat.NumberNegativePattern = 3;
 
-            List<SubeUrun> list = RecipeCostCRUD2.List(Convert.ToDateTime(viewModel.StartDate), Convert.ToDateTime(viewModel.EndDate), subeid, ID, "", "", 0, false);
+            List<SubeUrun> list = RecipeCostCRUD2.List(Convert.ToDateTime(viewModel.StartDate), Convert.ToDateTime(viewModel.EndDate), subeid, ID, "", "", 0, false, hammaddeStokTipi);
             return View(list);
         }
         #endregion LIST
@@ -101,6 +104,7 @@ namespace SefimV2.Controllers
             string subeid = string.Empty;
             string durum = string.Empty;
             string tumStoklarGosterilsinMi = string.Empty;
+            string hammaddeStokTipi = string.Empty;
 
             try
             {
@@ -121,6 +125,9 @@ namespace SefimV2.Controllers
                 {
                     tumStoklarGosterilsinMi = Request.QueryString["tumStoklarGetirilsinMi"].ToString();
                 }
+
+                if (Request.QueryString["HammaddeStokTipi"] != null)
+                    hammaddeStokTipi = Request.QueryString["HammaddeStokTipi"].ToString();
             }
             catch (Exception ex)
             {
@@ -134,9 +141,9 @@ namespace SefimV2.Controllers
             ViewBag.Pages = "Şube Detay Urunleri";
             ViewBag.SubeId = subeid;
 
-           
-                
-                 var culture = new CultureInfo("tr-TR");
+
+
+            var culture = new CultureInfo("tr-TR");
             culture.NumberFormat.CurrencyGroupSeparator = "";
             culture.NumberFormat.NumberGroupSeparator = "";
 
@@ -148,7 +155,7 @@ namespace SefimV2.Controllers
             culture.NumberFormat.PercentNegativePattern = 3;
             culture.NumberFormat.NumberNegativePattern = 3;
 
-            List<SubeUrun> list = RecipeCostCRUD2.List(Convert.ToDateTime(viewModel.StartDate), Convert.ToDateTime(viewModel.EndDate), subeid, ID, "", "", 2, Convert.ToBoolean(tumStoklarGosterilsinMi));
+            List<SubeUrun> list = RecipeCostCRUD2.List(Convert.ToDateTime(viewModel.StartDate), Convert.ToDateTime(viewModel.EndDate), subeid, ID, "", "", 2, Convert.ToBoolean(tumStoklarGosterilsinMi), hammaddeStokTipi);
 
             return View(list);
         }
@@ -200,7 +207,7 @@ namespace SefimV2.Controllers
             ViewBag.SubeId = subeid;
             ViewBag.ProductGroup = productName;
 
-  
+
 
             var culture = new CultureInfo("tr-TR");
             culture.NumberFormat.CurrencyGroupSeparator = "";
@@ -266,7 +273,7 @@ namespace SefimV2.Controllers
             ViewBag.SubeId = subeid;
             subeid = "exportExcel";
 
-            List<SubeUrun> result = RecipeCostCRUD2.List(Convert.ToDateTime(StartDate), Convert.ToDateTime(EndDate), subeid, ID, "", "", 2, false);
+            List<SubeUrun> result = RecipeCostCRUD2.List(Convert.ToDateTime(StartDate), Convert.ToDateTime(EndDate), subeid, ID, "", "", 2, false, "");
 
             var dataTable = new DataTable("Recete_Maliyet");
             dataTable.Columns.Add("ŞUBE", typeof(string));

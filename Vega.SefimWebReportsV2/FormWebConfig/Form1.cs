@@ -403,7 +403,7 @@ namespace FormWebConfig
                         "ALTER TABLE [SubeSettings] ADD [PersonelYemekRaporuAdi] [nvarchar](500)",
                         "ALTER TABLE [SubeSettings] ADD [VPosSubeKodu] [varchar](255) NULL",
                         "ALTER TABLE [SubeSettings] ADD [VPosKasaKodu] [varchar](255) NULL",
-                        
+
 
                         "ALTER TABLE Product ADD  [GuncellenecekSubeIdGrubu] [nvarchar](max) NULL   ALTER TABLE Product ADD [GuncellenecekSubeAdiGrubu] [nvarchar](max) NULL",
                         "ALTER TABLE Options ADD  [GuncellenecekSubeIdGrubu] [nvarchar](max) NULL   ALTER TABLE Options ADD [GuncellenecekSubeAdiGrubu] [nvarchar](max) NULL",
@@ -434,7 +434,7 @@ namespace FormWebConfig
                         "ALTER TABLE Belge ADD [AltBelgeTarihi] [datetime]  NULL",
 
                         "ALTER TABLE TempProductSube ADD [ProductNameEk] [nvarchar](500)",
-                       
+
                         "ALTER TABLE Product ALTER COLUMN GuncellenecekSubeIdGrubu NVARCHAR(max)",
                         "ALTER TABLE Product ALTER COLUMN GuncellenecekSubeAdiGrubu NVARCHAR(max)",
 
@@ -446,7 +446,10 @@ namespace FormWebConfig
 
                         "ALTER TABLE SubeSettings ADD [VPosSubeKodu] [nvarchar](255)  NULL",
                         "ALTER TABLE SubeSettings ADD [VPosKasaKodu]  [nvarchar](255)  NULL",
-                        "ALTER TABLE SubeSettings ADD [VPosKasaKoduTEST]  [nvarchar](255)  NULL",
+
+                        "ALTER TABLE SubeSettings ADD [EnvanterOzelKodTipi] [tinyint]  NULL",
+                        "ALTER TABLE SubeSettings ADD [EnvanterOzelKodAdi]  [nvarchar](255)  NULL",
+
 
                 };
 
